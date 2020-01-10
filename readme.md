@@ -1,18 +1,11 @@
 # Overview
 
-empty code repository
+扩展基于氨基酸衍征的分子分类系统：鸟类中的案例研究
 
-
-
-# How to use
-
-1. create repo on GitHub using me as template, clone to local
-1. replace description in `readme.md`
-1. delete this section
+Extending the molecular classification based on apomorphic amino acids: case study in birds
 
 
 
 -----------------------
-
-[![Creative Commons License](https://i.creativecommons.org/l/by-nc/3.0/88x31.png)](http://creativecommons.org/licenses/by-nc/3.0/)  
-This work is licensed under a [Creative Commons Attribution-NonCommercial 3.0 Unported License](http://creativecommons.org/licenses/by-nc/3.0/)
+[![Creative Commons License](https://i.creativecommons.org/l/by-nc/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc/4.0/)  
+This work is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/)
