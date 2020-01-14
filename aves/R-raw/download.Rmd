@@ -1,0 +1,56 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE);
+```
+
+## select assembly
+
+
+
+## download md5sum file
+
+```{r}
+aria2c_option <- '-d data-raw/md5checksums -j 8 -c --auto-file-renaming=false -i -';
+aria2c_input <- aves::genome_path %>% {paste0(., '/md5checksums.txt\n\tout=', basename(.))};
+tempfile() %T>% write_lines(aria2c_input, .) %>% system2('aria2c', aria2c_option, stdin = .);
+dir('data-raw/md5checksums')
+```
+
+## Avibase
+
+```{r}
+download_avibase <- function(id) {
+    output <- paste0('data-raw/Avibase/', id);
+    url <- paste0('https://avibase.bsc-eoc.org/species.jsp?lang=ZH&avibaseid=', id);
+    phantomjs_args <- paste0('inst/phantomjs_download_file.js "', url, '"');
+    system2('phantomjs',　phantomjs_args, output)
+}
+
+# prerequisite: `data-raw/Avibase`
+# must provide url of Chinese webpage, `***?lang=ZH&avibaseid=` 
+read_html('data-raw/bookmarks_for_avibase.html') %>% 
+	rvest::html_nodes('a[href*=avibaseid]') %>% rvest::html_attr('href') %>% 
+	mclapply(download_avibase, mc.preschedule = F, mc.cores = 64)
+
+mclapply(1:10, . %>% warning)
+```
+
+
+## genome 
+
+```{r}
+write_lines(aves::assembly$url, 'remote/download/genome.md')
+```
+
+
+```bash
+scp -r -P 4213 output/download/  entomo@hostname:/path/to/data/aves/
+
+
+xie 'cd /path/to/data/aves; aria2c --auto-file-renaming=false -d raw/protein -c -j 32 -i download/protein.md'
+xie 'cd /path/to/data/aves; wget -P raw/protein -i download/protein.md'
+
+xie 'cd /path/to/data/aves; aria2c --auto-file-renaming=false -d raw/genome -c -j 32 -i download/genome.md'
+xie 'cd /path/to/data/aves; wget -P raw/genome -i download/genome.md'
+
+xie 'cd /path/to/data/aves; aria2c --auto-file-renaming=false -d raw/fastq -c -j 32 -i download/sra.md'
+```

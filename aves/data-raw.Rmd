@@ -1,0 +1,152 @@
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE);
+```
+
+```{r clean, eval=FALSE}
+dir('data', full.names = T) %>% file.remove
+rm(list = ls(envir = globalenv(), all = T))
+```
+
+
+
+## taxonomy
+
+```{r}
+taxonomy <- dir('data-raw/Avibase', full.names = T) %>% 
+	mclapply(mcapomorphy::parse_avibase) %>% dplyr::bind_rows() %T>% print
+
+#" Apodiformes, Caprimulgiformes, Trogoniformes: three families of 'Caprimulgiformes' in Suh
+#" Suliformes (dubbed "Phalacrocoraciformes")
+#" Ciconiiformes Aequornithes (... belong to the Pelecaniformes, This would make Ciconiidae the only group)
+stratum <- yaml::read_yaml('data-raw/stratum.yaml') %T>% print
+
+
+devtools::use_data(taxonomy, stratum, overwrite = T);
+```
+
+
+
+```{r}
+genome_id <- read_lines('data-raw/genome_result.txt') %>% 
+	str_extract('(?<=ID: )\\d+') %>% na.omit %>% as.character;
+mcapomorphy:::fetch_genome(genome_id);
+
+
+genome <- dir('data-raw/genome-html', full.names = T) %>%
+	lapply(mcapomorphy::parse_genome) %>% dplyr::bind_rows() %>% 
+    mutate(species = aves::rectify_ncbi_species(species)) %T>% print;
+
+assembly <- read_file('data-raw/assembly_result.xml') %>% 
+	{str_split(., '\n\n')[[1]]} %>% {.[. != '']} %>%
+	mclapply(mcapomorphy:::parse_assembly) %>% bind_rows() %>% 
+	mutate(url = ifelse(gcf_dir == '', gca_dir, gcf_dir) %>% 
+		   	{paste0(., '/', basename(.), '_genomic.fna.gz')}
+	) %>% mutate(species = aves::rectify_ncbi_species(species)) %T>% print
+
+tsa <- libzhuoer::read_char_csv('data-raw/wgs_selector.csv') %>%
+	rename(species = 'organism_an', bases = 'contigs_total_length_l', 
+		   id = 'prefix_s', bio_project = 'bioproject_s') %>%
+	mutate(species = aves::rectify_ncbi_species(species)) %>%
+	mutate(size = as.numeric(bases)/1e6) %T>% print;
+
+sra <- libzhuoer::read_char_csv('data-raw/SraRunInfo.csv') %>% 
+	mutate(in_tsa = BioProject %in% tsa$bio_project) %>%
+	mutate(species = str_replace(ScientificName, '( \\w+) \\w+$', '\\1')) %>%
+	#" for example SRR5120198's ScientificName is Gallus
+	mutate(species = aves::rectify_ncbi_species(species)) %>%
+	mutate(size = as.numeric(bases)/1e6) %T>% print 
+
+
+devtools::use_data(genome, assembly, tsa, sra, overwrite = T);
+```
+
+
+
+
+
+## data distribution
+
+```{r}
+protein <- genome %>% filter(protein != '') %>%
+    mutate(id = str_sub(basename(protein), 1, 15), source = 'protein') %>%
+	select(species, id, source, url = protein) %T>% print 
+dna <- assembly %>% filter(!partial) %>% add_column(source = 'genome') %>%
+	select(species, id, source, url) %T>% print 
+transcript <- tsa  %>% filter(size >= 1) %>% select(species, id, size) %>%
+	add_column(source = 'TSA') %T>% print
+rna <- sra  %>% filter(size >= 100) %>% select(species, id = 'Run', size) %>%
+	add_column(source = 'SRA') %T>% print
+outgroup <- tribble(
+	~species, ~id, ~source, ~url,
+	'Homo sapiens', 'GCF_000001405.37', 'outgroup', 'ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.37_GRCh38.p11/GCF_000001405.37_GRCh38.p11_protein.faa.gz',
+	'Anolis carolinensis', 'GCF_000090745.1', 'outgroup', 'ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/090/745/GCF_000090745.1_AnoCar2.0/GCF_000090745.1_AnoCar2.0_protein.faa.gz',
+	'Chelonia mydas', 'GCF_000344595.1', 'outgroup', 'ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/344/595/GCF_000344595.1_CheMyd_1.0/GCF_000344595.1_CheMyd_1.0_protein.faa.gz',
+	'Alligator mississippiensis', 'GCF_000281125.3', 'outgroup', 'ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/281/125/GCF_000281125.3_ASM28112v4/GCF_000281125.3_ASM28112v4_protein.faa.gz'
+) %T>% print
+assembled <- bind_rows(protein, dna, transcript) %>% aves::bind_taxonomy() %T>% print
+all <- bind_rows(protein, dna, transcript, rna) %>% aves::bind_taxonomy() %T>% print
+
+
+## add name
+add_name <- . %>% mutate(
+	name = str_replace_all(id, '[_\\.]', '') %>% paste(species, source, .) %>% 
+		str_replace_all(' ', '_')
+);
+
+protein %<>% add_name;
+dna %<>% add_name;
+transcript %<>% add_name;
+rna %<>% add_name;
+outgroup %<>% add_name;
+assembled %<>% add_name;
+all %<>% add_name;
+
+
+devtools::use_data(protein, dna, transcript, rna, outgroup, assembled, all, overwrite = TRUE);
+```
+
+
+## result
+
+```{r}
+phylo <- yaml::read_yaml('inst/extdata/phylo.yaml')
+devtools::use_data(phylo, overwrite = TRUE);
+```
+
+
+## check
+```{r}
+assertthat::assert_that(
+	taxonomy %>% filter(aves::extract_genus(species) != genus) %>% libzhuoer::print_or_T(),
+	msg =  'schism between taxonomy\'s species name and genues name'
+)
+assertthat::assert_that(
+	unlist(stratum) %>% {.[duplicated(.)]} %>% {if(is_empty(.)) T else print(.)},
+	msg =  'duplicated item in stratum\'s order'
+)
+
+
+assertthat::assert_that(
+	assembly %>% filter(id != str_sub(basename(url), 1, 15)) %>% libzhuoer::print_or_T(),
+	msg =  'chosed file from assembly not identical to NCBI chosen ones'
+)
+
+
+assertthat::assert_that(
+	all %>% filter(species != 'Phasianidae gen. sp.') %>% 
+		filter(!(aves::extract_genus(species) %in% taxonomy$genus)) %>% 
+		group_by(species) %>% summarise(id = first(id)) %>% libzhuoer::print_or_T(),
+	msg =  'not all genus of all are in taxonomy'
+)
+assertthat::assert_that(
+	all %>% filter(!is.na(order)) %>% filter(!(order %in% unlist(stratum))) %>% libzhuoer::print_or_T(),
+	msg =  'not all order of all are in stratum'
+)
+```
+
+```{r rebuild}
+system('R CMD INSTALL --no-multiarch --with-keep.source .')
+devtools::reload()
+devtools::test()
+```

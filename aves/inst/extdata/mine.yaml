@@ -1,0 +1,235 @@
+vertebrata:
+    Sauropsida:
+        sup-aves:
+            aves:
+                Neognathae:
+                    Neoaves:
+                        Telluraves:
+                            Australaves:
+                                Eufalconimorphae:
+                                    Psittacopasserae:
+                                        Passeriformes:
+                                            sub-Passeriformes:
+                                                Passeri:
+                                                    Passerida:
+                                                        sub-Passerida:
+                                                            Passeroidea:
+                                                                sub-Passeroidea:
+                                                                    para-Passeridae:
+                                                                        sup-Passeroidea:
+                                                                            Thraupidae:
+                                                                                Geospiza: Geospiza
+                                                                                    fortis
+                                                                                Sporophila: Sporophila
+                                                                                    hypoxantha
+                                                                            Parulidae: Setophaga
+                                                                                    coronata
+                                                                            Passerellidae: Zonotrichia
+                                                                                    albicollis
+                                                                        Fringillidae:
+                                                                            sub-Fringillidae:
+                                                                                Acanthis:
+                                                                                - Acanthis
+                                                                                    flammea
+                                                                                - Acanthis
+                                                                                    hornemanni
+                                                                                Serinus: Serinus
+                                                                                    canaria
+                                                                            Chloris: Chloris
+                                                                                chloris
+                                                                    Passeridae: Passer
+                                                                            domesticus
+                                                                Estrildidae:
+                                                                    Lonchura: Lonchura
+                                                                        striata
+                                                                    Taeniopygia: Taeniopygia
+                                                                        guttata
+                                                            Muscicapoidea:
+                                                                Muscicapidae:
+                                                                    Ficedula: Ficedula
+                                                                        albicollis
+                                                                    Saxicola: Saxicola
+                                                                        maurus
+                                                                Sturnidae: Sturnus
+                                                                        vulgaris
+                                                        Sylvioidea:
+                                                            sub-Sylvioidea:
+                                                                Phylloscopidae:
+                                                                    - Seicercus
+                                                                        plumbeitarsus
+                                                                    - Seicercus
+                                                                        trochiloides
+                                                                    - Seicercus
+                                                                        trochilus
+                                                                Zosteropidae: Zosterops
+                                                                        lateralis
+                                                            Paridae:
+                                                                Parus: Parus major
+                                                                Pseudopodoces: Pseudopodoces
+                                                                    humilis
+                                                    Corvidae:
+                                                        - Corvus brachyrhynchos
+                                                        - Corvus cornix
+                                                Tyranni:
+                                                        Lepidothrix: Lepidothrix
+                                                            coronata
+                                                        Manacus: Manacus vitellinus
+                                            Acanthisittidae: Acanthisitta chloris
+                                        Psittaciformes:
+                                            sub-Psittaciformes:
+                                                Psittacidae:
+                                                    Amazona:
+                                                    - Amazona aestiva
+                                                    - Amazona vittata
+                                                    Ara: Ara macao
+                                                Psittaculidae:
+                                                    Agapornis: Agapornis roseicollis
+                                                    Melopsittacus: Melopsittacus
+                                                        undulatus
+                                            Strigopidae: Nestor notabilis
+                                    Falconiformes:
+                                            - Falco cherrug
+                                            - Falco peregrinus
+                                            - Falco sparverius
+                                Cariamiformes: Cariama cristata
+                            Afroaves:
+                                sub-Afroaves:
+                                    sup-Cavitaves:
+                                        Cavitaves:
+                                            sub-Cavitaves:
+                                                Picocoraciae:
+                                                    sub-Picocoraciae:
+                                                        Coraciiformes: Merops nubicus
+                                                        Piciformes: Picoides pubescens
+                                                    Bucerotiformes: Buceros rhinoceros
+                                                Trogoniformes: Apaloderma vittatum
+                                            Leptosomiformes: Leptosomus discolor
+                                        Strigiformes:
+                                            Tytonidae:
+                                                - Tyto alba
+                                                - Tyto longimembris
+                                            Strigidae: Strix occidentalis
+                                    Accipitriformes:
+                                        sub-Accipitriformes:
+                                            Accipitridae:
+                                                Haliaeetus:
+                                                - Haliaeetus albicilla
+                                                - Haliaeetus leucocephalus
+                                                Aquila: Aquila chrysaetos
+                                            Pandionidae: Pandion haliaetus
+                                        Cathartidae:
+                                            Aegypius(Vultur): Aegypius monachus
+                                            Cathartes: Cathartes aura
+                                Coliiformes: Colius striatus
+                        sup-Aequornithes:
+                            Aequornithes:
+                                sub-Aequornithes:
+                                    Pelecaniformes:
+                                        sub-Pelecaniformes:
+                                            Phalacrocoracidae:
+                                                - Phalacrocorax auritus
+                                                - Phalacrocorax brasilianus
+                                                - Phalacrocorax carbo
+                                                - Phalacrocorax harrisi
+                                                - Phalacrocorax pelagicus
+                                            para-Phalacrocoracidae:
+                                                sub-para-Phalacrocoracidae:
+                                                    Pelecanidae: Pelecanus crispus
+                                                    Ardeidae: Egretta garzetta
+                                                Threskiornithidae: Nipponia nippon
+                                        Ciconiidae: Ciconia boyciana
+                                    Procellariimorphae:
+                                        Sphenisciformes:
+                                            sub-Spheniscidae:
+                                                Pygoscelis: Pygoscelis adeliae
+                                                Eudyptes: Eudyptes chrysocome
+                                            Aptenodytes: Aptenodytes forsteri
+                                        Procellariiformes: Fulmarus glacialis
+                                Gaviiformes: Gavia stellata
+                            Phaethontimorphae: 
+                                Phaethontiformes: Phaethon lepturus
+                                Eurypygiformes: Eurypyga helias
+                        Charadriiformes:
+                            sub-Charadriiformes:
+                                Lari:
+                                    Alcidae: Uria lomvia
+                                    Laridae: Leucophaeus atricilla
+                                Scolopacidae:
+                                    Calidris: Calidris pugnax
+                                    Limosa: Limosa lapponica
+                            Charadriidae: Charadrius vociferus
+                        Gruiformes:
+                            Gruidae:
+                                Balearica: Balearica regulorum
+                                Grus: Grus japonensis
+                            Rallidae: Hypotaenidia okinawae
+                        Opisthocomiformes: Opisthocomus hoazin
+                        Caprimulgiformes:
+                            Apodidae:
+                                sub-Apodidae:
+                                    Aerodramus: Aerodramus maximus
+                                    Chaetura: Chaetura pelagica
+                                Calypte: Calypte anna
+                            Caprimulgidae: Antrostomus carolinensis
+                        Otidimorphae:
+                            sub-Otidimorphae:
+                                Otidiformes: Chlamydotis macqueenii
+                                Musophagiformes: Tauraco erythrolophus
+                            Cuculiformes: Cuculus canorus
+                        Columbimorphae:
+                            sub-Columbimorphae:
+                                Mesitornithiformes: Mesitornis unicolor
+                                Pteroclidiformes: Pterocles gutturalis
+                            Columbiformes:
+                                    Columba: Columba livia
+                                    Patagioenas: Patagioenas fasciata
+                                    Streptopelia: Streptopelia risoria
+                        Mirandornithes:
+                            Phoenicopteriformes: Phoenicopterus ruber
+                            Podicipediformes: Podiceps cristatus
+                    Galloanseres:
+                        Galliformes:
+                            sub-Galliformes:
+                                Phasianidae:
+                                    sub-Phasianidae:
+                                        Erectile:
+                                            sub-Erectile:
+                                                sub-sub-Erectile:
+                                                    Lyrurus: Lyrurus tetrix
+                                                    Tympanuchus: Tympanuchus cupido
+                                                Meleagris: Meleagris gallopavo
+                                            para-sub-Erectile:
+                                                Chrysolophus: Chrysolophus pictus
+                                                Phasianus: Phasianus colchicus
+                                        Non_erectile:
+                                            sub-Non_erectile:
+                                                sub-sub-Non_erectile:
+                                                    Coturnix: Coturnix japonica
+                                                    Alectoris: Alectoris rufa
+                                                Gallus: Gallus gallus
+                                            Pavo: Pavo cristatus
+                                    Arborophila: Arborophila rufipectus
+                                Odontophoridae:
+                                    Callipepla: Callipepla squamata
+                                    Colinus: Colinus virginianus
+                            Numididae: Numida meleagris
+                        Anseriformes:
+                            Anas:
+                            - Anas platyrhynchos
+                            - Anas zonorhyncha
+                            Anser:
+                            - Anser brachyrhynchus
+                            - Anser cygnoides
+                Palaeognathae:
+                    sub-Palaeognathae:
+                        Apterygiformes:
+                            - Apteryx australis
+                            - Apteryx owenii
+                            - Apteryx rowi
+                        Tinamiformes: Tinamus guttatus
+                    Struthioniformes: Struthio camelus
+            para-aves:
+            - Alligator mississippiensis
+            - Chelonia mydas
+        Squamata: Anolis carolinensis
+    Eutheria: Homo sapiens

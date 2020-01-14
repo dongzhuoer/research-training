@@ -1,0 +1,67 @@
+(
+Apterygiformes,
+(
+    (
+        (
+            (
+                (Passeriformes,Psittaciformes)Psittacopasserae,
+                Falconiformes
+            )Eufalconimorphae,
+            Cariamiformes
+        )
+    )Australaves,
+    (
+        (
+            (
+                (
+                    (
+                        (
+                            (Coraciiformes,Piciformes),
+                            Bucerotiformes
+                        )Picocoraciae,
+                        Trogoniformes
+                    ),
+                    Leptosomiformes
+                ),
+                Strigiformes
+            )Cavitaves,
+            Accipitriformes
+        ),
+        Coliiformes
+    )Afroaves
+),
+(
+    (
+        (
+            (
+                (
+                    (Pelecanidae,Ardeidae),
+                    Threskiornithidae
+                ),
+                Phalacrocoracidae
+            )Pelecaniformes,
+            (Procellariiformes,Sphenisciformes)Procellariimorphae
+        ),
+        Gaviiformes
+    )Aequornithes,
+    (Phaethontiformes,Eurypygiformes)Phaethontimorphae
+),
+Charadriiformes,
+Gruiformes,
+Opisthocomiformes,
+(
+    (Trochilidae,Apodidae),
+    Caprimulgidae
+)Caprimulgiformes,
+(
+    (Otidiformes,Musophagiformes),
+    Cuculiformes
+)Otidimorphae,
+(
+    (Mesitornithiformes,Pteroclidiformes),
+    Columbiformes
+)Columbimorphae,
+(Phoenicopteriformes,Podicipediformes)Mirandornithes,
+(Galliformes,Anseriformes)Galloanseres,
+(Struthioniformes,Tinamiformes)Palaeognathae,
+);

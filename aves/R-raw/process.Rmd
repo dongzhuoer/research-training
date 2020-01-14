@@ -1,0 +1,133 @@
+
+
+# process raw data
+
+
+## SRA
+
+### Quality control
+
+```bash
+nohup fastqc -o oases/fastqc/input -t 32  raw/fastq/* &> fastqc.log &
+grep -c 'Analysis complete' fastqc.log
+```
+
+```r
+# save in temp.R, and `nohup Rscript temp.R &>> trimmomatic.log &`
+read_lines('download/sra.md') %>% basename %>% str_replace('(_\\d)?.fastq.gz', '') %>% sapply(aves::trimmomatic_command) %>% mclapply(system, mc.preschedule = F)
+
+# Error: Unable to detect quality encoding
+# open with `mcapomorphy:::view_sra_*()`, 'Sanger / Illumina 1.9' means -phred33
+# list(read_lines('download/sra.md') %>% basename, dir('oases/input')) %>% lapply(. %>% str_replace('(_\\d)?.fastq.gz', '')) %>% {setdiff(.[[1]], .[[2]])} %>% sapply(aves::trimmomatic_command) %>% str_replace('(?<=[PS]E) ', ' -phred33 ') %>% paste0('nohup ', ., ' &> /dev/null &\n') %>% cat
+```
+
+```bash
+nohup fastqc -o oases/fastqc/output -t 32  oases/input/* &> fastqc.log &
+grep -c 'Analysis complete' fastqc.log
+```
+
+> on local
+
+```{r}
+bad_id <- c('SRR5833382', 'SRR6148275', 'SRR6713505', 'SRR6811834', 'SRR3493972', 'SRR3990508', 'SRR4340326', 'SRR4929853', 'SRR5120204', 'ERR522067', 'SRR3146195', 'SRR1531383', 'SRR1531386', 'SRR1567380', 'SRR2545932', 'SRR2891613','SRR1198306','SRR1199463','SRR671934','SRR671935','SRR768496')
+
+revise <- c('SRR5833382', 'SRR6148275', 'SRR6713505', 'SRR6811834', 'SRR3493972', 'SRR3990508', 'SRR4340326', 'SRR4929853', 'SRR5120204', 'ERR522067', 'SRR3146195', 'SRR1531383', 'SRR1531386', 'SRR1567380', 'SRR2545932', 'SRR2891613','SRR1198306','SRR1199463','SRR768496')
+
+read_rds('data-raw/rna_verify.rds') %>% {.[81:97, ]}  %>% 
+    plyr::dlply('id', . %>% {if(.$paired) mcapomorphy:::view_sra_paired(.$id) else mcapomorphy:::view_sra_single(.$id); system('sleep 1')})
+
+mcapomorphy:::compare_sra_paired('SRR3203217')
+
+read_rds('data-raw/rna_verify.rds') %>% {.$id[1:20]} %>% {.[!(. %in% bad_id)]} %>% paste0('rm raw/fastq/', ., '*') %>% cat(sep = '\n')
+
+
+```
+
+to do: re-trim
+
+SRR2545932: after using TruSeq2, the adaptor content drops, but still exist
+SRR3990508: after using TruSeq2, 1 become okay, while 2 only drop slightly
+
+```bash
+nohup bash -c "trimmomatic PE raw/fastq/SRR2545932_1.fastq.gz raw/fastq/SRR2545932_2.fastq.gz oases/input/SRR2545932_1.fastq.gz /dev/null oases/input/SRR2545932_2.fastq.gz /dev/null ILLUMINACLIP:software/Trimmomatic-0.36/adapters/TruSeq2-PE.fa:3:24:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 && fastqc -o oases/fastqc/output oases/input/SRR2545932*" &> /dev/null &
+nohup bash -c "trimmomatic PE raw/fastq/SRR3990508_1.fastq.gz raw/fastq/SRR3990508_2.fastq.gz oases/input/SRR3990508_1.fastq.gz /dev/null oases/input/SRR3990508_2.fastq.gz /dev/null ILLUMINACLIP:software/Trimmomatic-0.36/adapters/TruSeq2-PE.fa:3:24:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 && fastqc -o oases/fastqc/output oases/input/SRR3990508*" &> /dev/null &
+nohup bash -c "trimmomatic SE raw/fastq/SRR5120204.fastq.gz oases/input/SRR5120204.fastq.gz ILLUMINACLIP:software/Trimmomatic-0.36/adapters/TruSeq2-SE.fa:3:24:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 && fastqc -o oases/fastqc/output oases/input/SRR5120204*" &> /dev/null &
+nohup bash -c "trimmomatic SE raw/fastq/SRR5833382.fastq.gz oases/input/SRR5833382.fastq.gz ILLUMINACLIP:software/Trimmomatic-0.36/adapters/TruSeq3-SE.fa:3:24:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 && fastqc -o oases/fastqc/output oases/input/SRR5833382*" &> /dev/null &
+```
+
+
+to do: solve SRR671934 & SRR671935
+"RNA seq trim Illumina PCR Primer"
+https://www.biostars.org/p/167291/
+https://github.com/csf-ngs/fastqc/blob/master/Contaminants/contaminant_list.txt
+
+
+
+
+
+
+
+### pipeline
+
+```bash
+
+[ -d oases/@ ] || mkdir oases/@; nohup time oases_pipeline.py -m 21 -M 45 -s 4 -o oases/@/ -d '-fastq.gz oases/input/@-trim.fastq.gz' &>　oases/log/@ &
+[ -d oases/@ ] || mkdir oases/@; nohup time oases_pipeline.py -m 21 -M 23      -o oases/@/ -d '-fastq.gz -shortPaired -separate oases/input/@_1-trim-paired.fastq.gz oases/input/@_2-trim-paired.fastq.gz' &>　oases/log/@ &
+
+nohup ./@.sh &>> log/@ &
+```
+
+
+### deal with result
+
+
+```bash
+#" I copy them to make cleaning space easier
+aves "R -e \"dir('oases', full.names = T) %>% dir('Merged', full.names = T) %>% dir('transcripts.fa', full.names = T) %>% mclapply(. %>% {file.copy(., str_replace(., '/Merged/transcripts', '') %>% str_replace('oases/', 'oases/output/'), overwrite = T)})\""
+
+aves du oases -d 1 -h | sort -k 1 -h
+aves ls oases/*/Merged/transcripts.fa -hlr --sort=time
+
+aves rm oases/SRR5367023/_*/{Graph2,Sequences,Roadmaps,LastGraph}
+```
+
+```r
+
+```
+
+
+
+
+
+
+## protein
+
+```r
+bind_rows(aves::protein, aves::outgroup) %>% {
+    src  <- paste0('raw/protein/', basename(.$url));
+    dest <- paste0('protein/', .$name, '.faa.gz');
+    file.copy(src, dest, overwrite = T);
+}
+```
+
+
+## genome
+
+```r
+#" altenatively you can use bash
+#" aves::dna %>% {paste0('nohup augustus --species=chicken raw/genome/', basename(.$url), ' --outfile=augustus/', .$name, '.fna &> /dev/null &')} %>% readr::write_lines('***')
+aves::dna %>% plyr::dlply('id') %>% 
+    mclapply(. %>% {
+        input  <- paste0('raw/genome/', basename(.$url));
+        output <- paste0('augustus/', .$name, '.gff');
+        mcapomorphy::augustus('chicken', input, output);
+    }, mc.preschedule = F)
+```
+
+## TSA
+
+`/transcript`: copy, concatenate, rename
+
+```r
+fasta <- dir('raw/TSA/', pattern = id, full.names = T) %>% plyr::llply(read_lines) %>% unlist;
+```

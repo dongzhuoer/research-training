@@ -1,0 +1,310 @@
+vertebrata:
+    Sauropsida:
+        taxon:
+            aves:
+                Neognathae:
+                    Neoaves:
+                        Telluraves:
+                            Australaves:
+                                Eufalconimorphae:
+                                    Psittacopasserae:
+                                        Passeriformes:
+                                            taxon:
+                                                Passeri:
+                                                    Passerida:
+                                                        taxon:
+                                                            Passeroidea:
+                                                                taxon:
+                                                                    taxon:
+                                                                        taxon:
+                                                                            Thraupidae:
+                                                                                Geospiza: Geospiza
+                                                                                    fortis
+                                                                                Sporophila: Sporophila
+                                                                                    hypoxantha
+                                                                            Parulidae:
+                                                                                Setophaga: Setophaga
+                                                                                    coronata
+                                                                            Passerellidae:
+                                                                                Zonotrichia: Zonotrichia
+                                                                                    albicollis
+                                                                        Fringillidae:
+                                                                            taxon:
+                                                                                Acanthis:
+                                                                                - Acanthis
+                                                                                    flammea
+                                                                                - Acanthis
+                                                                                    hornemanni
+                                                                                Serinus: Serinus
+                                                                                    canaria
+                                                                            Chloris: Chloris
+                                                                                chloris
+                                                                    Passeridae:
+                                                                        Passer: Passer
+                                                                            domesticus
+                                                                Estrildidae:
+                                                                    Lonchura: Lonchura
+                                                                        striata
+                                                                    Taeniopygia: Taeniopygia
+                                                                        guttata
+                                                            Muscicapoidea:
+                                                                Muscicapidae:
+                                                                    Ficedula: Ficedula
+                                                                        albicollis
+                                                                    Saxicola: Saxicola
+                                                                        maurus
+                                                                Sturnidae:
+                                                                    Sturnus: Sturnus
+                                                                        vulgaris
+                                                        Sylvioidea:
+                                                            taxon:
+                                                                Phylloscopidae:
+                                                                    Seicercus:
+                                                                    - Seicercus
+                                                                        plumbeitarsus
+                                                                    - Seicercus
+                                                                        trochiloides
+                                                                    - Seicercus
+                                                                        trochilus
+                                                                Zosteropidae:
+                                                                    Zosterops: Zosterops
+                                                                        lateralis
+                                                            Paridae:
+                                                                Parus: Parus major
+                                                                Pseudopodoces: Pseudopodoces
+                                                                    humilis
+                                                    Corvidae:
+                                                        Corvus:
+                                                        - Corvus brachyrhynchos
+                                                        - Corvus cornix
+                                                Tyranni:
+                                                    Pipridae:
+                                                        Lepidothrix: Lepidothrix
+                                                            coronata
+                                                        Manacus: Manacus vitellinus
+                                            Acanthisittidae:
+                                                Acanthisitta: Acanthisitta chloris
+                                        Psittaciformes:
+                                            taxon:
+                                                Psittacidae:
+                                                    Amazona:
+                                                    - Amazona aestiva
+                                                    - Amazona vittata
+                                                    Ara: Ara macao
+                                                Psittaculidae:
+                                                    Agapornis: Agapornis roseicollis
+                                                    Melopsittacus: Melopsittacus
+                                                        undulatus
+                                            Strigopidae:
+                                                Nestor: Nestor notabilis
+                                    Falconiformes:
+                                        Falconidae:
+                                            Falco:
+                                            - Falco cherrug
+                                            - Falco peregrinus
+                                            - Falco sparverius
+                                Cariamiformes:
+                                    Cariamidae:
+                                        Cariama: Cariama cristata
+                            Afroaves:
+                                taxon:
+                                    taxon:
+                                        Cavitaves:
+                                            taxon:
+                                                Picocoraciae:
+                                                    taxon:
+                                                        Coraciiformes:
+                                                            Meropidae:
+                                                                Merops: Merops nubicus
+                                                        Piciformes:
+                                                            Picidae:
+                                                                Picoides: Picoides pubescens
+                                                    Bucerotiformes:
+                                                        Bucerotidae:
+                                                            Buceros: Buceros rhinoceros
+                                                Trogoniformes:
+                                                    Trogonidae:
+                                                        Apaloderma: Apaloderma
+                                                            vittatum
+                                            Leptosomiformes:
+                                                Leptosomidae:
+                                                    Leptosomus: Leptosomus discolor
+                                        Strigiformes:
+                                            Tytonidae:
+                                                Tyto:
+                                                - Tyto alba
+                                                - Tyto longimembris
+                                            Strigidae:
+                                                Strix: Strix occidentalis
+                                    Accipitriformes:
+                                        taxon:
+                                            Accipitridae:
+                                                Haliaeetus:
+                                                - Haliaeetus albicilla
+                                                - Haliaeetus leucocephalus
+                                                Aquila: Aquila chrysaetos
+                                            Pandionidae:
+                                                Pandion: Pandion haliaetus
+                                        Cathartidae:
+                                            Aegypius(Vultur): Aegypius monachus
+                                            Cathartes: Cathartes aura
+                                Coliiformes:
+                                    Coliidae:
+                                        Colius: Colius striatus
+                        taxon:
+                            Aequornithes:
+                                taxon:
+                                    Pelecaniformes:
+                                        taxon:
+                                            Phalacrocoracidae:
+                                                Phalacrocorax:
+                                                - Phalacrocorax auritus
+                                                - Phalacrocorax brasilianus
+                                                - Phalacrocorax carbo
+                                                - Phalacrocorax harrisi
+                                                - Phalacrocorax pelagicus
+                                            taxon:
+                                                taxon:
+                                                    Pelecanidae:
+                                                        Pelecanus: Pelecanus crispus
+                                                    Ardeidae:
+                                                        Egretta: Egretta garzetta
+                                                Threskiornithidae:
+                                                    Nipponia: Nipponia nippon
+                                        Ciconiidae:
+                                            Ciconia: Ciconia boyciana
+                                    Procellariimorphae:
+                                        Sphenisciformes:
+                                            Spheniscidae:
+                                                taxon:
+                                                    Pygoscelis: Pygoscelis adeliae
+                                                    Eudyptes: Eudyptes chrysocome
+                                                Aptenodytes: Aptenodytes forsteri
+                                        Procellariiformes:
+                                            Procellariidae:
+                                                Fulmarus: Fulmarus glacialis
+                                Gaviiformes:
+                                    Gaviidae:
+                                        Gavia: Gavia stellata
+                            Phaethontimorphae:
+                                Phaethontiformes:
+                                    Phaethontidae:
+                                        Phaethon: Phaethon lepturus
+                                Eurypygiformes:
+                                    Eurypygidae:
+                                        Eurypyga: Eurypyga helias
+                        Charadriiformes:
+                            taxon:
+                                Lari:
+                                    Alcidae:
+                                        Uria: Uria lomvia
+                                    Laridae:
+                                        Leucophaeus: Leucophaeus atricilla
+                                Scolopacidae:
+                                    Calidris: Calidris pugnax
+                                    Limosa: Limosa lapponica
+                            Charadriidae:
+                                Charadrius: Charadrius vociferus
+                        Gruiformes:
+                            Gruidae:
+                                Balearica: Balearica regulorum
+                                Grus: Grus japonensis
+                            Rallidae:
+                                Hypotaenidia: Hypotaenidia okinawae
+                        Opisthocomiformes:
+                            Opisthocomidae:
+                                Opisthocomus: Opisthocomus hoazin
+                        Caprimulgiformes:
+                            Apodidae:
+                                taxon:
+                                    Aerodramus: Aerodramus maximus
+                                    Chaetura: Chaetura pelagica
+                                Calypte: Calypte anna
+                            Caprimulgidae:
+                                Antrostomus: Antrostomus carolinensis
+                        Otidimorphae:
+                            taxon:
+                                Otidiformes:
+                                    Otididae:
+                                        Chlamydotis: Chlamydotis macqueenii
+                                Musophagiformes:
+                                    Musophagidae:
+                                        Tauraco: Tauraco erythrolophus
+                            Cuculiformes:
+                                Cuculidae:
+                                    Cuculus: Cuculus canorus
+                        Columbimorphae:
+                            taxon:
+                                Mesitornithiformes:
+                                    Mesitornithidae:
+                                        Mesitornis: Mesitornis unicolor
+                                Pteroclidiformes:
+                                    Pteroclidae:
+                                        Pterocles: Pterocles gutturalis
+                            Columbiformes:
+                                Columbidae:
+                                    Columba: Columba livia
+                                    Patagioenas: Patagioenas fasciata
+                                    Streptopelia: Streptopelia risoria
+                        Mirandornithes:
+                            Phoenicopteriformes:
+                                Phoenicopteridae:
+                                    Phoenicopterus: Phoenicopterus ruber
+                            Podicipediformes:
+                                Podicipedidae:
+                                    Podiceps: Podiceps cristatus
+                    Galloanseres:
+                        Galliformes:
+                            taxon:
+                                Phasianidae:
+                                    taxon:
+                                        Erectile:
+                                            taxon1:
+                                                taxon:
+                                                    Lyrurus: Lyrurus tetrix
+                                                    Tympanuchus: Tympanuchus cupido
+                                                Meleagris: Meleagris gallopavo
+                                            taxon2:
+                                                Chrysolophus: Chrysolophus pictus
+                                                Phasianus: Phasianus colchicus
+                                        Non_erectile:
+                                            taxon:
+                                                taxon:
+                                                    Coturnix: Coturnix japonica
+                                                    Alectoris: Alectoris rufa
+                                                Gallus: Gallus gallus
+                                            Pavo: Pavo cristatus
+                                    Arborophila: Arborophila rufipectus
+                                Odontophoridae:
+                                    Callipepla: Callipepla squamata
+                                    Colinus: Colinus virginianus
+                            Numididae:
+                                Numida: Numida meleagris
+                        Anseriformes:
+                            Anatidae:
+                                Anas:
+                                - Anas platyrhynchos
+                                - Anas zonorhyncha
+                                Anser:
+                                - Anser brachyrhynchus
+                                - Anser cygnoides
+                Palaeognathae:
+                    taxon:
+                        Apterygiformes:
+                            Apterygidae:
+                                Apteryx:
+                                - Apteryx australis
+                                - Apteryx owenii
+                                - Apteryx rowi
+                        Tinamiformes:
+                            Tinamidae:
+                                Tinamus: Tinamus guttatus
+                    Struthioniformes:
+                        Struthionidae:
+                            Struthio: Struthio camelus
+            taxon:
+            - Alligator mississippiensis
+            - Chelonia mydas
+        Squamata:
+            Anolis: Anolis carolinensis
+    Eutheria: Homo sapiens

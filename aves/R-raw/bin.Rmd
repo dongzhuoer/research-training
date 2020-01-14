@@ -1,0 +1,50 @@
+
+# analyse distribution ---------------------------------------------------------
+
+mono sequence on species doesn't harm too much
+
+
+
+```{r}
+#" bin by order
+order3 <- aves::all %>% plyr::ddply('species', . %>% dplyr::slice(1)) %>% 
+	{table(.$order)} %>% as_tibble() %>% filter(n >= 3) %T>% print %>% {.[[1]]}
+order4 <- aves::all %>% {table(.$order)} %>% as_tibble() %>% filter(n >= 4) %>% 
+	filter(Var1 %in% !! order3) %T>% print
+
+
+rna_species <- rna$species %>% unique()
+
+
+# choose the smallest of < 1000, otherwise choose biggest
+rna_verify <- aves::rna  %>% 
+	filter(id != 'SRR1210636') %>% #" it's so odd, paired yet only one file, you can't even divide it
+	filter(slice(aves::sra, match(basename(id), aves::sra$Run))$Platform == 'ILLUMINA') %>%
+# to do: ten species from other platform
+	group_by(species) %>% {bind_rows(
+	filter(., size < 1000) %>% filter(size == max(size)),
+	filter(., size >= 1000) %>% filter(size == min(size))
+)} %>% filter(size == max(size)) %>% filter(id == first(id)) %>%
+left_join(select(aves::sra, id = Run, LibraryLayout)) %>%
+mutate(paired = LibraryLayout == 'PAIRED', LibraryLayout = NULL) %T>% print()
+
+write_rds(rna_verify, 'data-raw/rna_verify.rds')
+
+no00_id <- c('SRR955502', 'SRR486074', 'SRR834578', 'SRR529556', 'SRR208078', 'ERR522067', 'ERR441001', 'SRR830283', 'SRR768235', 'SRR768235', 'SRR522907', 'SRR522907', 'ERR168763', 'ERR168763', 'SRR671934', 'SRR671935', 'SRR768496', 'SRR768496', 'ERR168818', 'ERR168818', 'SRR392516', 'SRR513755', 'SRR513755');
+
+read_rds('data-raw/rna_verify.rds') %>% 
+    mutate(no00 = str_extract(id, '\\d') != '0' & !(id %in% no00_id)) %>%
+	mutate(url = paste0(str_sub(id, 1, 6), ifelse(no00, paste0('/00', str_sub(id, -1, -1)), ''), '/', id, '/', id)) %>% 
+	mutate(url = paste0('ftp://ftp.sra.ebi.ac.uk/vol1/fastq/', url)) %>% 
+	mutate(url = ifelse(paired, paste0(url, '_1.fastq.gz\n', url, '_2.fastq.gz'), paste0(url, '.fastq.gz'))) %>% 
+	{write_lines(.$url, 'remote/download/sra.md')}
+
+
+c('SRR******') %>% 
+    paste0('https://www.ebi.ac.uk/ena/data/view/', .) %>% libzhuoer::browse_url()
+
+```
+
+
+
+

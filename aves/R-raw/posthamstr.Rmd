@@ -1,0 +1,73 @@
+
+
+
+
+```bash
+aves 'cd paup/hamstr-out; wc -l *' | sed '$d' > output/hamstr.out
+#aves 'cd paup/species; wc -l *'    | sed '$d' > output/species.tab
+aves 'cd paup/gene; wc -l *.aln'   | sed '$d' > output/OG.tab
+```
+
+```{r}
+
+hamstr_out <- read_table('output/hamstr.out', c('n', 'name'), 'ic') %>% 
+	mutate(name = str_extract(name, '\\w+'), n = n/2) %>%
+	mutate(source = name %>% str_replace('_\\d$', '') %>% str_extract('[:alpha:]+$')) %>% 
+	mutate(source = ifelse(source == 'genein', 'genome', source)) %T>% print
+hamstr_out %>% ggplot() + geom_boxplot(aes(source, n))
+
+mine <- hamstr_out %>% 
+	mutate(species = str_replace(name, '(\\w+?)_(\\w+?)_\\w+', '\\1 \\2')) %>% 
+	plyr::ddply('species', . %>% {filter(., n == max(.$n))}) %>% 
+	aves::bind_taxonomy()
+mine %>% ggplot() + geom_boxplot(aes(source, n))
+mine %>% ggplot(aes(species, n, color = source)) + 
+        geom_point() +
+        labs(x = 'species', y = 'n', title = 'number of OGs for each species') + 
+        theme(axis.text.x = element_text(angle = 90), plot.title = element_text(hjust = 0.5));
+
+
+summary_as_yaml <- function(data) {
+	data %<>% {if ('order' %in% colnames(.)) . else bind_taxonomy(.)};
+	
+	result %>% 
+		plyr::dlply(
+			'order', . %>% plyr::dlply(
+				'family', . %>% plyr::dlply(
+					'genus', . %>% plyr::dlply('species', . %>% {NULL})))) %>% 
+		yaml::as.yaml(indent = 8)
+}
+mine %>% plyr::dlply(
+			'order', . %>% plyr::dlply(
+				'family', . %>% plyr::dlply(
+					'genus', . %>% {.$species}))) %>% 
+		yaml::as.yaml(indent = 8) %>% write_lines('inst/extdata/omics.yaml')
+
+
+
+
+mat <- read_table('output/OG.tab', c('n', 'OG'), 'ic') %>%
+	mutate(OG = str_extract(OG, '\\w+')) %>%
+	mutate(coverage = n/2/nrow(mine)) %T>% print
+mat %>% ggplot(aes(1, coverage)) + geom_boxplot()
+length(mat$coverage);
+message('we choose 0.75 according to boxplot')
+sum(mat$coverage > 0.75);
+sum(mat$coverage == 1);
+
+mat %>% filter(coverage == 1)
+
+
+
+'inst/extdata/omics.tre' %>% ape::read.tree() %>% ggtree::ggtree(aes(hjust=0)) + 
+	#ggtree::geom_text2(aes(label = label, subset = !isTip, size = 2), nudge_x = 0.02) + 
+	ggtree::geom_tiplab(aes(size = 0.8)) + 
+	xlim(0,26)
+```
+
+
+
+
+
+
+
