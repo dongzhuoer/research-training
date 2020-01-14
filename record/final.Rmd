@@ -1,0 +1,50 @@
+
+## 01/16
+
+some SRA reserved for verify should be excluded from mine dataset 
+
+```
+Pygoscelis_papua_SRA
+Otus_bakkamoena
+```
+
+## 02/09
+
+in previous `stratum`, 'Casuariiformes' is included in `Other Neoaves`, but actually it should belong to `Palaeognathae`, thus the reference species for HaMStR is wrong. The lucky thing is that since it only contains one species, I haven't run HaMStR on it yet.
+
+
+
+```{r}
+aves_name <- read_html('inst/extdata/OrthoDB.html') %>% 
+	rvest::html_nodes('ul[style*=block]') %>% 
+	rvest::html_nodes('span.tree-name:not(.tree-folder)') %>% 
+	rvest::html_text() %>% str_replace_all('[\n\t]', '');
+
+ read_html('inst/extdata/OrthoDB.html') %>% rvest::html_nodes('ul:has(li)')
+
+
+orthodb_tree <- jsonlite::fromJSON('http://www.orthodb.org/tree', F)
+
+tree$data[[1]]$children[[1]]$children[[1]]$children[[1]]$children[[2]]$children[[1]]$children[[1]]
+
+
+names(element)
+
+levels[[which(sapply(levels, . %>% {.$name}) == 'Aves')]]
+
+str(levels, 2)
+str(orthodb_tree$data[[1]], 3)
+
+append(top$children)
+
+```
+
+
+
+
+
+
+```{r}
+# add new species to avibase 
+aves::all$species %>% unique %>% {.[. != 'Phasianidae gen. sp.']} %>% {.[!(aves::extract_genus(.) %in% aves::taxonomy$genus)]}
+```

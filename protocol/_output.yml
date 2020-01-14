@@ -1,0 +1,13 @@
+bookdown::gitbook:
+  dev: svglite
+  split_by: chapter+number
+  config:
+    toc:
+      collapse: section
+      after: |
+        <li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+    edit: https://github.com/rstudio/bookdown/edit/master/inst/examples/%s
+    sharing:
+      github: yes
+      facebook: no
+      twitter: no

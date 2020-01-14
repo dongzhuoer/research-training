@@ -1,0 +1,15 @@
+---
+knit: "bookdown::preview_chapter"
+---
+
+Try to reproduce Wu et al., 2016 's work, but failed, see `Misof.Rmd`
+
+已核实三大来源的物种名，待校对分类系统
+
+in Prum, 'Apteryx matelli' should be  'Apteryx mantelli'
+
+in Jarvis 'Ophisthocomus hoazin' should be 'Opisthocomus hoazin'
+
+
+finally I reboot the project at 11/15, hope I can finish it in the next incomplete 8 weeks
+

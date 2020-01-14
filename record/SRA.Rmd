@@ -1,0 +1,113 @@
+
+## rational
+
+essential SRA
+
+`+` mime, `-` verify, `*` both
+data display from `omics` (one per species)
+
+* Apodiformes: 2 protein, 1 SRA
+* Apterygiformes: 1 protein, 3 SRA
+* Columbiformes: 2 protein, 1 SRA
+* Sphenisciformes: 2 protein, 1 SRA
++ Strigiformes: 1 protein, 1 genome 1 SRA
+
+
+> how I choose SRA for mine
+
+Apodiformes: all 4, second biggest: SRX2544235(SRR5237173 2.3G), former failed: SRX3260294(SRR6148275 30.8G)
+Apterygiformes: 34, in SRP074490 biggest of Apteryx owenii: SRX1745686(SRR3480320 14.7G), rowi: SRX1748259(SRR3486434 17.1G) (remove 2 genome, remove a 17.2M)
+Columbiformes: SRX012364(SRR029331 115M)
+Sphenisciformes: 11, all single, choose biggest: SRX564992(SRR1324797 967.2M)
+Strigiformes: SRX1612725(SRR3203222 11.2G) paired
+
+> how I choose SRA for verify
+
+Apodiformes:  already: SRX012361(SRR029421 130.2M)
+Apterygiformes: smallest of Apteryx rowi: SRX1748257 (SRR3486432 6.1G)
+Columbiformes: smallest(>100) of Patagioenas fasciata: SRX1561944(SRR3146195 2.8G) 
+Sphenisciformes: already, SRX1470185(SRR2980760 700.8M)
+
+> how I choose SRA for Galliformes
+
+Alectoris rufa - biggest: SRR2089995, smallest: SRR1664672
+Arborophila rufipectus - biggest: SRR6382408, smallest: SRR6382407
+Chrysolophus pictus - biggest: SRR3583129, smallest: SRR3583130 
+Gallus gallus - reasonable large: SRR5367023, reasonable small: SRR2079875
+Pavo cristatus - biggest: SRR1797859, smallest: SRR1797882 
+Phasianus colchicus - biggest: SRR1797835, smallest: SRR1797827
+
+
+## record
+
+| id         | base     | trimmomatic | oases        | hamstr    | species                 | use                                                                   | special             |
+| ---------- | -------- | ----------- | ------------ | --------- | ----------------------- | --------------------------------------------------------------------- | ------------------- |
+| SRR2980760 | 700.8M   | 2 NA 20000  | 20           | 32m 3307? | Pygoscelis_papua        | test                                                                  |                     |
+| SRR3146192 | P 4.6G   |             |              |           | Patagioenas_fasciata    | another verify Columbiformes                                          |                     |
+| SRR6148275 | P 30.8G  | 02h 96.09   | 2  *h        |           | Archilochus_colubris_3  | used to mine Apodiformes, maybe too large                             | TruSeq3, HEADCROP:6 |
+| SRR029421  | S 130.2M | 35s 96.95   | 4 10m 27670  | 18m 588   | Archilochus_colubris_1  | used to verify Apodiformes, but too small, may useful for demonstrate | 4:15, no min, 454   |
+| SRR5237173 | * 2.3G   | omitted     | 2 15h failed |           | Archilochus_colubris_2  | used to mine Apodiformes, maybe PacBio needs two much memory          | PacBio long-paired  |
+| SRR1324797 | S 967.2M | 7m  86.02   | 2 02h 101290 | 02h 3494  | Aptenodytes_patagonicus | used to mine Sphenisciformes, too small                               | 4:15                |
+| SRR5367023 | P 8G     | 20m 90.95   | 2 02d 124266 |           | Gallus_gallus           | prepare for Galliformes mine, outwit by protein                       | TruSeq3             |
+
+  : obsoleted
+
+
+
+`*` means place holder
+in base, `S` for single, `P` for `paired`
+in oases, `2` for `21:23`, `4` for `21:45:4`
+
+
+| id         | base     | trimmomatic | oases        | hamstr   | species                  | use                     | special           |
+| ---------- | -------- | ----------- | ------------ | -------- | ------------------------ | ----------------------- | ----------------- |
+| SRR2980760 | S 700.8M |             | 4 32m 71587  | 82m 3366 | Pygoscelis_papua         | verify Sphenisciformes  | 4:20              |
+| SRR5070564 | P 7.8G   |             | 2 08h 158565 | 04h 6485 | Falco_sparverius         | outnumber TSA           | 4:15              |
+| SRR3203222 | P 11.2G  | 42m 94.43   | 2 06d 386958 | 08h 7648 | Tyto_longimembris        | mine Strigiformes       | 4:15, -phred33    |
+| SRR3480320 | P 14.7G  | 62m 91.12   | 2 39h 213370 | 04h 6089 | Apteryx_owenii           | mine Apterygiformes     | 4:15, TruSeq3     |
+| SRR3486434 | P 17.1G  | 62m 83.45   | 2 31h 199951 | 04h 6007 | Apteryx_rowi_1           | mine Apterygiformes     | TruSeq3           |
+| SRR3486432 | P 6.1G   | 28m 91.67   | 2 07h 158973 | 04h 5659 | Apteryx_rowi_2           | verify Apterygiformes   | TruSeq3           |
+| SRR029331  | S 115M   | 35s 97.88   | 4 09m 47233  | 29m 1239 | Streptopelia_risoria     | mine Columbiformes      | 4:15, no min, 454 |
+| SRR3146195 | P 2.8G   | 9m  66.26   | 4 03h 251190 | 06h 6091 | Patagioenas_fasciata     | verify Columbiformes    | TruSeq3           |
+| SRR3203243 | P 6.8G   | 17m 81.31   | 2 04h 162392 | 06h 7284 | Otus_bakkamoena          | verify Strigiformes     | TruSeq3           |
+| SRR4107067 | P 9.5G   | 26m 90.65   | 2 06h 190502 | 05h 6851 | Aerodramus_maximus_1     | mine Apodiformes        | TruSeq3           |
+| SRR4116890 | P 2.7G   | 07m 93.77   | 4 04h 452830 | 16h 6319 | Aerodramus_maximus_2     | verify Apodiformes      | TruSeq3           |
+| SRR1324935 | S 1.6G   | 10m 99.74   | 4 04h 150703 | NAh 5182 | Eudyptes_chrysocome      | mine Sphenisciformes    | TruSeq3           |
+| SRR2089995 | P 5.9G   | 12m 68.87   | 2 *h         |          | Alectoris_rufa_1         | Galliformes mine        |                   |
+| SRR1664672 | S 599M   | 03m 98.91   | 4 01h 164203 | NAh 5585 | Alectoris_rufa_2         | Galliformes verify      |                   |
+| SRR1664679 | S 1G     | 06m 98.87   | 4 02h 260033 | 06h 5969 | Alectoris_rufa_3         | backup Galliformes mine |                   |
+| SRR3583129 | S 3.1G   | 14m 99.99   | 4 07h 481353 | 06h 7034 | Chrysolophus_pictus_1    | Galliformes verify      |                   |
+| SRR3583130 | S 2.9G   | 13m 99.99   | 4 06h 556648 | 11h 7045 | Chrysolophus_pictus_2    | Galliformes mine        |                   |
+| SRR2079875 | S 2.5G   | 15m 99.33   | 4 07h 431616 | 07h 6246 | Gallus_gallus            | Galliformes verify      | TruSeq3           |
+| SRR1797859 | P 7.1G   | 23m 94.90   | 2 22h 314265 | 06h 6616 | Pavo_cristatus_1         | Galliformes mine        |                   |
+| SRR1797882 | P 3.2G   | 11m 94.98   | 4 07h 603581 | 12h 6267 | Pavo_cristatus_2         | Galliformes verify      |                   |
+| SRR1797835 | P 5.8G   | 19m 94.57   | 2 06h 287631 | 06h 7163 | Phasianus_colchicus_1    | Galliformes mine        |                   |
+| SRR1797827 | P 4G     | 14m 94.43   | 2 04h 177775 | NAh 6278 | Phasianus_colchicus_2    | Galliformes verify      |                   |
+| SRR6382408 | P 6.1G   | 15m 96.36   | 2 20h 103804 | 04h 6306 | Arborophila_rufipectus_1 | Galliformes verify      |                   |
+| SRR6382407 | P 5.8G   | 17m 95.75   | 2 24h 131431 | 03h 6864 | Arborophila_rufipectus_2 | Galliformes mine        |                   |
+|            |          |             |              |          |                          |                         |                   |
+|            | P *G     | *m          | 2  *h        |          |                          |                         |                   |
+|            |          |             |              |          |                          |                         |                   |
+
+
+
+SRR1947458: 4% N at 48
+SRR1198306: 1.5%N at 7
+SRR5833382: 3%N at 10
+ERR522067: Illumina Nextera Mate Pair Kit
+
+
+# no ebi
+
+
+
+```r
+c('SRR2089995', 'SRR1664672', 'SRR6382408', 'SRR6382407', 'SRR3583129', 'SRR3583130', 'SRR5367023', 'SRR2079875', 'SRR1797859', 'SRR1797882', 'SRR1797835', 'SRR1797827') %>% paste0('https://www.ebi.ac.uk/ena/data/view/', .) %>% rzhuoer::browse_url(0.5)
+c('SRR2089995', 'SRR1664672', 'SRR6382408', 'SRR6382407', 'SRR3583129', 'SRR3583130', 'SRR5367023', 'SRR2079875', 'SRR1797859', 'SRR1797882', 'SRR1797835', 'SRR1797827') %>% paste0('https://www.ncbi.nlm.nih.gov/sra/', .) %>% rzhuoer::browse_url(0.5)
+```
+
+
+
+
+
+

@@ -1,0 +1,307 @@
+
+
+## 12/25
+
+
+```{r}
+aves::genome$name %>% str_replace('_genome', '') %>% 
+	{paste0('mv augustus/gff/', ., '.gff augustus/gff/', ., '_genome.gff;')} %>% 
+	readr::write_lines('data-raw/exec/temp.sh')
+```
+
+Since annotate genome doesn't consume much computer resource, we don't bother to 
+invistigate which species is necessary. rather, we just annotate all. (and even 
+for some protein whose result is too bad)
+
+## 12/26
+
+```bash
+zcat raw/genome/GCA_002844005.1_Godwit_v1_genomic.fna.gz > augustus/genome/Limosa_lapponica_genome.fna;
+nohup augustus --species=chicken augustus/genome/Limosa_lapponica_genome.fna > augustus/gff/Limosa_lapponica_genome.gff 2> /dev/null &
+```
+
+```{r}
+common_genus <- intersect(aves::taxonomy$genus, aves::peter$genus)
+
+list(aves::taxonomy, aves::peter) %>% 
+	plyr::llply(. %>% filter(genus %in% common_genus)) %>% 
+	plyr::llply(. %>% plyr::ddply('genus', . %>% slice(1))) %>% 
+	plyr::llply(. %>% {slice(., order(.$genus))}) %>%
+	plyr::llply(. %>% select(1:3)) %T>%
+	{all.equal(.[[1]], .[[2]])} %>%
+	{write_csv(.[[1]], 'output/taxonomy.csv');write_csv(.[[2]], 'output/peter.csv')}
+
+
+bind_rows(aves::tax_genome, aves::tax_protein, aves::tax_tsa) %>% {aves::extract_genus(.$species)} %>% 
+	{filter(aves::taxonomy, genus %in% .)} %>% plyr::ddply('genus', . %>% slice(1)) %>% write_tsv('output/taxonomy.tsv') 
+
+bind_rows(aves::tax_genome, aves::tax_protein, aves::tax_tsa) %>% {aves::extract_genus(.$species)} %>% 
+	{filter(aves::taxonomy, genus %in% .)} %>% {unique(.$genus)} %>% write_lines('data-raw/calibrated_genus.md')
+
+filter(aves::all, !(genus %in% read_lines('data-raw/calibrated_genus.md')), order == 'Galliformes') %>% plyr::ddply('genus', . %>% slice(1)) %>% write_tsv('output/taxonomy.tsv') 
+
+filter(aves::all, !(genus %in% read_lines('data-raw/calibrated_genus.md')), order == 'Galliformes') %>% {unique(.$genus)} %>% write_lines('data-raw/calibrated_genus.md', append = T)
+
+aves::taxonomy$genus %>% unique
+```
+
+```
+Ciconiiformes	Ciconiidae	Ciconia	Ciconia boyciana
+Psittaciformes	Nestoridae	Nestor	Nestor meridionalis
+Suliformes	Phalacrocoracidae	Phalacrocorax	Phalacrocorax auritus
+Passeriformes	Emberizidae	Zonotrichia	Zonotrichia albicollis
+```
+
+## 12/27
+
+```{r}
+aves::all %>% filter(!is.na(species)) %>% plyr::ddply('species', . %>% slice(1)) %>% 
+	select(1:4) %>% write_tsv('output/taxonomy.tsv')
+
+
+dir('genome10', full.names = T) %>% str_subset('Gallirallus') %>% {file.rename(., str_replace(., 'Gallirallus', 'Hypotaenidia'))}
+dir('genome10', full.names = T) %>% str_subset('Phylloscopus') %>% {file.rename(., str_replace(., 'Phylloscopus', 'Seicercus'))}
+dir('genome10', full.names = T) %>% str_subset('Nannopterum') %>% {file.rename(., str_replace(., 'Nannopterum', 'Phalacrocorax'))}
+
+
+dir('augustus/gff', full.names = T) %>% str_subset('Gallirallus') %>% {file.rename(., str_replace(., 'Gallirallus', 'Hypotaenidia'))}
+dir('augustus/gff', full.names = T) %>% str_subset('Phylloscopus') %>% {file.rename(., str_replace(., 'Phylloscopus', 'Seicercus'))}
+dir('augustus/gff', full.names = T) %>% str_subset('Nannopterum') %>% {file.rename(., str_replace(., 'Nannopterum', 'Phalacrocorax'))}
+```
+
+
+essential SRA (for both verify and mime)
+
+`+` mime, `-` verify, `*` both
+data display from `omics` (one per species)
+
+* Apodiformes: 2 protein, 4 SRA
+* Apterygiformes: 1 protein, 2 SRA
+* Columbiformes: 2 protein, 1 SRA
+* Sphenisciformes: 2 protein, 5 SRA
+* Strigiformes: 1 protein, 1 genome 6 SRA
+
+
+> how I choose SRA for mine
+
+Apodiformes: biggest (except 30G): SRR4107067 9.5G, SRX2544235(SRR5237173 2.3G)
+Apterygiformes: 34, in SRP074490 biggest of Apteryx owenii: SRX1745686(SRR3480320 14.7G), rowi: SRX1748259(SRR3486434 17.1G) (remove 2 genome, remove a 17.2M)
+Columbiformes: SRX012364(SRR029331 115M)
+Sphenisciformes: largest: SRR1324935 1.6G
+Strigiformes: SRX1612725(SRR3203222 11.2G) paired
+
+> how I choose SRA for verify
+
+Apodiformes:  smallest (same species for mine): SRR4116890 2.7G 
+Apterygiformes: smallest of Apteryx rowi: SRX1748257 (SRR3486432 6.1G)
+Columbiformes: smallest(>100) of Patagioenas fasciata: SRX1561944(SRR3146195 2.8G) 
+Sphenisciformes: already, SRX1470185(SRR2980760 700.8M)
+Strigiformes: smallest SRR3203243 6.8G	
+
+
+[Galliformes](http://tolweb.org/Galliformes/26296/2007.03.07)
+
+
+Galliformes paper
+
+> Yet, despite their importance in many areas of research, the galliform phylogeny 
+> is poorly resolved at many key nodes (Wang et al. 2013; Kimball and Braun 2014).
+>                                                                   --Hosner, 2015
+
+
+
+```{r}
+protein_bad_species <- c('Limosa lapponica', 'Phoenicopterus ruber', 'Podiceps cristatus', 'Cathartes aura') %>% str_replace(' ', '_')
+dir('augustus/gff', full.names =T) %>% str_subset(protein_bad_species[1]) %>% {file.rename(., str_replace(., 'genome_', 'genein_'))}
+dir('augustus/gff', full.names =T) %>% str_subset(protein_bad_species[2]) %>% {file.rename(., str_replace(., 'genome_', 'genein_'))}
+dir('augustus/gff', full.names =T) %>% str_subset(protein_bad_species[3]) %>% {file.rename(., str_replace(., 'genome_', 'genein_'))}
+dir('augustus/gff', full.names =T) %>% str_subset(protein_bad_species[4]) %>% {file.rename(., str_replace(., 'genome_', 'genein_'))}
+```
+
+
+## 12/28
+
+
+Alectoris rufa - biggest: SRR2089995, smallest: SRR1664672
+Arborophila rufipectus - biggest: SRR6382408, smallest: SRR6382407
+Chrysolophus pictus - biggest: SRR3583129, smallest: SRR3583130 
+Gallus gallus - reasonable large: SRR5367023, reasonable small: SRR2079875
+Pavo cristatus - biggest: SRR1797859, smallest: SRR1797882 
+Phasianus colchicus - biggest: SRR1797835, smallest: SRR1797827
+
+```bash
+fastqc -o oases/fastqc -t 32  raw/fastq/SRR3203243* raw/fastq/SRR4107067* raw/fastq/SRR4116890* raw/fastq/SRR1324935*
+
+R -e "aves::view_sra_paired('SRR3203243')";
+R -e "aves::view_sra_paired('SRR4107067')";
+R -e "aves::view_sra_paired('SRR4116890')";
+R -e "aves::view_sra_single('SRR1324935')";
+
+R -e "aves::compare_sra_paired('SRR3203243')";
+R -e "aves::compare_sra_paired('SRR4107067')";
+R -e "aves::compare_sra_paired('SRR4116890')";
+R -e "aves::compare_sra_single('SRR1324935')";
+
+
+time trimmomatic PE -threads 32 raw/fastq/SRR3203243_1.fastq.gz raw/fastq/SRR3203243_2.fastq.gz  oases/input/SRR3203243_1-trim-paired.fastq.gz oases/input/SRR3203243_1-trim-unpaired.fastq.gz oases/input/SRR3203243_2-trim-paired.fastq.gz oases/input/SRR3203243_2-trim-unpaired.fastq.gz ILLUMINACLIP:/path/to/data/aves/software/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36; fastqc -t 32 -o oases/fastqc oases/input/SRR3203243*-pair*
+time trimmomatic PE -threads 32 raw/fastq/SRR4107067_1.fastq.gz raw/fastq/SRR4107067_2.fastq.gz  oases/input/SRR4107067_1-trim-paired.fastq.gz oases/input/SRR4107067_1-trim-unpaired.fastq.gz oases/input/SRR4107067_2-trim-paired.fastq.gz oases/input/SRR4107067_2-trim-unpaired.fastq.gz ILLUMINACLIP:/path/to/data/aves/software/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36; fastqc -t 32 -o oases/fastqc oases/input/SRR4107067*-pair*
+time trimmomatic PE -threads 32 raw/fastq/SRR4116890_1.fastq.gz raw/fastq/SRR4116890_2.fastq.gz  oases/input/SRR4116890_1-trim-paired.fastq.gz oases/input/SRR4116890_1-trim-unpaired.fastq.gz oases/input/SRR4116890_2-trim-paired.fastq.gz oases/input/SRR4116890_2-trim-unpaired.fastq.gz ILLUMINACLIP:/path/to/data/aves/software/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36; fastqc -t 32 -o oases/fastqc oases/input/SRR4116890*-pair*
+time trimmomatic SE -threads 32 raw/fastq/SRR1324935.fastq.gz oases/input/SRR1324935-trim.fastq.gz ILLUMINACLIP:/path/to/data/aves/software/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:3; fastqc -t 32 -o oases/fastqc oases/input/SRR1324935-trim*
+
+
+`SRR3203243.sh`
+[ -d SRR3203243 ] || mkdir SRR3203243; echo SRR3203243; time oases_pipeline.py -m 21 -M 23      -o SRR3203243/ -d '-fastq.gz -shortPaired -separate input/SRR3203243_1-trim-paired.fastq.gz input/SRR3203243_2-trim-paired.fastq.gz'; echo SRR3203243
+`SRR4107067-4116890-1324935.sh`
+[ -d SRR4107067 ] || mkdir SRR4107067; echo SRR4107067; time oases_pipeline.py -m 21 -M 23      -o SRR4107067/ -d '-fastq.gz -shortPaired -separate input/SRR4107067_1-trim-paired.fastq.gz input/SRR4107067_2-trim-paired.fastq.gz'; echo SRR4107067
+[ -d SRR4116890 ] || mkdir SRR4116890; echo SRR4116890; time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR4116890/ -d '-fastq.gz -shortPaired -separate input/SRR4116890_1-trim-paired.fastq.gz input/SRR4116890_2-trim-paired.fastq.gz'; echo SRR4116890
+[ -d SRR1324935 ] || mkdir SRR1324935; echo SRR1324935; time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR1324935/ -d '-fastq.gz input/SRR1324935-trim-paired.fastq.gz'; echo SRR1324935
+```
+
+
+
+
+```bash
+nohup fastq-dump -O raw/fastq --gzip --skip-technical -I -R pass --split-3 -W raw/sra/SRR6382407.sra &> /dev/null &
+nohup fastq-dump -O raw/fastq --gzip --skip-technical -I -R pass --split-3 -W raw/sra/SRR6382408.sra &> /dev/null &
+nohup fastq-dump -O raw/fastq --gzip --skip-technical -I -R pass --split-3 -W raw/sra/SRR2089995.sra &> /dev/null &
+
+dir('raw/fastq', full.names = T) %>% str_replace('_pass', '') # {file.rename(., str_replace(., '_pass', '')}
+
+fastqc -o oases/fastqc -t 32  raw/fastq/{SRR1664672,SRR3583129,SRR3583130,SRR2079875,SRR5367023,SRR1797859,SRR1797882,SRR1797835,SRR1797827}*trim*
+
+nohup time trimmomatic SE -threads 32 raw/fastq/SRR1664672.fastq.gz oases/input/SRR1664672-trim.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:3 &>> oases/trim-log/SRR1664672 &
+nohup time trimmomatic SE -threads 32 raw/fastq/SRR3583129.fastq.gz oases/input/SRR3583129-trim.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:3 &>> oases/trim-log/SRR3583129 &
+nohup time trimmomatic SE -threads 32 raw/fastq/SRR3583130.fastq.gz oases/input/SRR3583130-trim.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:3 &>> oases/trim-log/SRR3583130 &
+nohup time trimmomatic SE -threads 32 raw/fastq/SRR2079875.fastq.gz oases/input/SRR2079875-trim.fastq.gz ILLUMINACLIP:/path/to/data/aves/software/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:3 &>> oases/trim-log/SRR2079875 &
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR5367023_1.fastq.gz raw/fastq/SRR5367023_2.fastq.gz  oases/input/SRR5367023_1-trim-paired.fastq.gz oases/input/SRR5367023_1-trim-unpaired.fastq.gz oases/input/SRR5367023_2-trim-paired.fastq.gz oases/input/SRR5367023_2-trim-unpaired.fastq.gz ILLUMINACLIP:/path/to/data/aves/software/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR5367023 &
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR1797859_1.fastq.gz raw/fastq/SRR1797859_2.fastq.gz  oases/input/SRR1797859_1-trim-paired.fastq.gz oases/input/SRR1797859_1-trim-unpaired.fastq.gz oases/input/SRR1797859_2-trim-paired.fastq.gz oases/input/SRR1797859_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR1797859 &
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR1797882_1.fastq.gz raw/fastq/SRR1797882_2.fastq.gz  oases/input/SRR1797882_1-trim-paired.fastq.gz oases/input/SRR1797882_1-trim-unpaired.fastq.gz oases/input/SRR1797882_2-trim-paired.fastq.gz oases/input/SRR1797882_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR1797882 &
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR1797835_1.fastq.gz raw/fastq/SRR1797835_2.fastq.gz  oases/input/SRR1797835_1-trim-paired.fastq.gz oases/input/SRR1797835_1-trim-unpaired.fastq.gz oases/input/SRR1797835_2-trim-paired.fastq.gz oases/input/SRR1797835_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR1797835 &
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR1797827_1.fastq.gz raw/fastq/SRR1797827_2.fastq.gz  oases/input/SRR1797827_1-trim-paired.fastq.gz oases/input/SRR1797827_1-trim-unpaired.fastq.gz oases/input/SRR1797827_2-trim-paired.fastq.gz oases/input/SRR1797827_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR1797827 &
+
+fastqc -o oases/fastqc -t 32 oases/input/{SRR1664672,SRR3583129,SRR3583130,SRR2079875,SRR5367023,SRR1797859,SRR1797882,SRR1797835,SRR1797827}*trim*
+
+
+
+R -e "aves::compare_sra_single('SRR3583129')";
+R -e "aves::compare_sra_single('SRR1664672')";
+R -e "aves::compare_sra_single('SRR3583130')";
+R -e "aves::compare_sra_single('SRR2079875')";
+R -e "aves::compare_sra_paired('SRR5367023')";
+R -e "aves::compare_sra_paired('SRR1797859')";
+R -e "aves::compare_sra_paired('SRR1797882')";
+R -e "aves::compare_sra_paired('SRR1797835')";
+R -e "aves::compare_sra_paired('SRR1797827')";
+
+
+[ -d SRR1797835 ] || mkdir SRR1797835; echo SRR1797835; time oases_pipeline.py -m 21 -M 23      -o SRR1797835/ -d '-fastq.gz -shortPaired -separate input/SRR1797835_1-trim-paired.fastq.gz input/SRR1797835_2-trim-paired.fastq.gz'; echo SRR1797835
+[ -d SRR1797882 ] || mkdir SRR1797882; echo SRR1797882; time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR1797882/ -d '-fastq.gz -shortPaired -separate input/SRR1797882_1-trim-paired.fastq.gz input/SRR1797882_2-trim-paired.fastq.gz'; echo SRR1797882
+
+[ -d SRR1797859 ] || mkdir SRR1797859; echo SRR1797859; time oases_pipeline.py -m 21 -M 23      -o SRR1797859/ -d '-fastq.gz -shortPaired -separate input/SRR1797859_1-trim-paired.fastq.gz input/SRR1797859_2-trim-paired.fastq.gz'; echo SRR1797859
+[ -d SRR5367023 ] || mkdir SRR5367023; echo SRR5367023; time oases_pipeline.py -m 21 -M 23      -o SRR5367023/ -d '-fastq.gz -shortPaired -separate input/SRR5367023_1-trim-paired.fastq.gz input/SRR5367023_2-trim-paired.fastq.gz'; echo SRR5367023
+[ -d SRR1797827 ] || mkdir SRR1797827; echo SRR1797827; time oases_pipeline.py -m 21 -M 23      -o SRR1797827/ -d '-fastq.gz -shortPaired -separate input/SRR1797827_1-trim-paired.fastq.gz input/SRR1797827_2-trim-paired.fastq.gz'; echo SRR1797827
+
+[ -d SRR1664672 ] || mkdir SRR1664672; echo SRR1664672; time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR1664672/ -d '-fastq.gz input/SRR1664672-trim-paired.fastq.gz'; echo SRR1664672
+[ -d SRR3583129 ] || mkdir SRR3583129; echo SRR3583129; time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR3583129/ -d '-fastq.gz input/SRR3583129-trim-paired.fastq.gz'; echo SRR3583129
+[ -d SRR3583130 ] || mkdir SRR3583130; echo SRR3583130; time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR3583130/ -d '-fastq.gz input/SRR3583130-trim-paired.fastq.gz'; echo SRR3583130
+[ -d SRR2079875 ] || mkdir SRR2079875; echo SRR2079875; time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR2079875/ -d '-fastq.gz input/SRR2079875-trim-paired.fastq.gz'; echo SRR2079875
+```
+
+## 12/29
+
+
+
+
+```bash
+nohup fastq-dump -O raw/fastq --gzip --skip-technical -I -R pass --split-3 -W raw/sra/SRR2089995.sra &> /dev/null &
+nohup fastq-dump -O raw/fastq --gzip --skip-technical -I -R pass --split-3 -W raw/sra/SRR6382407.sra &> /dev/null &
+nohup fastq-dump -O raw/fastq --gzip --skip-technical -I -R pass --split-3 -W raw/sra/SRR6382408.sra &> /dev/null &
+
+rm raw/fastq/SRR2089995_pass.fastq.gz # not paired reads
+
+R -e "dir('raw/fastq', full.names = T) %>% {file.rename(., str_replace(., 'pass_', ''))}"
+
+fastqc -o oases/fastqc -t 32  raw/fastq/{SRR2089995,SRR6382407,SRR6382408}*
+
+R -e "aves::view_sra_paired('SRR2089995')";
+R -e "aves::view_sra_paired('SRR6382407')";
+R -e "aves::view_sra_paired('SRR6382408')";
+
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR2089995_1.fastq.gz raw/fastq/SRR2089995_2.fastq.gz  oases/input/SRR2089995_1-trim-paired.fastq.gz oases/input/SRR2089995_1-trim-unpaired.fastq.gz oases/input/SRR2089995_2-trim-paired.fastq.gz oases/input/SRR2089995_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR2089995 &
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR6382407_1.fastq.gz raw/fastq/SRR6382407_2.fastq.gz  oases/input/SRR6382407_1-trim-paired.fastq.gz oases/input/SRR6382407_1-trim-unpaired.fastq.gz oases/input/SRR6382407_2-trim-paired.fastq.gz oases/input/SRR6382407_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR6382407 &
+nohup time trimmomatic PE -threads 32 raw/fastq/SRR6382408_1.fastq.gz raw/fastq/SRR6382408_2.fastq.gz  oases/input/SRR6382408_1-trim-paired.fastq.gz oases/input/SRR6382408_1-trim-unpaired.fastq.gz oases/input/SRR6382408_2-trim-paired.fastq.gz oases/input/SRR6382408_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36 &>> oases/trim-log/SRR6382408 &
+
+R -e "aves::compare_sra_paired('SRR2089995')";
+R -e "aves::compare_sra_paired('SRR6382407')";
+R -e "aves::compare_sra_paired('SRR6382408')";
+
+fastqc -o oases/fastqc -t 32  oases/input/{SRR2089995,SRR6382407,SRR6382408}*trim*
+
+
+[ -d oases/SRR2089995 ] || mkdir oases/SRR2089995; nohup time oases_pipeline.py -m 21 -M 23      -o oases/SRR2089995/ -d '-fastq.gz -shortPaired -separate oases/input/SRR2089995_1-trim-paired.fastq.gz oases/input/SRR2089995_2-trim-paired.fastq.gz' &> oases/log/SRR2089995 &
+[ -d oases/SRR6382407 ] || mkdir oases/SRR6382407; nohup time oases_pipeline.py -m 21 -M 23      -o oases/SRR6382407/ -d '-fastq.gz -shortPaired -separate oases/input/SRR6382407_1-trim-paired.fastq.gz oases/input/SRR6382407_2-trim-paired.fastq.gz' &> oases/log/SRR6382407 &
+[ -d oases/SRR6382408 ] || mkdir oases/SRR6382408; nohup time oases_pipeline.py -m 21 -M 23      -o oases/SRR6382408/ -d '-fastq.gz -shortPaired -separate oases/input/SRR6382408_1-trim-paired.fastq.gz oases/input/SRR6382408_2-trim-paired.fastq.gz' &> oases/log/SRR6382408 &
+```
+
+
+## 12/30
+
+```{r}
+filter(aves::rna %>% aves::bind_taxonomy(), !(id %in% mine$id)) %>% 
+	filter(species %in% mine$species) %>% 
+	plyr::ddply('species', . %>% {slice(., which.min(.$size))}) %>% 
+	{slice(., order(.$order, .$species))} %>% print(n = 100)
+```
+
+```
+Passeriformes
+```
+
+Apodiformes:  smallest (same species for mine): SRR4116890 2.7G 
+Apterygiformes: smallest of Apteryx rowi: SRX1748257 (SRR3486432 6.1G)
+Columbiformes: smallest(>100) of Patagioenas fasciata: SRX1561944(SRR3146195 2.8G) 
+Sphenisciformes: already, SRX1470185(SRR2980760 700.8M)
+Strigiformes: smallest SRR3203243 6.8G
+
+
+Accipitriformes    
+
+SRR1265955       6024
+SRR1818011      11469
+SRR3203233      12211
+ERR441003         874
+
+
+
+```
+EOG090F000M
+```
+
+
+## 12/31
+
+```{r}
+fasta <- readr::read_lines('~/Downloads/SRR2089995_pass.fastq.gz') %>% 
+	{.[sort(c(seq(1, length(.), 4), seq(2, length(.), 4)))]} %>%
+	str_replace('^@', '>') %>%
+	paste0(collapse = '\n') %>% 
+	bioinfor::read_fasta()
+
+forward <- names(fasta) %>% str_subset('\\.1 ') %>% str_extract('(?<= )\\d+(?= )')
+reverse <- names(fasta) %>% str_subset('\\.2 ') %>% str_extract('(?<= )\\d+(?= )')
+
+intersect(forward, reverse)
+
+qplot(x = 1, y = str_length(fasta), geom = 'boxplot')
+
+length(fastq)/2
+```
+
+
+
+
+
+
+
+
+

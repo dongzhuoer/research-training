@@ -1,0 +1,49 @@
+
+
+
+```r
+muscle_to_yaml_mat <- . %>% {
+    src <- .;
+    dest <- str_replace(src, 'muscle$', 'yaml');
+    
+    src %>% biozhuoer::read_fasta() %>%
+        mutate(name = str_replace(name, '_', ' ')) %>%
+        filter(name != 'Pygoscelis papua') %>%
+        filter(name != 'Otus bakkamoena') %>%
+        biozhuoer:::extend_aligned_fasta(unlist(aves::phylo)) %>%
+        mutate(seq = str_replace_all(seq, fixed('X'), ' ')) %>%
+        mutate(seq = str_replace_all(seq, fixed('-'),     ' ')) %>%
+        {paste0(.$name, ': "', .$seq, '"')} %>% 
+        write_lines(dest);
+}
+
+dir('mine/gene', pattern = 'muscle$', full.names = T) %>% mclapply(muscle_to_yaml_mat, mc.cores = 128) -> dev.null;
+
+
+```
+
+
+```r
+mine_gene <- function(mat_file, gene_name) {
+    system2('mine', c('~/.local/lib/R/aves/extdata/mine.yaml', mat_file, gene_name), T);
+}
+mine_gene('mine/gene/EOG090F0000.yaml', 'EOG090F0000');
+
+mclapply(
+    dir('mine/gene', pattern = 'yaml$', , full.names = T),
+    . %>% {mine_gene(., str_extract(., 'EOG\\w+'))}
+) %>% unlist %>% write_lines('mine/apomorphy.csv')
+```
+
+
+
+```r
+apomorphy <- read_csv('mine/apomorphy.csv', c('missing', 'one', 'other', 'node', 'gene', 'position'), 'dcccci')
+
+x$node %>% unique %>% sort %>% write_lines('mine/node.md')
+
+plyr::ddply(apomorphy, 'node', . %>% {slice(., order(nchar(.$one), nchar(.$other), .$missing)[1])})
+
+```
+
+

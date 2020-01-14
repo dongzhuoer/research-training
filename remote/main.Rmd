@@ -1,0 +1,33 @@
+# maintain
+
+## clean
+
+> to furthur shrink space, please rm `raw/*phylogenomics*` and `raw/genome/*`
+
+```bash
+aves rm hamstr/{hmm_dir_*,hmm_search_*,fa_dir_*,*_*.log,*.mod*} -r
+aves rm hamstr/tmp -r
+aves rm hamstr-data/ext/* -r
+```
+
+## backup
+
+```bash
+aves tar -cz -f backup/hamstr_top10.tar.gz  hamstr/output_top10
+aves tar -cz -f backup/hamstr_all.tar.gz    hamstr/output_all
+
+aves tar -cz -f backup/augustus.tar.gz   augustus/gff/*
+aves tar -cz -f backup/gene.tar.gz       paup/gene/*
+aves tar -cz -f backup/oases.tar.gz oases/output/*
+```
+
+
+### update R package
+
+
+```r
+detach('package:magrittr') 
+unloadNamespace('compiler')
+unloadNamespace('magrittr')
+update.packages(ask=F)
+```

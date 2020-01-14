@@ -1,0 +1,60 @@
+# collect metadata
+
+
+
+transcript on Nucleotide is the same as TSA on WGS
+
+Jarvis2014 (genomic data)
+
+Jarvis2015 (phylogenomic data): ftp://climb.genomics.cn/pub/10.5524/101001_102000/101041/Newick_tree_files.tar.gz; ^[navigate to the directory to see other files]
+
+SRA search: from example, ERX1417704's title is PacBio RS sequencing https://www.ncbi.nlm.nih.gov/sra/ERX1417704
+
+
+1. NCBI genome: 
+
+   - `assembly_result.xml`
+   
+     [search "txid8782[Organism:exp]" in assembly](https://www.ncbi.nlm.nih.gov/assembly/?term=txid8782%5BOrganism%3Aexp%5D)  
+     `Send to` -> `File` -> `XML`
+
+    - `genome_result.txt`
+
+	  [search "txid8782[Organism:exp]" in genome](https://www.ncbi.nlm.nih.gov/genome/?term=txid8782%5BOrganism%3Aexp%5D), 
+      `Send to` -> `File` -> `Summary`
+
+1. `SraRunInfo.csv` 
+
+   [search "txid8782[Organism:exp]" in SRA](https://www.ncbi.nlm.nih.gov/sra/?term=txid8782%5BOrganism%3Aexp%5D) 
+   select "RNA" in "Source", `Send to` -> `File` -> `Runinfo`
+     
+
+1. NCBI WGS TSA: `wgs_selector.csv`
+
+   [search "aves" in TSA](https://www.ncbi.nlm.nih.gov/Traces/wgs/?page=1&view=tsa&search=aves)
+
+> choose GCF or GCA
+
+NCBI choose GCF if exist, only when there is just GCA, they use it
+
+genebank: GCA_id.major, RefSeq: GCF_id.major (id is a stable 9 digits number, but major may differ)
+
+their main versions don't mean the same thing, the following seven are all identical (except one, GCF 多 a MT...)
+
+  species              id              chosen          
+  <chr>                <chr>           <chr>           
+1 Meleagris gallopavo  GCF_000146605.2 GCA_000146605.3 
+2 Taeniopygia guttata  GCF_000151805.1 GCA_000151805.2 
+3 Ficedula albicollis  GCF_000247815.1 GCA_000247815.2 
+4 Manacus vitellinus   GCF_000692015.1 GCA_000692015.2 
+5 Tinamus guttatus     GCF_000705375.1 GCA_000705375.2 
+6 Charadrius vociferus GCF_000708025.1 GCA_000708025.2 
+7 Numida meleagris     GCF_002078875.1 GCA_002078875.2 
+
+## prepare core-ortholog set for HaMStR
+
+we use [OtrhoDB](http://www.orthodb.org/)
+
+choose primer species
+
+

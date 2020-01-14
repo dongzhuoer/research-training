@@ -1,0 +1,144 @@
+## 01/08
+
+```bash
+wc paup/gene/*trim -l | sort -k 1 -n
+ls paup/gene/*aln | xargs grep '>' -c | sort
+```
+
+
+> eight fasta file contain duplicated sequence, but I don't know why
+
+```
+> dir('paup/gene', pattern = 'aln$', full.names = T)[bad]
+[1] "paup/gene/EOG090F05N0.aln" "paup/gene/EOG090F0701.aln"
+[3] "paup/gene/EOG090F075D.aln" "paup/gene/EOG090F0A6B.aln"
+[5] "paup/gene/EOG090F0AR9.aln" "paup/gene/EOG090F0B3A.aln"
+[7] "paup/gene/EOG090F0BKB.aln" "paup/gene/EOG090F0C0X.aln"
+```
+
+
+```r
+muscle_l <- dir('paup/gene', pattern = '^EOG\\w+.muscle$', full.names = T) %>%
+    mclapply(biozhuoer::read_fasta)
+
+bad <- muscle_l %>% plyr::llply(. %>% {.$name} %>% {.[duplicated(.)]}) %>% plyr::laply(length)  %>% {. != 0} %>% which
+
+unique_fasta_file <- function(x) {
+    biozhuoer::read_fasta(x) %>% plyr::ddply('name',. %>% slice(1)) %>% as_tibble %>% biozhuoer::write_fasta(x)
+}
+dir('paup/gene', pattern = 'aln$', full.names = T)[bad] %>% mclapply(unique_fasta_file)
+dir('paup/gene', pattern = 'mafft$', full.names = T)[bad] %>% mclapply(unique_fasta_file)
+dir('paup/gene', pattern = 'trim$', full.names = T)[bad] %>% mclapply(unique_fasta_file)
+dir('paup/gene', pattern = '^EOG\\w+.muscle$', full.names = T)[bad] %>% mclapply(unique_fasta_file)
+```
+
+
+## 01/09
+
+```bash
+while [ true ]; do echo ; echo; echo; aves "R --slave -e \"dir('hamstr', 'hmm_', full.names = T) %>% plyr::ldply(. %>% {data.frame(name = str_extract(., '(?<=search_)\\\\\\\\w+(?=_aves)'), length = dir(.) %>% length)})\"" 2> /dev/null; echo; aves ps -aux | grep 'oases oases'; echo;  sleep 30; done
+while [ true ]; do echo ; echo; echo; aves ls paup/rds/*_node.rds -hl | cat -n; echo; xie pgrep java -al; sleep 10; done
+```
+
+```r
+dir('paup/rds')
+
+aves_node <- read_rds('paup/rds/aves_node.rds')
+
+x <- aves_node %>%
+            filter(ingroup1_state != '', ingroup2_state != '', ingroup1_missing != 1, ingroup2_missing != 1) %>% 
+            mutate(ingroup1_state = str_replace(ingroup1_state, '/', '|'), ingroup2_state = str_replace(ingroup2_state, '/', '|')) %>%
+            filter(!str_detect(ingroup1_state, ingroup2_state))
+
+x %>% filter(outgroup_state != '', outgroup_missing != 1) %>% filter(!str_detect(ingroup1_state, outgroup_state), !str_detect(ingroup2_state, outgroup_state))
+```
+
+## 01/10
+
+```{r}
+apomorphy <- read_rds('output/aves.rds') %>% 
+	plyr::dlply('node', . %>% {
+		df1 <- filter(., outgroup_state != '', outgroup_missing < 1) %>% {slice(., order(nchar(.$outgroup_state)))}
+		df11 <- filter(df1, !str_detect(ingroup1_state, outgroup_state), !str_detect(ingroup2_state, outgroup_state))
+
+		df2 <- filter(df1, other_state != '', other_missing < 1)  %>% {slice(., order(nchar(.$other_state)))}
+		df22 <- filter(df2, !str_detect(ingroup1_state, other_state), !str_detect(ingroup2_state, other_state))
+		
+		df <- if (nrow(df2) > 0) {
+			if (nrow(df22) > 0) df22 else df2
+		} else if (nrow(df1) > 0) {
+			if (nrow(df11) > 0) df11 else df1
+		} else .
+		df %>% as_tibble 
+	}) %>% 
+	plyr::ldply(. %>% {
+		order <- order(nchar(.$ingroup1_state) + nchar(.$ingroup2_state),
+					   .$outgroup_state == '', nchar(.$outgroup_state), 
+					   .$ingroup1_missing + .$ingroup2_missing, 
+					   .$outgroup_missing,
+					   .$other_state == '', nchar(.$other_state), .$other_missing
+		);
+		slice(., order[1]) 
+	}) %>% as_tibble() 
+
+apomorphy$node %>% setdiff(mcapomorphy:::node_names, .)
+```
+
+
+
+```{r}
+
+sort_fasta <- function(gene) {
+	src  <- paste0('output/muscle/',  gene, '.muscle')
+	dest <- paste0('output/muscle2/', gene, '.muscle')
+	name <- yaml::read_yaml('inst/extdata/phylo.yaml') %>% unlist %>% str_replace(' ', '_')
+	
+	biozhuoer::read_fasta(src) %>% {.[match(name, .$name) %>% na.omit, ]} %>% biozhuoer::write_fasta(dest)
+} # EOG090F01XF' %>% sort_fasta()
+
+read_rds('output/bad.rds') %>% bind_rows() %>% {.$gene} %>% mclapply(sort_fasta)
+
+read_rds('output/bad.rds')[[2]] %>% 
+	mutate(id = paste0(gene, '/', position)) %>%
+	plyr::dlply('id', . %>% {
+			df <- .
+			paste0('output/muscle2/', df$gene, '.muscle') %>% biozhuoer::read_fasta() %>% 
+				mutate(seq = str_sub(seq, df$position, df$position)) %>%
+				filter(str_detect(seq, '\\w')) %>%
+				mutate(name = str_replace(name, '_', ' ')) %>%
+				filter(name %in% unlist(mcapomorphy:::neoaves8_node[[1]]))
+		}
+	) %>% plyr::laply(nrow) %>% {names(.[. == 4])} %>% str_extract('\\w+') %>% 
+	{filter(read_rds('output/bad.rds')[[2]], gene %in% .)}
+
+
+
+read_rds('output/bad.rds')[[2]] %>% {unique(.$position)}
+```
+
+
+
+
+```{r}
+apomorphy %>%
+	bind_rows(read_rds('output/bad.rds')[[1]][6, ] %>% add_column(node = 'neoaves2_node')) %>%
+	bind_rows(read_rds('output/bad.rds')[[2]][5, ] %>% add_column(node = 'neoaves8_node')) %>%
+	write_csv('inst/extdata/apomorphy.csv')
+```
+
+
+
+```{r}
+'inst/extdata/classify.tre' %>% ape::read.tree() %>% ggtree::ggtree(aes(hjust=0)) + 
+	#ggtree::geom_text2(aes(label = label, subset = !isTip, size = 2), nudge_x = 0.02) + 
+	ggtree::geom_tiplab(aes(size = 0.8)) + xlim(c(0,16)) -> tree
+#tree$data[42,'x'] <- 5
+ggsave('output/classify.png', tree, width = 10, height = 7.5)
+```
+
+
+
+
+
+
+

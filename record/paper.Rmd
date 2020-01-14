@@ -1,0 +1,83 @@
+# Overview
+
+- 吴昊阳. (2016). 基于系统发育基因组学的六足总纲分子分类学体系的设计. 南开大学博士论文.
+- Ebersberger, I., Strauss, S., & Von Haeseler, A. (2009). HaMStR: Profile hidden markov model based search for orthologs in ESTs. BMC Evolutionary Biology, 9(1), 157. https://doi.org/10.1186/1471-2148-9-157
+- Wu, H.-Y., Wang, Y.-H., Xie, Q., Ke, Y.-L., & Bu, W.-J. (2016). Molecular classification based on apomorphic amino acids (Arthropoda, Hexapoda): Integrative taxonomy in the era of phylogenomics. Scientific Reports, 6(1), 28308. https://doi.org/10.1038/srep28308
+- Zhang, H., Bai, Y., Shi, X., Sun, L., Wang, Z., & Wu, X. (2018). The complete mitochondrial genomes of Tarsiger cyanurus and Phoenicurus auroreus: a phylogenetic analysis of Passeriformes. Genes & Genomics, 40(2), 151–165. https://doi.org/10.1007/s13258-017-0617-5
+- Misof, B., Liu, S., Meusemann, K., Peters, R. S., Donath, A., Mayer, C., … Zhou, X. (2014). Phylogenomics resolves the timing and pattern of insect evolution. Science, 346(6210), 763–767. https://doi.org/10.1126/science.1257570
+- Alström, P., Olsson, U., & Lei, F. (2013). A review of the recent advances in the systematics of the avian superfamily Sylvioidea. Chinese Birds, 4(2), 99–131. https://doi.org/10.5122/cbirds.2013.0016
+- Chesser, R. T., Burns, K. J., Cicero, C., Dunn, J. L., Kratter, A. W., Lovette, I. J., … Winker, K. (2017). Fifty-eighth supplement to the American Ornithological Society’s Check-list of North American Birds. The Auk, 134(3), 751–773. https://doi.org/10.1642/AUK-17-72.1
+- Nasir, A., & Caetano-Anolles, G. (2015). A phylogenomic data-driven exploration of viral origins and evolution. Science Advances, 1(8), e1500527–e1500527. https://doi.org/10.1126/sciadv.1500527
+- Brent, M. R. (2008). Steady progress and recent breakthroughs in the accuracy of automated genome annotation. Nature Reviews Genetics, 9(1), 62–73. https://doi.org/10.1038/nrg2220
+- Jarvis, E. D., Mirarab, S., Aberer, A. J., Li, B., Houde, P., Li, C., … Zhang, G. (2014). Whole-genome analyses resolve early branches in the tree of life of modern birds. In Supplementary (Vol. 346). https://doi.org/10.1126/science.1253451
+- Hosner, P. A., Faircloth, B. C., Glenn, T. C., Braun, E. L., & Kimball, R. T. (2016). Avoiding missing data biases in phylogenomic inference: An empirical study in the landfowl (Aves: Galliformes). Molecular Biology and Evolution, 33(4), 1110–1125. https://doi.org/10.1093/molbev/msv347
+- Zhang, G., Li, B., Li, C., Gilbert, M. T. P., Jarvis, E. D., & Wang, J. (2014). Comparative genomic data of the Avian Phylogenomics Project. GigaScience, 3(1), 26. https://doi.org/10.1186/2047-217X-3-26
+- Jarvis, E. D., Mirarab, S., Aberer, A. J., Li, B., Houde, P., Li, C., … Zhang, G. (2014). Whole-genome analyses resolve early branches in the tree of life of modern birds. Science, 346(6215), 1320–1331. https://doi.org/10.1126/science.1253451
+- Hoff, K. J., & Stanke, M. (2015). Current methods for automated annotation of protein-coding genes. Current Opinion in Insect Science, 7, 8–14. https://doi.org/10.1016/j.cois.2015.02.008
+- Cox, W. A., Kimball, R. T., & Braun, E. L. (2007). Phylogenetic Position of the New World Quail (Odontophoridae): Eight Nuclear Loci and Three Mitochondrial Regions Contradict Morphology and the Sibley-Ahlquist Tapestry. The Auk, 124(1), 71–84. https://doi.org/10.1642/0004-8038(2007)124[71:PPOTNW]2.0.CO;2
+- Prum, R. O., Berv, J. S., Dornburg, A., Field, D. J., Townsend, J. P., Lemmon, E. M., & Lemmon, A. R. (2015). A comprehensive phylogeny of birds (Aves) using targeted next-generation DNA sequencing. Nature, 526(7574), 569–573. https://doi.org/10.1038/nature15697
+- Koepfli, K.-P., Paten, B., & O’Brien, S. J. (2015). The Genome 10K Project: A Way Forward. Annual Review of Animal Biosciences, 3(1), 57–111. https://doi.org/10.1146/annurev-animal-090414-014900
+- Zhang, Y., Zhou, X., Luo, L., & Zhang, L. (2017). 鸟类基因组进化树的构建与分析. 7(March), 1–11.
+- Kapusta, A., & Suh, A. (2017). Evolution of bird genomes—a transposon’s-eye view. Annals of the New York Academy of Sciences, 1389(1), 164–185. https://doi.org/10.1111/nyas.13295
+- Suh, A., Smeds, L., & Ellegren, H. (2015). The dynamics of incomplete lineage sorting across the ancient adaptive radiation of neoavian birds. PLoS Biology, 13(8), 1–18. https://doi.org/10.1371/journal.pbio.1002224
+- Zhang, G., Li, C., Li, Q., Li, B., Larkin, D. M., Lee, C., … Froman, D. P. (2014). Comparative genomics reveals insights into avian genome evolution and adaptation. Science, 346(6215), 1311–1320. https://doi.org/10.1126/science.1251385
+- Suh, A. (2016). The phylogenomic forest of bird trees contains a hard polytomy at the root of Neoaves. Zoologica Scripta, 45(October), 50–62. https://doi.org/10.1111/zsc.12213
+- Treplin, S., Siegert, R., Bleidorn, C., Thompson, H. S., Fotso, R., & Tiedemann, R. (2008). Molecular phylogeny of songbirds (Aves: Passeriformes) and the relative utility of common nuclear marker loci. Cladistics, 24(3), 328–349. https://doi.org/10.1111/j.1096-0031.2007.00178.x
+- Li, X., Huang, Y., & Lei, F. (2015). Comparative mitochondrial genomics and phylogenetic relationships of the Crossoptilon species (Phasianidae, Galliformes). BMC Genomics, 16(1), 42. https://doi.org/10.1186/s12864-015-1234-9
+- Wang, N., Hosner, P. A., Liang, B., Braun, E. L., & Kimball, R. T. (2017). Historical relationships of three enigmatic phasianid genera (Aves: Galliformes) inferred using phylogenomic and mitogenomic data. Molecular Phylogenetics and Evolution, 109, 217–225. https://doi.org/10.1016/j.ympev.2017.01.006
+- Kimball, R. T., & Braun, E. L. (2014). Does more sequence data improve estimates of galliform phylogeny? Analyses of a rapid radiation using a complete data matrix. PeerJ, 2(5), e361. https://doi.org/10.7717/peerj.361
+- Wang, N., Kimball, R. T., Braun, E. L., Liang, B., & Zhang, Z. (2017). Ancestral range reconstruction of Galliformes: the effects of topology and taxon sampling. Journal of Biogeography, 44(1), 122–135. https://doi.org/10.1111/jbi.12782
+- Wang, N., Kimball, R. T., Braun, E. L., Liang, B., & Zhang, Z. (2013). Assessing Phylogenetic Relationships among Galliformes: A Multigene Phylogeny with Expanded Taxon Sampling in Phasianidae. PLoS ONE, 8(5). https://doi.org/10.1371/journal.pone.0064312
+
+
+
+# to use
+
+
+https://www.nature.com/articles/nature15638   
+'198 bird species' in the beginning
+
+https://academic.oup.com/mbe/article/33/4/1110/2579645
+Avoiding Missing Data Biases in Phylogenomic Inference: An Empirical Study in the Landfowl (Aves: Galliformes)
+Galliformes ^[https://figshare.com/articles/Avoiding_missing_data_biases_in_phylogenomic_inference_an_empirical_study_in_the_landfowl_Aves_Galliformes_/3181132]
+
+
+[ETE 3: Reconstruction, Analysis, and Visualization of Phylogenomic Data](https://academic.oup.com/mbe/article/33/6/1635/2579822)
+"Comparing Trees" 这一节也许有点价值
+
+
+
+[How reticulated are species?](http://onlinelibrary.wiley.com/doi/10.1002/bies.201500149/full)
+Incomplete lineage sorting, 网状 等理论问题
+
+
+
+## explain concepts
+
+
+Reference sequence (RefSeq) database at NCBI: current status, taxonomic expansion, and functional annotation
+
+Genomic approaches to understanding population divergence and speciation in birds
+
+
+
+## stored
+
+- 回答形态与分子冲突的问题
+
+Wright2015 Estimating phylogenetic trees from discrete morphological data
+
+[Morphological Phylogenetics in the Genomic Age Author links open overlay panel](http://www.sciencedirect.com/science/article/pii/S096098221500812X)
+
+
+
+## Galliformes
+
+- Wen, L., Fu, Y., Dai, B., & Antalffy, J. (2015). Polymorphism in some birds of Galliformes. Acta Ecologica Sinica, 35(4), 103–106. https://doi.org/10.1016/j.chnaes.2015.06.004
+- Li, X., Huang, Y., & Lei, F. (2015). Comparative mitochondrial genomics and phylogenetic relationships of the Crossoptilon species (Phasianidae, Galliformes). BMC Genomics, 16(1), 42. https://doi.org/10.1186/s12864-015-1234-9
+- Wang, N., Hosner, P. A., Liang, B., Braun, E. L., & Kimball, R. T. (2017). Historical relationships of three enigmatic phasianid genera (Aves: Galliformes) inferred using phylogenomic and mitogenomic data. Molecular Phylogenetics and Evolution, 109, 217–225. https://doi.org/10.1016/j.ympev.2017.01.006
+- Kimball, R. T., & Braun, E. L. (2014). Does more sequence data improve estimates of galliform phylogeny? Analyses of a rapid radiation using a complete data matrix. PeerJ, 2(5), e361. https://doi.org/10.7717/peerj.361
+- Hosner, P. A., Tobias, J. A., Braun, E. L., & Kimball, R. T. (2017). How do seemingly non-vagile clades accomplish trans-marine dispersal? Trait and dispersal evolution in the landfowl (Aves: Galliformes). Proceedings of the Royal Society B: Biological Sciences, 284(1854). https://doi.org/10.1098/rspb.2017.0210
+- Wang, N., Kimball, R. T., Braun, E. L., Liang, B., & Zhang, Z. (2017). Ancestral range reconstruction of Galliformes: the effects of topology and taxon sampling. Journal of Biogeography, 44(1), 122–135. https://doi.org/10.1111/jbi.12782
+- Wang, N., Kimball, R. T., Braun, E. L., Liang, B., & Zhang, Z. (2013). Assessing Phylogenetic Relationships among Galliformes: A Multigene Phylogeny with Expanded Taxon Sampling in Phasianidae. PLoS ONE, 8(5). https://doi.org/10.1371/journal.pone.0064312
+- Stein, R. W., Brown, J. W., & Mooers, A. O. (2015). A molecular genetic time scale demonstrates Cretaceous origins and multiple diversification rate shifts within the order Galliformes (Aves). Molecular Phylogenetics and Evolution, 92, 155–164. https://doi.org/10.1016/j.ympev.2015.06.005

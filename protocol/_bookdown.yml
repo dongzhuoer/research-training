@@ -1,0 +1,10 @@
+book_filename: research-record
+output_dir: gitbook
+new_session: yes
+language:
+  label:
+    fig: "Figure "
+    tab: "Table "
+  ui:
+    edit: "Edit"
+    chapter_name: "Chapter "

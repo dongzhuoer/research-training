@@ -1,0 +1,247 @@
+---
+knit: "bookdown::preview_chapter"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE);
+```
+
+# week5
+
+
+## 12/11
+
+```
+[entomo@localhost output]$ time ../software/hamstr.v13.2.6/bin/hamstr -protein -sequence_file=GC1_000002315.4_Gallus_gallus-5.0_protein.faa -taxon=Gallus_gallus -hmmset=aves -refspec=Gallus_gallus -blastpath=/path/to/data/aves/hamstr/blast_dir -hmmpath=/path/to/data/aves/hamstr -representative -central -force -cpu 32 &> /dev/null;
+
+real    807m10.113s
+user    23538m1.882s
+sys     543m52.706s
+[entomo@localhost zhuoer]$ cp output/GC0_000002315.4_Gallus_gallus-5.0_protein.faa output/GC2_000002315.4_Gallus_gallus-5.0_protein.faa[entomo@localhost zhuoer]$ cd output/
+[entomo@localhost output]$ time ../software/hamstr.v13.2.6/bin/hamstr -protein -sequence_file=GC0_000002315.4_Gallus_gallus-5.0_protein.faa -taxon=Gallus_gallus -hmmset=aves -refspec=Gallus_gallus -blastpath=/path/to/data/aves/hamstr/blast_dir -hmmpath=/path/to/data/aves/hamstr -representative -central -force -cpu 32 -hit_limit 10 &> /dev/null;
+
+real    75m24.168s
+user    2192m1.230s
+sys     75m36.292s
+```
+
+## 12/12
+
+- Optimizing ... RNA-seq ... phylogenomics
+
+Downloaded reads were subjected to the following cleaning steps: (1) read pairs were removed if either of the reads in the read pair had average quality score ≤ 32; (2) read 3’ end nucleotides with quality scores < 10 were trimmed, and post-trim read pairs with either of the reads ≤ 72 bp were removed; and (3) reads with adaptor contamination were removed.
+
+- Trimmomatic
+
+https://academic.oup.com/bioinformatics/article/30/15/2114/2390096
+
+
+```
+读段清理主要去掉读段中多个“N”碱基，读段两端的低质量区域（质量分数少于Q20），读段3’端可能混入的接头序列，还有可能污染进来的rRNA和病毒序列。
+```
+
+[FastQC 博文](https://zhuanlan.zhihu.com/p/20731723)
+
+
+## 12/13
+
+```
+那就读cutadapt和fastqc的文档, 搞清楚之后可以看看afterqc
+```
+
+## 12/14
+
+SRR in `data-raw/sra.yaml`, open ncbi page
+fastqc all sequence
+trimmomatic (adpater path must be absolute)
+
+## 12/15
+
+|                           |                             |
+| ------------------------- | --------------------------- |
+| Per base sequence quality | Q20 filter: 10%分位数大于20 |
+| Per base sequence content | A=T,C=G, otherwise cut      |
+| Per base N content        | cut >0 (pluge)              |
+| Kmer Content              | cut >0                      |
+|                           |                             |
+|                           |                             |
+|                           |                             |
+
+知乎，may `fastx_trimmer`,  `cutadapt`
+https://zhuanlan.zhihu.com/p/31432993
+https://zhuanlan.zhihu.com/p/20776942
+
+
+```{r}
+sra <- yaml::yaml.load_file('data-raw/sra.yaml');
+names(sra) %>% paste0('https://www.ncbi.nlm.nih.gov/sra/?term=', .) %>% 
+	plyr::l_ply(. %>% {browseURL(.);system('sleep 0.3')})
+
+#http://10.5.92.83:8787/file_show?path=%2Fmedia%2Fcomputer%2Fifastqc%2FERR441000_1_fastqc.html
+```
+
+
+`xie wc -l /path/to/data/aves/protein/*out > output/protein.out`
+```{r}
+protein_out <- 	read_table('output/protein.out', c('n', 'species'), 'ic') %>% 
+	{dplyr::slice(., -nrow(.))} %>% 
+	dplyr::mutate(species = str_extract(species, '(?<=_)\\w+(?=_)'))
+
+ggplot2::qplot(1, protein_out[[1]],geom = 'boxplot')
+
+ggplot2::ggplot(protein_out, ggplot2::aes(species, n)) + ggplot2::geom_point() + ggplot2::coord_flip()
+```
+
+> what SRA and genome do I need to analyse
+
+```{r}
+foobar <- function(TSA = T){
+	df <- aves::omics;
+	if (!TSA) df %<>% dplyr::filter(source != 'TSA'); 
+	
+	uniq_current <-  df %>% dplyr::filter(source %in% c('protein', 'TSA')) %>% 
+		plyr::ddply('species', . %>% dplyr::slice(1))
+	
+	uniq_prefer_sra <- df %>% plyr::ddply('species', . %>% {
+		result <- .;
+		
+		if ('protein' %in% .$source) {
+			result = dplyr::filter(., source == 'protein');
+		} else if ('TSA' %in% .$source) {
+			result = dplyr::filter(., source == 'TSA');
+		} else if ('SRA' %in% .$source) {
+			result = dplyr::filter(., source == 'SRA');
+		}
+		
+		dplyr::slice(result, 1);
+	})
+	
+	uniq_prefer_genome <- df %>% plyr::ddply('species', . %>% {
+		result <- .;
+		
+		if ('protein' %in% .$source) {
+			result = dplyr::filter(., source == 'protein');
+		} else if ('TSA' %in% .$source) {
+			result = dplyr::filter(., source == 'TSA');
+		} else if ('genome' %in% .$source) {
+			result = dplyr::filter(., source == 'genome');
+		}
+		
+		dplyr::slice(result, 1);
+	})
+	
+	dplyr::all_equal(
+		aves::diff_order(uniq_prefer_genome, 'SRA') %>% {dplyr::filter(uniq_prefer_genome, source == 'SRA', order %in% .)}, 
+		aves::diff_order(uniq_prefer_sra, 'SRA') %>% {dplyr::filter(uniq_prefer_sra, source == 'SRA', order %in% .)}
+	) %>% print
+	dplyr::all_equal(
+		aves::diff_order(uniq_prefer_genome, 'genome') %>% {dplyr::filter(uniq_prefer_genome, source == 'genome', order %in% .)}, 
+		aves::diff_order(uniq_prefer_sra, 'genome') %>% {dplyr::filter(uniq_prefer_sra, source == 'genome', order %in% .)}
+	) %>% print
+	print('they are equal so we only display one')
+	
+	print('SRA');
+	aves::diff_order(uniq_prefer_sra, 'SRA') %T>% print %>% {dplyr::filter(uniq_prefer_sra,  order %in% .)} %>% {.[order(.$order), ]} %>% dplyr::as_tibble() %>% print
+	print('genome');
+	aves::diff_order(uniq_prefer_sra, 'genome') %T>% print %>% {dplyr::filter(uniq_prefer_sra,  order %in% .)} %>% {.[order(.$order), ]} %>% dplyr::as_tibble() %>% print
+	
+	
+	# aves::bin_by_order(uniq_prefer_genome) %>% print
+	# aves::bin_by_order(uniq_current) %>% print
+}
+
+foobar(T)
+foobar(F)
+```
+
+```{r}
+# code in `bin.Rmd`
+
+aves::omics %>% dplyr::filter(source %in% c('protein', 'TSA')) %>% 
+	plyr::ddply('species', . %>% dplyr::slice(1)) %>% 
+	summary_as_yaml %>% write_file('output/taxonomy.yml')
+
+aves::omics %>% dplyr::filter(source == 'TSA') %>% {.$id} %>% 
+	plyr::llply(. %>% paste0('data-raw/TSA-html/', .) %>% read_html %>% rvest::html_nodes('a[href^=ftp]') %>% rvest::html_attr('href') %>% stringr::str_subset('fsa')) %>% unlist() %>% write_lines('output/TSA.md')
+
+```
+
+## 12/16
+
+```{r}
+read_tsv('data-raw/SraRunTable.txt')$Experiment_s %>% unique %>% {.[51:150]} %>% paste0('https://www.ncbi.nlm.nih.gov/sra/', .) %>% plyr::l_ply(browseURL)
+```
+
+at Bridger
+
+```bash
+trimmomatic SE -threads 32 input/SRR029421.fastq.gz input/SRR029421-trim.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36
+trimmomatic SE -threads 32 input/SRR2980760.fastq.gz input/SRR2980760-trim.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36
+trimmomatic SE -threads 32 input/SRR029331.fastq.gz input/SRR029331-trim.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20
+```
+
+```
+SRR2980760 Pygoscelis_papua 21:23
+oases: NA, 20000 transcripts
+hamstr: 32m20.970s, 3307 gene
+```
+
+## 12/17
+
+https://www.ncbi.nlm.nih.gov/sra/SRX3260294
+
+
+[OpenMP runtime options ](https://www.ibm.com/support/knowledgecenter/SSGH2K_13.1.3/com.ibm.xlc1313.aix.doc/compiler_ref/ruomprun.html#ruomprun)
+
+```bashrc
+export OMP_THREAD_LIMIT=32
+export OMP_NUM_THREADS=32
+```
+
+
+at oases software
+```bash
+cd velvet
+make CATEGORIES=2 MAXKMERLENGTH=57 LONGSEQUENCES=1 OPENMP=1
+cd ..
+make CATEGORIES=2 MAXKMERLENGTH=57 LONGSEQUENCES=1 OPENMP=1
+mv oases velvet/velvet* ~/.local/bin/
+```
+
+`aria2c -d raw/fastq -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR614/005/SRR6148275/SRR6148275_1.fastq.gz ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR614/005/SRR6148275/SRR6148275_2.fastq.gz`
+
+
+at oases
+`time oases_pipeline.py -m 21 -M 45 -s 4 -o SRR2980760 -d '-fastq.gz ../Bridger/input/SRR2980760-trim.fastq.gz'`
+
+
+```
+SRR2980760 Pygoscelis_papua 21:45:4
+oases: 32m20.970s, 71587 transcripts
+hamstr: 81m42.207s, 3366 gene
+``` 
+
+`trimmomatic PE -threads 32 input/SRR5070564_1.fastq.gz input/SRR5070564_2.fastq.gz  input/SRR5070564_1-trim-paried.fastq.gz input/SRR5070564_1-trim-unparied.fastq.gz input/SRR5070564_2-trim-paried.fastq.gz input/SRR5070564_2-trim-unparied.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36`
+
+`time oases_pipeline.py -m 21 -M 23 -o SRR5070564 -d '-fastq.gz -shortPaired -separate input/SRR5070564_1-trim-paried.fastq.gz input/SRR5070564_2-trim-paried.fastq.gz'`
+
+```
+SRR5070564 Falco_sparverius, 21:23
+oases: 461m28.413s, 158565 transcripts
+hamstr: ,  gene
+```
+
+set `aves` in SRA will get 6 more microorganisms then `txid8782[Organism:exp]`
+
+set result to run selector will lose some, such as `SRX681407` (`SRR1551787`)
+
+finally， I give up filtering TSA source from SRA. Just check manually if there is really a problem
+
+[PacBio QC](https://gif.biotech.iastate.edu/blog/dr-andrew-j-severin/exploring-pacbio-data-beginners-quality-control)
+
+
+
+
+
+
+

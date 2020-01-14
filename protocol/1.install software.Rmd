@@ -1,0 +1,51 @@
+# install software
+
+
+## configuration 
+
+1. All the install guide assume you are inside the software root directory
+
+1. In orde to paste-and-run, you should set following env variables
+
+  `$program` : directory containing software need compile
+  `$opt`: directory containing platform-independent software (you can copy the software to another OS and run it)
+
+## [HaMStR](http://deep-phylogeny.org/hamstr/index.php)
+
+## [oases](https://github.com/dzerbino/oases)
+
+(note to add the submodule)
+
+```bash
+
+git clone --depth 1 git@github.com:dzerbino/oases.git  $program/oases 
+# we don't use submodule since sometimes it becomes very slow
+rm -r $program/oases/velvet $program/oases/.gitmodules
+git clone --depth 1 git@github.com:dzerbino/velvet.git $program/oases/velvet
+```
+
+```bash
+cd velvet
+make CATEGORIES=2 MAXKMERLENGTH=57 LONGSEQUENCES=1 OPENMP=1
+cd ..
+make CATEGORIES=2 MAXKMERLENGTH=57 LONGSEQUENCES=1 OPENMP=1
+cp oases velvet/velvet* scripts/* ../bin
+```
+
+## [AUGUSTUS](http://bioinf.uni-greifswald.de/augustus/binaries/)
+
+1. for Ubuntu, you can directly use the pre-compiled binaries (support gzip input) in `bin`. ^[if you make a link to `bin/augustus`, you need to set the env virable `AUGUSTUS_CONFIG_PATH` to `config` since the default path is `../config` to executable. ]
+
+1. build from source
+
+   comment `ZIPINPUT = true` in `common.mk` (support gzip input needs Boost C++ Libraries and zlib library)
+   
+   ```bash
+   cd src;
+   make augustus  #" then you can find `augustus` executable here
+   cp augustus ../../bin
+   ```
+
+
+
+

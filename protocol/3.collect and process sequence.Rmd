@@ -1,0 +1,16 @@
+# collect and process sequence
+
+
+# process data
+
+
+## augustus
+
+
+
+## oases
+
+
+
+## hamstr-data
+

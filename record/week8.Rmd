@@ -1,0 +1,126 @@
+## 01/01
+
+```{r}
+mclapply(
+    dir('TSA10', 'aves.out', full.names = T),
+    . %>% {
+        name <- str_extract(., '(?<=_)\\w+(?=_aves)');
+        source_dir <- 'hamstr/aves/hmm_dir/';
+        dest_dir <- paste0('hamstr//', name, '/hmm_dir/');
+        dest_dir %T>% {if (dir.exists(.)) unlink(., recursive = T)} %>% dir.create(recursive = T);
+        
+        finish <- read_lines(.) %>% str_extract('^\\w+');
+        todo <- setdiff(dir(source_dir), finish);
+        
+        file.copy(paste0(source_dir, todo), paste0(dest_dir, todo));
+        file.copy('hamstr/aves/aves.fa', paste0('hamstr/', name, '/', name, '.fa'));
+    }, mc.cores = 128
+) -> dev.null
+
+dir('hamstr', full.names = T) %>% dir('hmm_dir', full.names = T) %>% plyr::laply(. %>% dir %>% length) %>% sort
+
+str_extract(dir('TSA10', '\\.fna$'), '\\w+') %>% 
+    {setdiff(., str_extract(dir('hamstr-ext', '\\.out'), '(?<=search_)[:alpha:]+_[:alpha:]+_[:alpha:]+(_\\d)?'))} %>%
+    aves::hamstr_command(., T, 'hamstr-ext', NULL, .) %>% 
+    c('#!/bin/bash', .) %>% write_lines('hamstr.sh')
+
+dir('hamstr-ext', 'hmm_', full.names = T) %>% plyr::ldply(. %>% {data.frame(name = str_extract(., '(?<=search_)[:alpha:]+_[:alpha:]+_[:alpha:]+(_\\d)?'), legth = dir(.) %>% length)})
+```
+
+
+
+
+
+## 01/02
+
+```bash
+perl -I ~/.local/lib/R/bioinfor/exec/ ~/.local/lib/R/bioinfor/exec/Aliscore.02.2.pl -r 6329 -i ../muscle_dir/EOG090F003B
+```
+
+while [ true ]; do echo ; echo; echo; aves "R --slave -e \"dir('hamstr', 'hmm_', full.names = T) %>% plyr::ldply(. %>% {data.frame(name = str_extract(., '(?<=search_)\\\\\\\\w+(?=_aves)'), length = dir(.) %>% length)})\"" 2> /dev/null; echo; aves ps -aux | grep oases/SRR2089995/_; xie ps -aux | grep oases/SRR5367023/_; echo;   sleep 30; done
+
+```bash
+xie "R --slave -e \"dir('hamstr-ext', 'hmm_', full.names = T) %>% plyr::ldply(. %>% {data.frame(name = str_extract(., '(?<=search_)[:alpha:]+_[:alpha:]+_[:alpha:]+(_\\\\\\\\d)?'), length = dir(.) %>% length)})\"" 2> /dev/null
+```
+
+```r
+dir('hamstr-ext', 'hmm_', full.names = T) %>% plyr::ldply(. %>% {data.frame(name = str_extract(., '(?<=search_)[:alpha:]+_[:alpha:]+_[:alpha:]+(_\\d)?'), length = dir(.) %>% length)})
+
+dir('hamstr', 'hmm_', full.names = T) %>% plyr::ldply(. %>% {data.frame(name = str_extract(., '(?<=search_)\\w+(?=_aves)'), length = dir(.) %>% length)})
+
+dir('hamstr', full.names = T) %>% paste0('/hmm_dir') %>% plyr::ldply(. %>% {data.frame(name = str_extract(., '[:alpha:]+_[:alpha:]+_[:alpha:]+(_\\d)?'), length = dir(.) %>% length)})
+
+```
+
+## 01/03
+
+```bash
+R -e "aves::compare_sra_single('SRR1664679')";
+[ -d oases/SRR1664679 ] || mkdir oases/SRR1664679; nohup time oases_pipeline.py -m 21 -M 45 -s 4 -o oases/SRR1664679/ -d '-fastq.gz oases/input/SRR1664679-trim.fastq.gz' &> oases/log/SRR1664679 &
+```
+
+> verify hmm search result reusable
+
+```bash
+aves ls hamstr/hmm_search_Gallus_gallus_SRA_aves/* | wc -l
+aves "ls hamstr/hmm_search_Gallus_gallus_SRA_aves/* | xargs grep '^\[ok\]$'" | wc -l
+```
+
+## 01/04
+
+need to search paper
+
+```
+Sphenisciformes
+Columbidae
+Apteryx
+Palaeognathae
+Accipitriformes
+```
+
+## 01/05
+
+```{r}
+mine <- hamstr_out %>% 
+	mutate(species = str_replace(name, '(\\w+?)_(\\w+?)_\\w+', '\\1 \\2')) %>% 
+	plyr::ddply('species', . %>% {filter(., n == max(.$n))}) %>% 
+	aves::bind_taxonomy()
+mine %>% ggplot() + geom_boxplot(aes(source, n))
+mine %>% ggplot(aes(species, n, color = source)) + 
+        geom_point() +
+        labs(x = 'species', y = 'n', title = 'number of OGs for each species') + 
+        theme(axis.text.x = element_text(angle = 90), plot.title = element_text(hjust = 0.5));
+
+mine %>% select(order:genus, species) %>% 
+	{slice(., order(.$order, .$family, .$genus, .$species))} %>% 
+	mutate(species = str_replace(species, ' ', '_')) %>% 
+	#plyr::ddply('order', . %>% slice(1)) %>% 
+	write_delim('output/mine.tab', '\t')
+```
+
+
+## 01/06
+
+```{r}
+# select test file of appropriate size
+dir('paup/gene', pattern = 'muscle$', full.names = T) %>%
+    mclapply(bioinfor::read_fasta) %>% mclapply(length) ->x
+unlist(x) %>% {. == max(.)} %>% which %>% {dir('paup/gene', pattern = 'trim$', full.names = T)[.]} %>% tibble(name = ., size = file.size(.)/1000) %>% slice(., order(.$size))
+```
+
+
+
+## 01/07
+
+```{r}
+yaml::read_yaml('inst/extdata/omics.yaml') %>% View
+yaml::read_yaml('inst/extdata/omics.yaml') %>% yaml::write_yaml('inst/extdata/omics.yaml', indent = 4)
+```
+
+
+
+
+
+
+
+

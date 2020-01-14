@@ -1,0 +1,382 @@
+---
+knit: "bookdown::preview_chapter"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE);
+```
+
+# week4
+
+## 12/04
+
+```bash
+stringtie -p 32 -G chrX_data/genes/chrX.gtf -o SRR2980760.gtf –l SRR2980760 SRR2980760.bam
+```
+
+```{r}
+x <- dir('data-raw/genome-html') %>% plyr::ldply(aves::parse_genome)
+x$species
+
+assembly <- sapply(
+	dir('data-raw/assembly-html/'),
+	. %>% paste0('data-raw/assembly-html/', .) %>% read_html %>% 
+		rvest::html_nodes('dd a[href^="/Taxonomy"]') %>% rvest::html_text() %>% 
+		stringr::str_extract('\\w+ \\w+')
+);
+assembly %>% {.[. == 'Anas platyrhynchos']}
+
+
+read_csv('data-raw/wgs_selector.csv')$prefix_s %>% aves::fetch_TSA()
+
+'GFNW01' %>% paste0('data-raw/TSA-html/', .) %>% read_html() %>% 
+	rvest::html_nodes('tr td a[href^="https://www.ncbi.nlm.nih.gov/sra"]') %>%
+    	rvest::html_text();
+```
+
+differences bewteen gcf and gac
+
+```{r}
+mclapply(
+	dir('data-raw/assembly-html/'),
+	. %>% paste0('data-raw/assembly-html/', .) %>% read_html %>% 
+		rvest::html_node('.portlet_content a[href*=GCF][href*=ftp]') %>% rvest::html_attr('href')
+) -> gcf
+
+mclapply(
+	dir('data-raw/assembly-html/'),
+	. %>% paste0('data-raw/assembly-html/', .) %>% read_html %>% 
+		rvest::html_node('a[href*=GCA]') %>% rvest::html_attr('href')
+) -> gca
+
+gcf %>% unlist %>% na.omit()
+```
+
+
+SRA for Sphenisciformes & Casuariiformes
+
+
+## 12/05
+
+http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual#output
+
+novel isoforms (i.e. assembled transcripts present in the samples but missing from the reference annotation)
+
+- download OrthoDB
+
+```
+http://www.orthodb.org/v9.1/download/odb9v1_metazoa_fasta.tar.gz
+http://www.orthodb.org/v9.1/download/odb9v1_genes.tab.gz
+http://www.orthodb.org/v9.1/download/odb9v1_levels.tab.gz
+http://www.orthodb.org/v9.1/download/odb9v1_species.tab.gz
+http://www.orthodb.org/v9.1/download/odb9v1_OGs.tab.gz
+http://www.orthodb.org/v9.1/download/odb9v1_OG2genes.tab.gz
+http://www.orthodb.org/v9.1/download/README.txt
+```
+
+on workstation 
+```bash
+cat OrthoDB/odb9v1_OGs.tab | grep -P '\t8782' | join OrthoDB/odb9v1_OG2genes.tab - | awk '{print $1 "\t" $2}' > hamstr/OG2genes.tsv
+```
+
+assembly statistics
+
+```{r}
+mclapply(
+	dir('data-raw/assembly-html/'),
+	. %>% {
+		name <- paste0('data-raw/assembly-html/', .) %>% read_html %>% 
+			rvest::html_nodes('dd a[href^="/Taxonomy"]') %>% rvest::html_text() %>% 
+			stringr::str_extract('\\w+ \\w+');
+		paste0('data-raw/assembly-html/', .) %>% read_html %>% 
+			rvest::html_node('table[summary]') %>% rvest::html_table() %>% 
+			tidyr::spread(key = X1, value = X2) %>% tibble::as_tibble() %>%
+			tibble::add_column(species = name, .before = 1)
+	}
+) %>% plyr::ldply() -> assembly_stat
+
+tempfile() %T>% write_csv(assembly_stat, .) %>% read_csv
+
+
+
+aves_tax_id <- mclapply(
+	dir('data-raw/assembly-html/'),
+	. %>% paste0('data-raw/assembly-html/', .) %>% read_html %>% 
+			rvest::html_nodes('dd a[href^="/Taxonomy"]') %>% rvest::html_attr('href') %>% str_extract('\\d+')
+) %>% plyr::laply(as.character) 
+
+read_tsv('data-raw/odb9v1_species.tab', F, 'cciic') %>% dplyr::filter(X1 %in% aves_tax_id);
+```
+
+open http://www.orthodb.org/, check aves, unfold all (aves + 4 order), save all
+
+```{r}
+aves_name <- read_html('data-raw/Ortholog Search _.html') %>% 
+	rvest::html_nodes('ul[style*=block]') %>% 
+	rvest::html_nodes('span.tree-name:not(.tree-folder)') %>% 
+	rvest::html_text() %>% str_replace_all('[\n\t]', '');
+
+orthodb <- read_tsv('data-raw/odb9v1_species.tab', c('id', 'species', 'gene', 'OG', 'type'), 'cciic') %>% 
+	dplyr::filter(species %in% aves_name) %>% aves::bind_taxonomy()
+
+```
+
+
+Finally, I decide to choose 9031 'Gallus gallus', 59729 'Taeniopygia guttata' & 128390 'Nipponia nippon'
+
+For chicken, Zebra finch, and one Pelecaniformes species to represent core waterbirds
+
+## 12/06
+
+```{r}
+omics %>% plyr::ddply('species', . %>% {
+	result <- .;
+	
+	if ('protein' %in% .$source) {
+		result = dplyr::filter(., source == 'protein');
+	} else if ('TSA' %in% .$source) {
+		result = dplyr::filter(., source == 'TSA');
+	} else if ('SRA' %in% .$source) {
+		result = dplyr::filter(., source == 'SRA');
+	}
+	
+	dplyr::slice(result, 1);
+	
+}) %>% {
+	order_3 <- table(.$order) %>% 
+	dplyr::as_tibble() %>% dplyr::filter(n > 2) %>% {.[[1]]};
+	dplyr::filter(., order %in% order_3) %>% dplyr::as_tibble()
+} %>% dplyr::filter(source == 'SRA') %>% {.$id} -> Run
+
+#" do not use fetch since downloaded html file doesn't contains the form
+#paste0('https://www.ebi.ac.uk/ena/data/view/', Run) %>% 
+#    plyr::l_ply(browseURL)
+
+run <- yaml::yaml.load_file('data-raw/sra.yaml')
+
+setequal(
+plyr::laply(run, . %>% str_extract('\\wRR\\d+(?=[\\._])') %>% unique),
+Run)
+ 
+setequal(names(run), Run)
+
+yaml::yaml.load_file('data-raw/sra.yaml') %>% unlist() %>% 
+	str_replace('([\\w_\\.]+)(\\.gz)$', '\\1.gz\n\tout=\\1') %>% 
+	write_lines('data-raw/fastq.md')
+```
+
+
+## 12/07
+
+> no matter you prefer genome or SRA, the workload is almost the same.
+
+```{r}
+#" favor genome
+aves::omics %>% plyr::ddply('species', . %>% {
+	result <- .;
+	
+	if ('protein' %in% .$source) {
+		result = dplyr::filter(., source == 'protein');
+	} else if ('TSA' %in% .$source) {
+		result = dplyr::filter(., source == 'TSA');
+	} else if ('genome' %in% .$source) {
+		result = dplyr::filter(., source == 'genome');
+	}
+	
+	dplyr::slice(result, 1);
+	
+}) %>% {table(.$source)}
+
+#" favor SRA
+aves::omics %>% plyr::ddply('species', . %>% {
+	result <- .;
+	
+	if ('protein' %in% .$source) {
+		result = dplyr::filter(., source == 'protein');
+	} else if ('TSA' %in% .$source) {
+		result = dplyr::filter(., source == 'TSA');
+	} else if ('SRA' %in% .$source) {
+		result = dplyr::filter(., source == 'SRA');
+	}
+	
+	dplyr::slice(result, 1);
+	
+}) %>% {table(.$source)}
+```
+
+in hamstr, `blosum62.bla` should be `BLOSUM62.bla`
+
+> ublast is much faster than blastp (3.5x)
+
+```
+hamstr -sequence_file=testset-prot.fa -taxon=test2 -hmmset=modelorganisms_hmmer3 -refspec=DROME -central -force -cpu 32
+blastp
+real    6m56.809s
+user    173m58.157s
+sys     7m42.249s
+
+ublast
+real    1m57.670s
+user    29m45.085s
+sys     13m57.842s
+```
+
+```
+[entomo@localhost output]$ time ../software/hamstr.v13.2.6/bin/hamstr -protein -sequence_file=GCF_000002315.4_Gallus_gallus-5.0_protein.faa -taxon=Gallus_gallus -hmmset=aves -refspec=Gallus_gallus -blastpath=/path/to/data/aves/hamstr/blast_dir -hmmpath=/path/to/data/aves/hamstr -representative -central -force -cpu 32 -ublast &> /dev/null;
+
+real    147m3.959s
+user    3270m35.124s
+sys     1163m17.227s
+[entomo@localhost output]$ time ../software/hamstr.v13.2.6/bin/hamstr -protein -sequence_file=GC0_000002315.4_Gallus_gallus-5.0_protein.faa -taxon=Gallus_gallus -hmmset=aves -refspec=Gallus_gallus -blastpath=/path/to/data/aves/hamstr/blast_dir -hmmpath=/path/to/data/aves/hamstr -representative -central -force -cpu 32 -ublast -hit_limit 10 &> /dev/null
+
+real    32m5.598s
+user    898m51.634s
+sys     105m7.312s
+```
+
+## 12/08
+
+refercence species (abandoned) 
+```r
+protein <- aves::genome %>% dplyr::filter(protein != '') %>% aves::bind_taxonomy() %>% 
+    dplyr::mutate(species = str_replace(species, ' ', '_'));
+
+protein %>% dplyr::mutate(input = basename(protein)) %>% dplyr::select(species, input) %>% 
+	plyr::d_ply('species', . %>% {
+		fasta <- bioinfor::read_fasta(paste0('raw/protein/', .$input));
+        names(fasta) %<>% str_replace('\\.[\\w\\W]+$', '');
+        bioinfor::write_fasta(fasta, paste0('protein/', .$species, '.faa'));
+	}) 
+
+ref_species <- character(nrow(protein));
+ref_species[protein$order %in% aves::stratum$order[aves::stratum$Galloanseres]] = 'Gallus_gallus';
+ref_species[protein$order %in% aves::stratum$order[aves::stratum$Telluraves]] = 'Taeniopygia_guttata';
+ref_species[protein$order %in% aves::stratum$order[aves::stratum$`Aequornithia+`]] = 'Nipponia_nippon';
+ref_species[protein$order %in% aves::stratum$order[aves::stratum$`Other Neoaves`]] = 'Taeniopygia_guttata,Nipponia_nippon -relaxed';
+ref_species[ref_species == ''] = 'Gallus_gallus';
+```
+
+
+> NCBI genome annotation is better than Jarvis 2014 so we use former
+
+```{r}
+aves::genome %>% dplyr::filter(protein != '') %>% 
+	dplyr::mutate(file_name = basename(protein)) %>%
+	dplyr::mutate(species = str_replace(species, ' ', '_')) %>%
+	dplyr::select(species, file_name) %>% 
+	plyr::d_ply('species', . %>% {
+		fasta <- read_lines(paste0('raw/protein/', .$file_name[1]));
+        names(fasta) %<>% str_replace('\\.[\\w\\W]+$', '');
+        write_lines(fasta, paste0('protein/', .$species[1], '.faa'));
+	})
+
+dir('bird_phylogenomics_data/gene_and_repeat_annotation/coding_sequences/pep/') %>% 
+    plyr::l_ply(. %>% {
+        fasta <- read_lines(paste0('bird_phylogenomics_data/gene_and_repeat_annotation/coding_sequences/pep/', .));
+        names(fasta) %<>% str_replace(' [\\w\\W]*$', '');
+        write_lines(fasta, paste0('protein/', str_replace(., '\\.gz', '')));
+    })
+
+
+dir('protein', '\\.pep', full.names = T) %>%  {c(., str_replace(., 'pep', 'faa'))} %>% 
+    file.info %>% tibble::rownames_to_column() %>% dplyr::select(1:2) %>% 
+    dplyr::mutate(species = str_extract(rowname, '(?<=/)[\\w_]+'), size = size/1e6) %>% 
+    dplyr::mutate(type = str_extract(rowname, '[\\w]+$')) %>% dplyr::select(2:4) %>%
+    ggplot2::ggplot() + ggplot2::geom_point(ggplot2::aes(species, size, color = type)) + ggplot2::coord_flip() + ggplot2::scale_color_discrete(labels = c('NCBI', 'Jarvis')) + ggplot2::labs(y = 'size (MB)', title = 'NCBI genome annotation is better than Jarvis 2014') + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+```
+
+## 12/09
+
+analyse hmmer hits number
+
+```r
+OG <- dir('hamstr/aves/hmm_dir/')
+species <- str_extract(dir('protein', 'hmm_'), '(?<=search_)\\w+(?=_aves)') %>% str_replace('_', ' ');
+hmm_hit <- dir('protein', 'hmm_', full.names = T) %>% plyr::llply(. %>% paste0('/', OG) %>% mclapply(. %>% read_file %>% str_count('>>')) %>% unlist) 
+
+
+seq_along(hmm_hit) %>% plyr::ldply(. %>% {
+    tibble::data_frame(
+        species = species[.], OG = OG, hmm_hit = hmm_hit[[.]])
+}) %>% tibble::as.tibble()
+
+write_csv(.Last.value, 'protein_hmm_hit.csv')
+```
+
+## 12/10
+
+transcript assembly
+
+1. Bridger(2015)
+
+https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0596-2
+https://sourceforge.net/projects/rnaseqassembly/files/?source=navbar
+
+1. SOAPdenovo-Trans(2014)
+https://academic.oup.com/bioinformatics/article/30/12/1660/380938
+https://github.com/aquaskyline/SOAPdenovo-Trans
+
+1. Oases(2012)
+
+https://academic.oup.com/bioinformatics/article/28/8/1086/195757
+https://github.com/dzerbino/oases
+
+1. Trinity(2011)
+
+https://www.nature.com/articles/nbt.1883
+https://github.com/trinityrnaseq/trinityrnaseq/wiki
+
+1. Trans-ABySS(2010)
+
+https://www.nature.com/articles/nmeth.1517
+https://github.com/bcgsc/transabyss
+
+
+others
+
+1. Optimizing for phylogenomics (last 4)
+https://bmcgenomics.biomedcentra## 12/04
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

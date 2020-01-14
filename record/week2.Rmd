@@ -1,0 +1,41 @@
+---
+knit: "bookdown::preview_chapter"
+---
+
+# week1
+
+## 11/20
+
+## 11/21
+
+## 11/22
+
+## 11/23
+
+## 11/24
+
+filter all result of searching 'phylo' in articles who cite Jarvis2014
+
+## 11/25
+
+search all articles who cite Suh2016
+
+search all result of searching 'phylo' in articles who cite Prum2015, none deserved to be opened and navigated.
+
+## 11/26
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

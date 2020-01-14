@@ -1,0 +1,264 @@
+
+## 12/18
+
+essential SRA
+
+`+` mime, `-` verify, `*` both
+data display from `omics` (one per species)
+
+* Apodiformes: 2 protein, 1 SRA
+* Apterygiformes: 1 protein, 3 SRA
+* Columbiformes: 2 protein, 1 SRA
+* Sphenisciformes: 2 protein, 1 SRA
++ Strigiformes: 1 protein, 1 genome 1 SRA
+
+
+> how I choose SRA for mine
+
+Apodiformes: all 4, second biggest: SRX2544235(SRR5237173 2.3G), former failed: SRX3260294(SRR6148275 30.8G)
+Apterygiformes: 34, in SRP074490 biggest of Apteryx owenii: SRX1745686(SRR3480320 14.7G), rowi: SRX1748259(SRR3486434 17.1G) (remove 2 genome, remove a 17.2M)
+Columbiformes: SRX012364(SRR029331 115M)
+Sphenisciformes: 11, all single, choose biggest: SRX564992(SRR1324797 967.2M)
+Strigiformes: SRX1612725(SRR3203222 11.2G) paired
+
+> how I choose SRA for verify
+
+Apodiformes:  already: SRX012361(SRR029421 130.2M)
+Apterygiformes: smallest of Apteryx rowi: SRX1748257 (SRR3486432 6.1G)
+Columbiformes: smallest(>100) of Patagioenas fasciata: SRX1561944(SRR3146195 2.8G) 
+Sphenisciformes: already, SRX1470185(SRR2980760 700.8M)
+
+
+```bash
+cp raw/fastq/SRR029421* oases/input
+cp raw/fastq/SRR5237173_1.fastq.gz oases/input/SRR5237173.fastq.gz
+cp raw/fastq/SRR029331* oases/input
+cp raw/fastq/SRR1324797* oases/input
+cp raw/fastq/SRR3203222* oases/input
+
+time trimmomatic SE -threads 32 oases/input/SRR029421.fastq.gz  oases/input/SRR029421-trim.fastq.gz  LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15
+# PacBio, so trimmomatic is omitted
+time trimmomatic SE -threads 32 oases/input/SRR029331.fastq.gz  oases/input/SRR029331-trim.fastq.gz  LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15
+time trimmomatic SE -threads 32 oases/input/SRR1324797.fastq.gz oases/input/SRR1324797-trim.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+time trimmomatic PE -threads 32 -phred33 oases/input/SRR3203222_1.fastq.gz oases/input/SRR3203222_2.fastq.gz  oases/input/SRR3203222_1-trim-paired.fastq.gz oases/input/SRR3203222_1-trim-unpaired.fastq.gz oases/input/SRR3203222_2-trim-paired.fastq.gz oases/input/SRR3203222_2-trim-unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+
+fastqc -t 32 -o oases/fastqc oases/input/*
+fastqc -o oases/fastqc oases/input/SRR029421*
+fastqc -o oases/fastqc oases/input/SRR5237173*
+fastqc -o oases/fastqc oases/input/SRR029331*
+fastqc -o oases/fastqc oases/input/SRR1324797*
+fastqc -o oases/fastqc oases/input/SRR3203222*
+
+mkdir oases/SRR029421;  time oases_pipeline.py -m 21 -M 45 -s 4 -o oases/SRR029421/  -d '-fastq.gz oases/input/SRR029421-trim.fastq.gz'
+mkdir oases/SRR5237173; time oases_pipeline.py -m 21 -M 23 -o oases/SRR5237173/ -d '-fastq.gz -long oases/input/SRR5237173.fastq.gz'
+mkdir oases/SRR029331;  time oases_pipeline.py -m 21 -M 45 -s 4 -o oases/SRR029331/  -d '-fastq.gz oases/input/SRR029331-trim.fastq.gz'
+mkdir oases/SRR1324797; time oases_pipeline.py -m 21 -M 45 -s 4 -o oases/SRR1324797/ -d '-fastq.gz oases/input/SRR1324797-trim.fastq.gz'
+mkdir oases/SRR3203222; time oases_pipeline.py -m 21 -M 23 -o oases/SRR3203222/ -d '-fastq.gz -shortPaired -separate oases/input/SRR3203222_1-trim-paired.fastq.gz oases/input/SRR3203222_2-trim-paired.fastq.gz'
+```
+
+
+
+## 12/19
+
+
+
+```bash
+fastqc -t 32 -o oases/fastqc raw/fastq/SRR348* raw/fastq/SRR3146195* raw/fastq/SRR6148275*
+
+time trimmomatic PE -threads 32 raw/fastq/SRR3480320_1.fastq.gz raw/fastq/SRR3480320_2.fastq.gz  oases/input/SRR3480320_1-trim-paired.fastq.gz oases/input/SRR3480320_1-trim-unpaired.fastq.gz oases/input/SRR3480320_2-trim-paired.fastq.gz oases/input/SRR3480320_2-trim-unpaired.fastq.gz ILLUMINACLIP:$HOME/.local/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+time trimmomatic PE -threads 32 raw/fastq/SRR3486434_1.fastq.gz raw/fastq/SRR3486434_2.fastq.gz  oases/input/SRR3486434_1-trim-paired.fastq.gz oases/input/SRR3486434_1-trim-unpaired.fastq.gz oases/input/SRR3486434_2-trim-paired.fastq.gz oases/input/SRR3486434_2-trim-unpaired.fastq.gz ILLUMINACLIP:$HOME/.local/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36; fastqc -t 32 -o oases/fastqc oases/input/SRR3486434*-pair*
+time trimmomatic PE -threads 32 raw/fastq/SRR3486432_1.fastq.gz raw/fastq/SRR3486432_2.fastq.gz  oases/input/SRR3486432_1-trim-paired.fastq.gz oases/input/SRR3486432_1-trim-unpaired.fastq.gz oases/input/SRR3486432_2-trim-paired.fastq.gz oases/input/SRR3486432_2-trim-unpaired.fastq.gz ILLUMINACLIP:$HOME/.local/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36; fastqc -t 32 -o oases/fastqc oases/input/SRR3486432*-pair*
+time trimmomatic PE -threads 32 raw/fastq/SRR3146195_1.fastq.gz raw/fastq/SRR3146195_2.fastq.gz  oases/input/SRR3146195_1-trim-paired.fastq.gz oases/input/SRR3146195_1-trim-unpaired.fastq.gz oases/input/SRR3146195_2-trim-paired.fastq.gz oases/input/SRR3146195_2-trim-unpaired.fastq.gz ILLUMINACLIP:$HOME/.local/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36; fastqc -t 32 -o oases/fastqc oases/input/SRR3146195*-pair*
+time trimmomatic PE -threads 32 raw/fastq/SRR6148275_1.fastq.gz raw/fastq/SRR6148275_2.fastq.gz  oases/input/SRR6148275_1-trim-paired.fastq.gz oases/input/SRR6148275_1-trim-unpaired.fastq.gz oases/input/SRR6148275_2-trim-paired.fastq.gz oases/input/SRR6148275_2-trim-unpaired.fastq.gz HEADCROP:6 ILLUMINACLIP:$HOME/.local/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:3:15 MINLEN:36; fastqc -t 32 -o oases/fastqc oases/input/SRR6148275*-pair*
+
+
+mkdir oases/SRR3480320; time oases_pipeline.py -m 21 -M 23 -o oases/SRR3480320/ -d '-fastq.gz -shortPaired -separate oases/input/SRR3480320_1-trim-paired.fastq.gz oases/input/SRR3480320_2-trim-paired.fastq.gz'
+mkdir oases/SRR3486434; time oases_pipeline.py -m 21 -M 23 -o oases/SRR3486434/ -d '-fastq.gz -shortPaired -separate oases/input/SRR3486434_1-trim-paired.fastq.gz oases/input/SRR3486434_2-trim-paired.fastq.gz'
+mkdir oases/SRR3486432; time oases_pipeline.py -m 21 -M 23 -o oases/SRR3486432/ -d '-fastq.gz -shortPaired -separate oases/input/SRR3486432_1-trim-paired.fastq.gz oases/input/SRR3486432_2-trim-paired.fastq.gz'
+mkdir oases/SRR3146195; time oases_pipeline.py -m 21 -M 45 -s 4 -o oases/SRR3146195/ -d '-fastq.gz -shortPaired -separate oases/input/SRR3146195_1-trim-paired.fastq.gz oases/input/SRR3146195_2-trim-paired.fastq.gz'
+mkdir oases/SRR6148275; time oases_pipeline.py -m 21 -M 23 -o oases/SRR6148275/ -d '-fastq.gz -shortPaired -separate oases/input/SRR6148275_1-trim-paired.fastq.gz oases/input/SRR6148275_2-trim-paired.fastq.gz'
+```
+
+
+## 12/20
+
+SRR6148275 headcrop 6 since 'Per base N content'
+
+
+## 12/21
+
+
+
+## 12/22
+
+```bash
+time trimmomatic SE -threads 32 oases/input/SRR2980760.fastq.gz  oases/input/SRR2980760-trim.fastq.gz  LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36
+```
+
+```{r}
+aves::browse_fastqc('SRR5237173');      system('sleep 1');
+aves::compare_sra_single('SRR2980760'); system('sleep 1');
+aves::compare_sra_single('SRR029421');  system('sleep 1');
+aves::compare_sra_single('SRR1324797'); system('sleep 1');
+aves::compare_sra_single('SRR029331');  system('sleep 1');
+aves::compare_sra_paired('SRR5070564'); system('sleep 2');
+aves::compare_sra_paired('SRR3203222'); system('sleep 2');
+aves::compare_sra_paired('SRR3480320'); system('sleep 2');
+aves::compare_sra_paired('SRR3486434'); system('sleep 2');
+aves::compare_sra_paired('SRR3486432'); system('sleep 2');
+aves::compare_sra_paired('SRR3146195'); system('sleep 2');
+aves::compare_sra_paired('SRR6148275'); system('sleep 2');
+```
+
+
+add `period` for `browse_url`
+
+
+essential genome
+
+`+` mime, `-` verify, `*` both
+
++ Gruiformes 1*protein + 2*genome, 8893 & 17090
++ Strigiformes 1*protein + 1*SRA + 1*genome, 58928 
+* Suliformes 1*protein + 4*genome, 55342 & (55344|44160|55343)
+
+
+         order            family         genus                   species         id  source    size
+          <chr>             <chr>         <chr>                     <chr>      <chr>   <chr>   <dbl>
+ 1   Gruiformes           Gruidae     Balearica       Balearica regulorum      17144 protein      NA
+ 2   Gruiformes           Gruidae          Grus           Grus japonensis      17090  genome      NA
+ 3   Gruiformes          Rallidae   Gallirallus      Gallirallus okinawae       8893  genome      NA
+ 4 Strigiformes         Tytonidae          Tyto                 Tyto alba      31927 protein      NA
+ 5 Strigiformes         Tytonidae          Tyto         Tyto longimembris SRX1612725     SRA 5190.74
+ 6 Strigiformes         Strigidae         Strix        Strix occidentalis      58928  genome      NA
+ 7   Suliformes Phalacrocoracidae Phalacrocorax       Phalacrocorax carbo      32171 protein      NA
+ 8   Suliformes Phalacrocoracidae Phalacrocorax Phalacrocorax brasilianus      44160  genome      NA
+ 9   Suliformes Phalacrocoracidae   Nannopterum       Nannopterum harrisi      55342  genome      NA
+10   Suliformes Phalacrocoracidae Phalacrocorax   Phalacrocorax pelagicus      55343  genome      NA
+11   Suliformes Phalacrocoracidae Phalacrocorax     Phalacrocorax auritus      55344  genome      NA
+
+## 12/23
+
+
+[GeneID](http://genome.crg.es/software/geneid/)
+
+AUGUSTUS http://bioinf.uni-greifswald.de/webaugustus/ http://bioinf.uni-greifswald.de/augustus/binaries/
+
+try ProSplign
+
+```{r}
+c('Acyrthosiphon pisum',
+'Aedes aegypti',
+'Amphimedon queenslandica',
+'Ancylostoma ceylanicum',
+'Apis mellifera',
+'Bombus terrestris',
+'Brugia malayi',
+'Caenorhabditis elegans',
+'Callorhinchus milii',
+'Culex pipiens',
+'Danio rerio',
+'Drosophila melagonaster',
+'Gallus gallus',
+'Heliconius melpomene',
+'Homo sapiens',
+'Nasonia vitripennis',
+'Petromyzon marinus',
+'Rhodnius prolixus',
+'Schistosoma mansoni',
+'Tribolium castaneum',
+'Trichinella spiralis',
+'Xipophorus maculatus') %>% paste0('https://en.wikipedia.org/wiki/', .) %>% rzhuoer::browse_url()
+# `Drosophila melagonaster` should be `Drosophila melanogaster`
+# `Xipophorus maculatus` not found in `README.txt`, and might be `Xiphophorus maculatus`
+```
+
+
+
+## 12/24
+
+
+augustus, 1m27s = 187 protein
+
+> for `autoAug.pl`, but failed
+
+```bash
+export AUGUSTUS_CONFIG_PATH=$HOME/.local/augustus/config
+sudo perl -MCPAN -e 'install DBI'
+scripts/autoAug.pl --species=caenorhabditis --genome=examples/autoAug/genome.fa
+```
+
+
+
+```bash
+./bootstrap.sh
+./b2 install --prefix=$HOME/.local/boost-1.66.0
+```
+
+8893   Gallirallus_okinawae  
+17090  Grus_japonensis       
+58928  Strix_occidentalis    
+
+
+
+```{r}
+aves::genome %>% dplyr::filter(id %in% aves::tax_genome$id) %>% {basename(.$dna)}
+
+assembly <- plyr::ldply(
+	dir('data-raw/assembly-html/'),
+	. %>% {
+		html <- paste0('data-raw/assembly-html/', .) %>% read_html;
+		species <- rvest::html_nodes(html, 'dd a[href^="/Taxonomy"]') %>% rvest::html_text() %>% stringr::str_extract('^\\w+ \\w+')
+		link <- html %>% rvest::html_nodes('div.brieflink ul li a[href^=ftp]') %>% rvest::html_attr('href') %>% {.[1]};
+		tibble::data_frame(species = species, link = link);
+	}
+) 
+
+# %>% dplyr::filter(str_detect(link, 'GCA'))
+assembly %>% dplyr::mutate(species = aves::rectify_genome_species(species))  %>% 
+	dplyr::filter(!(basename(link) %in% basename(dirname(aves::genome$protein)))) %>% 
+	dplyr::filter(species != 'Apteryx australis') %T>% 
+	{setequal(.$species, aves::tax_genome$species) %>% print} %>% 
+	dplyr::mutate(species = str_replace(species, ' ', '_'), file = basename(link)) %>% 
+	plyr::ddply('species', . %>% {
+        if (nrow(.) > 1) dplyr::mutate(., species = paste0(species, '_', seq_len(nrow(.)))) else .
+    }) %T>% {
+		plyr::daply(., 'species', . %>% {
+			paste0('zcat raw/genome/', .$file, '_genomic.fna.gz > augustus/genome/', .$species, '.fna;')
+		})# %>% readr::write_lines('output/cat-genome.sh')
+	} %>% {plyr::laply(.$species, . %>% 
+		paste0('nohup augustus --species=chicken augustus/genome/', ., '.fna > augustus/gff/', ., '.gff 2> /dev/null &;')
+	) %>% readr::write_lines('output/auustus.sh')}
+
+#" GCF all contain protein, only some GCA contain protein. For the latter, protein's name is the same as genome's
+
+#https://www.ncbi.nlm.nih.gov/assembly/GCF_001039765.1/
+
+setdiff(aves::tax_genome$species, assembly$species)
+
+assembly_id  %>% paste0('data-raw/assembly-html/', .) %>% 
+	mclapply(
+	. %>% read_html %>% rvest::html_nodes('div.brieflink ul li a') %>% rvest::html_attr('href') %>% str_subset('ftp') %>% str_subset('(?<!txt)$')
+) %>% unlist %>% str_replace('(?<=/)(GC[AF]_[\\w\\W]+?)$', '\\1/\\1_genomic.fna.gz') %>% 
+
+
+protein10 <- aves::genome %>% dplyr::filter(protein != '') %>% aves::bind_taxonomy() %>% 
+    dplyr::mutate(species = str_replace(species, ' ', '_'));
+
+protein10 %>% dplyr::mutate(input = basename(protein)) %>% dplyr::select(species, input) %>% 
+	plyr::d_ply('species', .parallel = T, . %>% {
+		fasta <- bioinfor::read_fasta(paste0('raw/protein/', .$input));
+        names(fasta) %<>% str_replace('\\.[\\w\\W]+$', '');
+        bioinfor::write_fasta(fasta, paste0('protein10/', .$species, '.faa'));
+	}) 
+
+```
+
+
+## 12/25
+
+```{r}
+
+```
+
+

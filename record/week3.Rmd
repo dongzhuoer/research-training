@@ -1,0 +1,261 @@
+---
+knit: "bookdown::preview_chapter"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE);
+```
+
+# week1
+
+
+
+## 11/27
+
+## 11/28
+
+download genome and SRA information again
+
+
+check Jarvis pep md5
+
+```bash
+cd data-raw/bird_phylogenomics_data/gene_and_repeat_annotation/coding_sequences/pep
+md5sum *.gz | awk '{print $2 "\t" $1}' | md5sum
+md5sum all_pep.md5sum
+```
+
+
+get BioProject id of all [aves transcript](https://www.ncbi.nlm.nih.gov/nuccore/?term=txid8782%5BOrganism%3Aexp%5D+AND+transcript+%5BTitle%5D)
+
+```r
+transcript <- xml2::read_html('https://www.ncbi.nlm.nih.gov/nuccore/?term=txid8782%5BOrganism%3Aexp%5D+AND+transcript+%5BTitle%5D');
+bioproject <- transcript %>% rvest::html_nodes('.links.nohighlight a') %>% rvest::html_attr('href') %>% stringr::str_subset('bioproject');
+id <- bioproject %>% plyr::laply(. %>% paste0('https://www.ncbi.nlm.nih.gov', .) %>% xml2::read_html() %>% rvest::html_node('td.CTcontent') %>% rvest::html_text() %>% stringr::str_extract('^\\w+'))
+#" download  wgs_selector.csv from https://www.ncbi.nlm.nih.gov/Traces/wgs/?page=1&view=tsa&search=aves
+# readr::read_csv('~/Downloads/wgs_selector.csv')$bioproject_s %>% setequal(id)
+```
+
+prove transcript on Nucleotide is the same as TSA on WGS
+
+
+## 11/29
+
+genome protein and second
+
+https://www.ncbi.nlm.nih.gov/genome/18230
+https://www.ncbi.nlm.nih.gov/genome/31278
+
+
+
+## 11/30
+
+- 10.1126/science.aal3345 & Avibase
+
+"Urile pelagicus" should be "Phalacrocorax pelagicus" 
+"Nannopterum auritus" should be "Phalacrocorax auritus" 
+"Nannopterum brasilianus" should be "Phalacrocorax brasilianus" 
+
+```{r}
+x <- dir('data-raw/genome-html') %>% plyr::ldply(aves::parse_genome);
+x$species %<>% stringr::str_replace('Urile pelagicus', 'Phalacrocorax pelagicus');
+x$species %<>% stringr::str_replace('Nannopterum auritus', 'Phalacrocorax auritus');
+x$species %<>% stringr::str_replace('Nannopterum brasilianus', 'Phalacrocorax brasilianus');
+x %<>% dplyr::as_tibble();
+#" use taxonomy's while loop here
+
+all <- readr::read_csv('data-raw/all.csv');
+Jarvis_species <- all %>% dplyr::filter(source == 'Jarvis') %>% {.$species};
+
+#" ncbi protein include all Jarvis
+x %>% dplyr::filter(nchar(protein) >0) %>% {.$species} %>% {Jarvis_species %in%.} %>% all;
+
+
+ncbi_protein <- x %>% dplyr::filter(nchar(protein) >0) %>% {.$species} %>% setdiff(Jarvis_species);
+ncbi_genome  <- x %>% dplyr::filter(protein == '' | number >= 2L) %>% {.$species};
+
+all %<>% tibble::add_row(species = ncbi_protein, source = 'NCBI protein');
+all %<>% tibble::add_row(species = ncbi_genome,  source = 'NCBI genome');
+
+readr::write_csv(all, 'data-raw/all.csv')
+```
+
+	
+## 12/01
+
+'Organism_s' in `SraRunTable.txt` is identical to the species name on biosample webpage (except for ERS*, such as )
+
+```{r}
+biosample_id <- dir('data-raw/biosample-html');
+biosample_name <- biosample_id %>% parallel::mclapply(
+    . %>% paste0('data-raw/biosample-html/', .) %>% xml2::read_html() %>% 
+	    rvest::html_nodes('a.replace-link[ref]') %>% rvest::html_text()
+) %>% plyr::laply(as.character);
+names(biosample_name) <- biosample_id;
+
+sra <- read_tsv('data-raw/SraRunTable.txt') %>% dplyr::filter(!str_detect(BioSample_s, '^ERS'));
+all(biosample_name[sra$BioSample_s] == sra$Organism_s);
+
+biosample_name %>% stringr::str_extract('\\w+ \\w+') %>% unique -> todo;
+todo %>% stringr::str_subset('(?<!sp)$') %>% fetch_wiki();
+```
+
+> So both annnotating genome and assemblying transcript have telling significance
+
+```{r}
+aves::omics %>% dplyr::filter(source != 'SRA', source != 'genome') %>% aves::bin_by_order();
+aves::omics %>% dplyr::filter(source != 'SRA') %>% aves::bin_by_order();
+aves::omics %>% aves::bin_by_order();
+```
+
+## 12/02
+
+
+`https://www.ncbi.nlm.nih.gov/assembly/?term=aves`
+
+download genome sequence from NCBI Assembly database
+
+```{r}
+x <- dir('data-raw/genome-html') %>% plyr::ldply(aves::parse_genome)
+x$protein %>% unique() %>% str_subset('ftp') %>% write_lines('protein.md')
+
+assembly_id <- read_lines('data-raw/aves - Assembly - NCBI.html') %>% str_extract_all('(?<=<p class="title"><a href=")[\\w\\W]+?(?=")') %>% unlist() %>% str_extract('GC[\\w\\W]+$')
+
+fetch_assembly(assembly_id);
+
+
+mclapply(
+	assembly_id, 
+	. %>% paste0('data-raw/assembly-html/', .) %>% read_lines() %>% 
+		str_extract('(?<=RefSeq assembly and GenBank assembly identical: </dt><dd>)[\\w/]+') %>% 
+		na.omit	%>% as.character
+) -> x
+
+assembly_id[x=='no'] %>% paste0('data-raw/assembly-html/', .) %>% 
+	plyr::laply(
+	.  %>% read_file() %>% str_extract('Data displayed for [\\w/]+ version') 
+)
+
+assembly_id[x=='no'] %>% paste0('data-raw/assembly-html/', .) %>%  
+	plyr::laply(. %>% read_html %>% rvest::html_nodes('dd#assembly-diff') %>% rvest::html_text())
+
+assembly_id  %>% paste0('data-raw/assembly-html/', .) %>% 
+	mclapply(
+	. %>% read_html %>% rvest::html_nodes('div.brieflink ul li a') %>% rvest::html_attr('href') %>% str_subset('ftp') %>% str_subset('(?<!txt)$')
+) %>% unlist %>% str_replace('(?<=/)(GC[AF]_[\\w\\W]+?)$', '\\1/\\1_genomic.fna.gz') %>% 
+	write_lines('data-raw/genome.md')
+```
+
+on xie
+
+```bash
+aria2c -d genome --auto-file-renaming false -j 32 -c -i genome.md
+```
+
+
+## 12/03
+
+```{r}
+# see http://aria2.github.io/manual/en/html/aria2c.html#input-file
+read_lines('data-raw/genome.md') %>% str_replace('/[\\w_\\-\\.]+$', '') %>% 
+	str_replace('(?<=/)(GC[AF]_[\\w\\W]+?)$', '\\1/md5checksums.txt\n\tout=\\1') %>%
+	write_lines('data-raw/md5checksums.md')
+```
+
+```{r}
+# code in `taxonomy.R`
+order_3_no_SRA <- all %>% dplyr::filter(source != 'Prum', source != 'SRA') %>% {table(.$order)} %>% 
+	dplyr::as_tibble() %>% dplyr::filter(., n > 2) %>% {.[[1]]}
+
+order_3_SRA <- all %>% dplyr::filter(source != 'Prum') %>% {table(.$order)} %>% 
+	dplyr::as_tibble() %>% dplyr::filter(., n > 2) %>% {.[[1]]}
+
+
+order_4_no_SRA <- all %>% dplyr::filter(source != 'Prum', source != 'SRA') %>% {table(.$order)} %>% 
+	dplyr::as_tibble() %>% dplyr::filter(., n > 3) %>% {.[[1]]}
+
+order_4_SRA <- all %>% dplyr::filter(source != 'Prum') %>% {table(.$order)} %>% 
+	dplyr::as_tibble() %>% dplyr::filter(., n > 3) %>% {.[[1]]}
+
+order_SRA <- union(setdiff(order_3_SRA, order_3_no_SRA), setdiff(order_4_SRA, order_4_no_SRA))
+
+all %>% dplyr::filter(order %in% order_SRA) %>% 
+	dplyr::filter(source == 'SRA') %>% {.$id} %>% paste(collapse = ' ') %>% write_file('data-raw/sra.md')
+```
+
+
+
+
+```bash
+srapath SRR029421 SRR029422 SRR029331 SRR2980760 SRR3334768 SRR5237173 SRR5515042 SRR5515043 SRR5515044 SRR5515045 SRR521357 SRR521358 SRR521359 SRR521360 SRR521361 SRR521362 SRR787604 SRR787601 SRR787599 SRR787602 SRR1619445 SRR1619459 SRR2097530 SRR2097529 SRR2093956
+```
+
+`sra.md`
+```
+https://sra-download.ncbi.nlm.nih.gov/traces/sra4/SRR/000028/SRR029421
+https://sra-download.ncbi.nlm.nih.gov/traces/sra4/SRR/000028/SRR029422
+https://sra-download.ncbi.nlm.nih.gov/traces/sra4/SRR/000028/SRR029331
+https://sra-download.ncbi.nlm.nih.gov/traces/sra36/SRR/002910/SRR2980760
+https://sra-download.ncbi.nlm.nih.gov/traces/sra40/SRR/003256/SRR3334768
+https://sra-download.ncbi.nlm.nih.gov/traces/sra46/SRR/005114/SRR5237173
+https://sra-download.ncbi.nlm.nih.gov/traces/sra48/SRR/005385/SRR5515042
+https://sra-download.ncbi.nlm.nih.gov/traces/sra48/SRR/005385/SRR5515043
+https://sra-download.ncbi.nlm.nih.gov/traces/sra48/SRR/005385/SRR5515044
+https://sra-download.ncbi.nlm.nih.gov/traces/sra48/SRR/005385/SRR5515045
+https://sra-download.ncbi.nlm.nih.gov/traces/sra5/SRR/000509/SRR521357
+https://sra-download.ncbi.nlm.nih.gov/traces/sra5/SRR/000509/SRR521358
+https://sra-download.ncbi.nlm.nih.gov/traces/sra5/SRR/000509/SRR521359
+https://sra-download.ncbi.nlm.nih.gov/traces/sra5/SRR/000509/SRR521360
+https://sra-download.ncbi.nlm.nih.gov/traces/sra5/SRR/000509/SRR521361
+https://sra-download.ncbi.nlm.nih.gov/traces/sra5/SRR/000509/SRR521362
+https://sra-download.ncbi.nlm.nih.gov/traces/sra9/SRR/000769/SRR787604
+https://sra-download.ncbi.nlm.nih.gov/traces/sra9/SRR/000769/SRR787601
+https://sra-download.ncbi.nlm.nih.gov/traces/sra9/SRR/000769/SRR787599
+https://sra-download.ncbi.nlm.nih.gov/traces/sra9/SRR/000769/SRR787602
+https://sra-download.ncbi.nlm.nih.gov/traces/sra22/SRR/001581/SRR1619445
+https://sra-download.ncbi.nlm.nih.gov/traces/sra22/SRR/001581/SRR1619459
+https://sra-download.ncbi.nlm.nih.gov/traces/sra32/SRR/002048/SRR2097530
+https://sra-download.ncbi.nlm.nih.gov/traces/sra32/SRR/002048/SRR2097529
+https://sra-download.ncbi.nlm.nih.gov/traces/sra32/SRR/002044/SRR2093956
+```
+
+```r
+read_lines('sra.md') %>% str_replace('([\\w]+)$', '\\1\n\tout=\\1.sra') %>%
+    write_lines('sra.md')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

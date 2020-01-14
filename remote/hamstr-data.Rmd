@@ -1,0 +1,134 @@
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE);
+```
+
+## Usage
+
+
+### prerequisite
+
+```
+OrthoDB
+  |---- odb9v1_OGs.tab
+  |---- odb9v1_OG2genes.tab
+hamstr-data
+  |---- aves
+          |---- aln_dir   
+          |---- hmm_dir   
+          |---- mafft_dir   
+          |---- muscle_dir   
+  |---- blast_dir
+```
+
+### parameter
+
+1. 8782 (NCBI taxonomy id for aves)
+1. `core_tax_id` and `core_tax` 
+
+
+## Code
+
+```bash
+zcat raw/OrthoDB/odb9v1_OGs.tab.gz | grep -P '\t8782' | join <(zcat raw/OrthoDB/odb9v1_OG2genes.tab.gz) - | awk '{print $1 "\t" $2}'> hamstr-data/OG2genes.tsv
+```
+### filter OG
+
+```{r}
+
+#core_ortholog_set(c( '9031', '59729', '128390'), 'OG2genes.tsv', 'hasmstr-data')
+#core_ortholog_set_sequence(c( '9031', '59729', '128390'), 'OG2genes.tsv', 'hasmstr-data')
+#core_ortholog_set_database('hasmstr-data');
+
+
+## 1. reserve only selected species
+#" Finally, I decide to choose 9031 'Gallus gallus', 59729 'Taeniopygia guttata' & 128390 'Nipponia nippon'
+#"     For chicken, Zebra finch, and one Pelecaniformes species to represent core waterbirds
+## 2. remove multicopy OGs
+## 3. reserve only OGs which present in all species
+core_tax_id <-  c( '9031', '59729', '128390');
+
+#" get it from df
+core_tax <- c('Gallus_gallus', 'Taeniopygia_guttata', 'Nipponia_nippon');
+
+OG2gene <- read_tsv('hamstr-data/OG2genes.tsv', c('OG', 'gene'), col_types = 'cc') %>% 
+	dplyr::mutate(tax_id = str_extract(gene, '\\d+')) %>% 
+	dplyr::filter(tax_id %in% core_tax_id) %>%	
+	plyr::ddply(
+	    'OG',
+	    . %>% {
+	        eq_len <- function(x, y, z) length(x) == length(y) && length(y) == length(z);
+	        if (eq_len(.$tax_id, unique(.$tax_id), core_tax_id)) . else tibble::tibble();
+        }
+	);
+```
+
+### write fasta file
+
+```{r}
+
+
+#" preserve only OG genes
+#" core-ortholog-name|taxon_name|protein-id
+species_file <- paste0('metazoa/Rawdata/', core_tax_id, '.fs');
+untar('raw/OrthoDB/odb9v1_metazoa_fasta.tar.gz', species_file);
+
+# unlink('metazoa')
+
+plyr::llply(species_file, biozhuoer::read_fasta) %>% dplyr::bind_rows() %>% 
+    dplyr::filter(name %in% OG2gene$gene) %>% 
+    dplyr::mutate(OG = OG2gene$OG[match(name, OG2gene$gene)]) %>%
+    dplyr::mutate(tax = core_tax[match(stringr::str_extract(name, '\\d+'), core_tax_id)]) %>% 
+    dplyr::mutate(name = paste(OG, tax, name, sep = '|')) %>% 
+    plyr::dlply('OG') %>% 
+    mclapply(. %>% {
+        aln <- .$seq;
+        names(aln) <- .$name;
+        path <- paste0('hamstr-data/aves/aln_dir/', .$OG[1]);
+
+        bioinfor::write_fasta(aln, path);
+    });
+system('cat hamstr-data/aves/aln_dir/* > hamstr-data/aves/aves.fa');
+```
+
+### align, hmm
+
+```{r}
+# till now, there is no 'U' in the protein sequence, but you may consider --anysymbol for mafft
+# similarly, '*' will corrupt muscle
+mclapply(
+    unique(OG2gene$OG), 
+    . %>% {
+        system2('mafft', c('--auto', '--amino', paste0('hamstr-data/aves/aln_dir/', .)), 
+                   paste0('hamstr-data/aves/mafft_dir/', .), F);
+        system2('muscle',c('-refine', '-in', paste0('hamstr-data/aves/mafft_dir/', .)), 
+                paste0('hamstr-data/aves/muscle_dir/', .), stderr = F);
+        system2('hmmbuild', paste0('hamstr-data/aves/hmm_dir/', ., ' hamstr-data/aves/muscle_dir/', .), F);
+    }
+)
+```
+
+
+### generate blastdb
+
+```{r}
+mclapply(
+    seq_along(core_tax), 
+    . %>% {
+        source <- paste0('OrthoDB/metazoa/', core_tax_id[.], '.fs');
+        name <- paste0('hamstr-data/blast_dir/', core_tax[.], '/', core_tax[.], '_prot');
+        dest <- paste0(name, '.fa');
+
+        paste0('hamstr-data/blast_dir/', core_tax[.]) %T>% {if (dir.exists(.)) unlink(., recursive = T)} %>% dir.create;
+        file.copy(source, dest, overwrite = T);
+        system2('makeblastdb', paste('-dbtype', 'prot', '-in', dest, '-out', name));
+        system2('usearch', paste0('-makeudb_ublast ', dest, ' -output ', name, '.udb'));
+    }
+)
+```
+
+
+
+

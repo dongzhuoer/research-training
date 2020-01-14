@@ -1,0 +1,96 @@
+
+---
+title: "skeleton for a bookdown book"
+author: "Zhuoer Dong"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+site: bookdown::bookdown_site
+description: "lab record of the aves molecular apomorphy project"
+github-repo: dongzhuoer/aves
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE);
+```
+
+
+ggtree plot
+
+tree + gene matrix (of orthologs)
+
+former: published, combine, or construct *self
+latter: readymade: ensembl, omics sequence + software (we use HaMStR)
+
+
+sequence: transcriptome or (annotated) genome
+
+former: TSA or _de novo_ assembly (we use oases)
+latter: NCBI genome or _ab initio_ annotation (we use AUGUSTUS)
+
+
+that's all, thank you
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# collect data
+
+
+
+Jarvis2014 (genomic data)
+
+Jarvis2015 (phylogenomic data): ftp://climb.genomics.cn/pub/10.5524/101001_102000/101041/Newick_tree_files.tar.gz; ^[navigate to the directory to see other files]
+
+
+1. `assembly_result.xml`
+   
+   [search "aves" in assembly](https://www.ncbi.nlm.nih.gov/assembly/?term=aves)  
+   `Send to` -> `File` -> `XML`
+
+## `Ortholog Search _.html`
+
+
+## `SraRunInfo.csv` 
+
+   [search "txid8782[Organism:exp]" in SRA](https://www.ncbi.nlm.nih.gov/sra/?term=txid8782%5BOrganism%3Aexp%5D) 
+   select "RNA" in "Source" and "Public" in "Access", `Send to` -> `File` -> `Runinfo`
+     
+
+## `wgs_selector.csv`
+
+
+## `genome_result.txt`
+
+	[search "aves" in genome](https://www.ncbi.nlm.nih.gov/genome/?term=aves), `Send to` -> `File` -> `Summary`
+
+```{r}
+```
+
+
+
+
+
+
+maybe useful
+
+
+GitHub: gigascience/paper-zhang2014, gigascience/paper-jarvis2014
+
+
+
