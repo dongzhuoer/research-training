@@ -1,0 +1,31 @@
+Package: mcapomorphy
+Type: Package
+Title: Molecular Classfication based on amino acid apomorphy
+Version: 0.0.0.9000
+Authors@R: person("Zhuoer", "Dong", email = "dongzhuoer@mail.nankai.edu.cn", 
+    role = c("aut", "cre"))
+Description: omitted
+License: AGPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
+Imports: 
+    libzhuoer,
+    biozhuoer,
+    xml2,
+    magrittr,
+    rvest,
+    stringr,
+    tibble,
+    dplyr,
+    readr,
+    parallel,
+    jsonlite,
+    plyr
+Suggests:
+    prettydoc
+Remotes:
+    dongzhuoer/libzhuoer,
+    dongzhuoer/biozhuoer
+VignetteBuilder: knitr, rmarkdown

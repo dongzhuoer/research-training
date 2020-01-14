@@ -1,0 +1,1169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>Oenanthe oenanthe oenanthe (Northern Wheatear (nominate)) - Avibase</title>
+<meta http-equiv="expires" content="0">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="Description" content="Avibase is an extensive database information system about all birds of the world, containing over &amp;1 million records about 10,000 species and 22,000 subspecies of birds, including distribution information for 12,000 regions, taxonomy, synonyms in several languages and more.">
+<meta name="KeyWords" content="bird, birds, birding, birder, birders, birdwatching, birdwatcher, birdwatchers, links, birdlink, birdlinks, ornithology, checklist, checklists, world, oiseau, oiseaux, aves, subspecies, family, taxonomy">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Language" content="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+   
+<style type="text/css">@import url("avibase.css");</style>
+
+<!-- script type="text/javascript" src="js/bsn.AutoSuggest_2.1.3_avibase.js" charset="utf-8"></script -->
+<!-- link rel="stylesheet" href="css/autosuggest_inquisitor.css" type="text/css" media="screen" charset="utf-8" / -->
+<link rel="stylesheet" href="jquery-ui.css" type="text/css" media="screen" charset="utf-8">
+
+<script language="JavaScript">
+function changepg(pg, lang, id, ts) {
+  self.document.location = 'avibase.jsp?pg=' + pg + (lang != ''?'&lang='+lang:'') + (id != null?'&id=' + id:'') + (ts != null?'&ts=' + ts:'');
+}
+</script>
+<!-- SCRIPT language="JavaScript" src="avibase.js"></script -->
+
+<!-- script type="text/javascript" src="jquery-1.8.3.min.js"></script -->
+<!-- script type="text/javascript" src="jquery.json-2.2.min.js"></script -->
+<script type="text/javascript" src="jquery.min-1.11.0.js"></script>
+<script type="text/javascript" src="jquery.json-2.4.min.js"></script>
+<script type="text/javascript" src="jquery-ui.1.11.4.min.js"></script>
+<!-- script type="text/javascript" src="jquery.ui.draggable.js"></script -->
+<script type="text/javascript" src="jquery.alerts.js"></script>
+<script type="text/javascript" src="mobile/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="bscutil.js"></script>
+<link href="jquery.alerts.css" rel="stylesheet" type="text/css" media="screen">
+<link rel="search" type="application/opensearchdescription+xml" title="Avibase" href="opensearchplugin.xml">
+
+<script>
+   $(document).ready(function(){
+
+     var isNav = false;
+     var isHoveringOnLoad = true;
+
+     $("[id^=nav]").hover(
+       function() {
+         var id = $(this).attr("id").substring(3,5);
+         $("[id^=sub]").toggle(false);
+
+         if (!isHoveringOnLoad) {
+              isNav = true;
+              $("#sub" + id).toggle(true);
+         }
+         isHoveringOnLoad = false;
+
+       },
+       function() {
+           var id = $(this).attr("id").substring(3,5);
+           isNav = false;
+           isHoveringOnLoad = false;
+           window.setInterval(function() {
+             if(!isNav) $("#sub" + id).toggle(false);
+           }, 500);
+
+        }
+     );
+
+     $(".AVBnav").click(function() {
+        var id = $(this).attr("id");
+        id = "#sub" + id.substring(3);
+        $(id).toggle();
+     });
+
+     $(".AVBnav a").click(function(ev) {
+        var id = $(this).closest("div").attr("id");
+        id = "#sub" + id.substring(3);
+        if (!$(id).is(":visible")) {
+          $(id).toggle(true);
+          ev.preventDefault();
+          ev.stopPropagation();
+          return;
+        }
+     });
+
+	$( "#searchboxsm" ).autocomplete({
+		source: "suggest_json.jsp",
+		select: function( event, ui ) {
+			$("#searchboxsm").val(ui.item.label);
+			self.location = 'species.jsp?avibaseid=' + ui.item.value;
+		}
+	});
+
+   });
+
+</script>
+</head>
+<body style="background-color: #DADADD;">
+
+
+<table border="0" bgcolor="#000078" cellpadding="0" cellspacing="0" width="1024" align="center">
+<tbody><tr>
+<td width="400" colspan="2"><a href="avibase.jsp"><img src="avibase.gif" align="top" height="84" border="0"></a></td>
+<td align="right" width="580">
+<a target="photos" href="http://www.digimages.info"><img src="images/ph769.jpg" align="top" border="0" height="65" alt="" title="Black Wheatear, , Alain Fossé"></a><a target="photos" href="http://www.neoecofoundation.org"><img src="images/ph1272.jpg" align="top" border="0" height="65" alt="" title="Picazuro Pigeon, Brazil, Neotropical Eco Foundation"></a><a target="photos" href="http://www.stanford.edu/~cagan/photography.html"><img src="images/ph953.jpg" align="top" border="0" height="65" alt="" title="Bananaquit, Las Cruces, Costa Rica, Cagan Sekercioglu"></a><a target="photos" href="http://www.flickr.com/photos/faisca/79541327/in/set-742885/"><img src="images/ph1973.jpg" align="top" border="0" height="65" alt="" title="Common Buzzard, Portugal, Faisca"></a><a target="photos" href="http://woodcreeper.150m.com/"><img src="images/ph74.jpg" align="top" border="0" height="65" alt="" title="Slaty-backed Gull, Key West, Florida, USA, David LaPuma"></a><img src="images/ph1604.jpg" align="top" border="0" height="65" alt="" title="Jamaican Tody, Jamaica, Jan van den Broek"><a target="photos" href="http://www.flickr.com/photos/faisca/135321334/in/set-72057594117426441/"><img src="images/ph2262.jpg" align="top" border="0" height="65" alt="" title="Lesser Striated Swallow, Portugal, Faisca"></a>
+<br><b><font color="#FFFFFF" size="1" face="Geneva,Arial,Helvetica">Bird checklists - taxonomy - distribution - maps - links</font></b></td></tr>
+
+<tr><td colspan="3">
+
+
+
+<div id="nav01" class="AVBnav"> <!-- onClick="changepg('home','EN');" -->
+<a href="avibase.jsp?lang=EN&amp;pg=home" class="AVBlinks3"><font color="#F0F0F0">Home</font></a>
+
+
+<div id="sub01" class="AVBnavsub">
+
+<ul>
+   <li> <a href="/avibase.jsp">Avibase home</a></li>
+   <li> <a href="/myavibase.jsp">MyAvibase</a></li>
+   <li> <a href="/mobile/">Mobile site</a></li>
+   <li> <a href="http://www.twitter.com/Avibase">Twitter</a></li>
+   <li> <a href="/links/links.jsp">Birdlinks</a></li>
+   <li> <a href="/links/links.jsp?page=g_reports">Trip reports</a></li>
+   <li> <a href="/webcams.jsp">Birding webcams</a></li>
+   <li> <a href="/compare.jsp">Compare taxonomies</a></li>
+   <li> <a target="_blank" href="http://flickr.com/groups/avibase/">Flickr group</a> </li>
+   <li> <a href="/botd.jsp">Bird of the day archives</a> </li>
+   <li> <a href="/peterschecklist.jsp">Peter's Checklist Database</a></li>
+   <li> <a href="/citations.jsp">Avibase citations</a></li>
+
+</ul>
+
+</div> <!-- end sub01 -->
+
+</div> <!-- end nav01 -->
+
+<div id="nav02" class="AVBnav"> <!-- onClick="self.location='/myavibase.jsp';" -->
+<a href="/myavibase.jsp" class="AVBlinks3">myAvibase</a>
+
+<div id="sub02" class="AVBnavsub">
+
+<p>MyAvibase allows you to create and manage your own lifelists, and produce useful reports to help you plan your next birding excursion.</p>
+
+<ul>
+   <li> <a href="/myavibase.jsp">myAvibase Home</a></li>
+   <li> <a href="/myavb_lists.jsp">Manage lifelists</a></li>
+   <li> <a href="/myavb_observ.jsp">Manage observations</a></li>
+   <li> <a href="/myavb_reports.jsp">myAvibase reports</a></li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="nav03" class="AVBnav"> <!-- onClick="changepg('checklist','EN');" -->
+<a href="checklist.jsp?lang=EN" class="AVBlinks3">Checklists</a>
+
+
+<div id="sub03" class="AVBnavsub">
+
+<p>There are more than 12,000 regional checklists in Avibase, offered in 9 different taxonomies, including synonyms more than 175 languages. Each checklist can be viewed with photos shared by the birding community, and also printed as PDF checklists for field use.</p>
+
+<ul>
+   <li> <a href="/checklist.jsp?lang=EN">Avibase checklists</a></li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="nav04" class="AVBnav"> <!-- onClick="changepg('search','EN');" -->
+<a href="avibase.jsp?lang=EN&amp;pg=search" class="AVBlinks3">Search</a>
+
+<div id="sub04" class="AVBnavsub">
+
+<ul>
+   <li> <a href="/avibase.jsp?lang=EN&amp;pg=search&amp;isadv=yes">Avibase search</a></li>
+   <li> <a href="/avibase.jsp?lang=EN&amp;pg=families">Browse by families</a></li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="nav05" class="AVBnav"> <!-- onClick="changepg('contrib','EN');" -->
+<a href="contrib.jsp?lang=EN" class="AVBlinks3">Contribute</a>
+
+<div id="sub05" class="AVBnavsub">
+
+<p>There are a few ways by which you can help the development of this page, such as joining the Flickr group for photos or providing translations of the site in addition languages.</p>
+
+<ul>
+   <li> <a href="/contrib.jsp?lang=EN">Contribute to Avibase</a></li>
+   <li> <a href="/contrib.jsp?lang=EN">Acknowledgements</a></li>
+   <li> <a target="_blank" href="http://flickr.com/groups/avibase/">Flickr group</a> </li>
+   <li> <a href="flickr_stats.jsp?lang=EN">Media stats</a></li>
+   <li> <a href="flickr_stats.jsp?action=flickr&amp;lang=EN">Flickr group members</a></li>
+   <li> <a href="flickr_stats.jsp?action=missing&amp;lang=EN">Media wanted</a></li>
+
+</ul>
+
+</div>
+
+
+</div>
+
+<div id="nav06" class="AVBnav">
+<span class="AVBlinks3" style="color: #F0F0F0;">Translate</span>
+
+<div id="sub06" class="AVBnavsub">
+
+<p><b><font color="#FFFFFF">Avibase is also available in the following languages:</font></b><br>
+
+</p><div style="float: left; width: 120px; font-family: Geneva,Arial,Helvetica; font-size: 9pt;">
+
+<br><a class="AVBlink" href="species.jsp?lang=EN&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=EN&amp;avibaseid=01761045A529DC4A">English</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=ES&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=ES&amp;avibaseid=01761045A529DC4A">Spanish</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=FR&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=FR&amp;avibaseid=01761045A529DC4A">French</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=DE&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=DE&amp;avibaseid=01761045A529DC4A">German</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=HU&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=HU&amp;avibaseid=01761045A529DC4A">Hungarian</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=ID&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=ID&amp;avibaseid=01761045A529DC4A">Indonesian</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=IT&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=IT&amp;avibaseid=01761045A529DC4A">Italian</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=NL&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=NL&amp;avibaseid=01761045A529DC4A">Dutch</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=PT&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=PT&amp;avibaseid=01761045A529DC4A">Portuguese</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=SV&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=SV&amp;avibaseid=01761045A529DC4A">Swedish</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=CA&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=CA&amp;avibaseid=01761045A529DC4A">Catalan</a>
+</div><div style="float: left; width: 120px; font-family: Geneva,Arial,Helvetica; font-size: 9pt;">
+
+<br><a class="AVBlink" href="species.jsp?lang=IS&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=IS&amp;avibaseid=01761045A529DC4A">Icelandic</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=AF&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=AF&amp;avibaseid=01761045A529DC4A">Afrikaans</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=IA&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=IA&amp;avibaseid=01761045A529DC4A">unknown [IA]</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=PL&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=PL&amp;avibaseid=01761045A529DC4A">Polish</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=UK&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=UK&amp;avibaseid=01761045A529DC4A">Ukrainian</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=CS&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=CS&amp;avibaseid=01761045A529DC4A">Czech</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=SK&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=SK&amp;avibaseid=01761045A529DC4A">Slovak</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=RU&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=RU&amp;avibaseid=01761045A529DC4A">Russian</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=FI&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=FI&amp;avibaseid=01761045A529DC4A">Finnish</a>
+
+
+<br><a class="AVBlink" href="species.jsp?lang=LV&amp;avibaseid=01761045A529DC4A"></a> <a class="AVBlink" href="species.jsp?lang=LV&amp;avibaseid=01761045A529DC4A">Latvian</a>
+
+
+</div>
+<div style="clear: both;"></div>
+
+<p>Google translations:<br>
+<select name="lgg" style="font-size: 9pt;" onchange="googleTrans(this)">
+<option value=""></option>
+<option value="AR">Arabic</option><option value="AZ">Azerbaijani</option><option value="BG">Bulgarian</option><option value="BE">Belarusian</option><option value="CY">Welsh</option><option value="DA">Danish</option><option value="EL">Greek</option><option value="ET">Estonian</option><option value="EU">Basque</option><option value="FA">Persian</option><option value="FIL">unknown [FIL]</option><option value="GA">Irish</option><option value="GL">Galician</option><option value="HATX">Haitian Creole French</option><option value="HE">Hebrew</option><option value="HI">Hindi</option><option value="HR">Croatian</option><option value="HY">Armenian</option><option value="JP">Japanese</option><option value="KA">Georgian</option><option value="KO">Korean</option><option value="LT">Lithuanian</option><option value="MK">Macedonian</option><option value="MS">Malay</option><option value="MT">Maltese</option><option value="NO">Norwegian</option><option value="RO">Romanian</option><option value="RU">Russian</option><option value="SL">Slovenian</option><option value="SQ">Albanian</option><option value="SR">Serbian</option><option value="SW">Swahili</option><option value="TH">Thai</option><option value="TR">Turkish</option><option value="UR">unknown [UR]</option><option value="VI">Vietnamese</option><option value="YI">unknown [YI]</option><option value="ZH">Chinese</option>
+</select></p>
+
+<p><a href="translate.jsp?lang=EN" class="AVBlink">Contribute a better translation</a></p>
+
+
+<script>
+function googleTrans(s) {
+  if (s.options[s.selectedIndex].value == '') return;
+  var url = 'species.jsp?lang=' + s.options[s.selectedIndex].value + '&avibaseid=01761045A529DC4A';
+  document.location = url;
+}
+</script>
+
+
+
+</div>
+
+</div>
+
+<div style="float: right; width: 130 px;">
+<form action="avibase.jsp" name="avbsmall" style="position: relative;">
+<input type="hidden" name="pg" value="search">
+<font face="Geneva,Arial,Helvetica" size="1" color="white">
+<input id="searchboxsm" placeholder="search avibase" name="qstr" type="text" size="18" style="font-size: 9pt" class="ui-autocomplete-input" autocomplete="off">
+</font>
+</form>
+</div>
+
+</td></tr>
+
+</tbody></table>
+
+<table border="0" width="1024" align="center" style="background-color: #FFFFFF;">
+<tbody><tr valign="top">
+<td colspan="2" style="padding: 5px 15px 15px 15px;">
+
+
+
+
+<div id="credentials" style="font-size: 8pt; font-family: arial; text-align: right; width: 100%; padding-bottom: 5px;">
+Welcome <span style="color: red" id="fullname">Guest</span>
+<span id="credlogin" style=""> | <a id="loginlnk" href="#">Log in</a> | <a href="myavibase.jsp">Register</a> | </span>
+<span id="credlogout" style="display: none;"> | <a href="myavibase.jsp">myAvibase</a> | <a id="logoutlnk" href="#">Logout</a> </span>
+
+<div class="border" id="loginbox" style="display: none; width: 300px; height: 100px; left: 50%; margin-left: 212px; float: right; position: absolute; border-style: solid; border-width: 1px; background-color: #F0F0F0">
+<p>Login:
+<input type="text" size="15" name="loginname" id="loginname">
+<br>
+Password:
+<input type="password" size="15" name="password" id="password">
+
+<br>
+<input type="button" id="login_btn" name="login" value="Log in">
+</p>
+</div>
+
+</div>
+
+
+<script>
+$(document).ready(function() {
+
+  $("#loginlnk").click(function(){
+     $('#loginbox').slideToggle('fast');
+     if ($('#loginbox').is(':visible')) {
+       $('#loginname').focus();
+     }
+  });
+
+
+  $('#credlogin').toggle(true);
+  if ($("#isloggedin").length > 0) $("#isloggedin").toggle(false);
+  if ($("#notloggedin").length > 0) $("#notloggedin").toggle(true);
+
+
+
+  $("#login_btn").click(function(){
+     checkAuth(true);
+  });
+
+  $("#logoutlnk").click(function() {
+    $.ajax({
+       url:"myavb_auth.jsp",
+       dataType:"json",
+       async:true,
+       cache:false,
+       data:{ "logout": "yes" },
+       success:function(data) {
+         logout();
+       }
+
+    });
+  });
+
+  function checkAuth(s) {
+    $("#loginmsg").html("");
+    $.ajax({
+       url:"myavb_auth.jsp",
+       dataType:"json",
+       async:true,
+       cache:false,
+       data:{ "loginname": $("#loginname").val(), "password": $("#password").val(), "remember": ($("#remember").is(":checked")?"yes":""), "checkauth": "yes" },
+       success:function(data) {
+         if (data && data.login) {
+          $('#loginbox').toggle(false);
+          $('#fullname').html(data.fullname);
+          $('#credlogin').toggle(false);
+          $('#credlogout').toggle(true);
+          buildLifelist(data, '');
+          if ($("#isloggedin").length > 0) $("#isloggedin").toggle(true);
+          if ($("#notloggedin").length > 0) $("#notloggedin").toggle(false);
+          //if ($("#showoptions")) $("#showoptions").toggle(true);
+          //if (s && document.URL.indexOf("/myavibase.jsp") < 0) window.location = "myavibase.jsp";
+
+         } else {
+           $("#loginmsg").html("The login attempt was not successful");
+         }
+       }
+
+    });
+  }
+
+  function logout() {
+    $('#loginbox').toggle(false);
+    $('#fullname').html("guest");
+    $('#credlogin').toggle(true);
+    $('#credlogout').toggle(false);
+    $("#password").val('')
+    buildLifelist({"checklists": [{"id": "", "name": "None"}]}, '');
+    if ($("#isloggedin").length > 0) $("#isloggedin").toggle(false);
+    if ($("#notloggedin").length > 0) $("#notloggedin").toggle(true);
+  }
+
+  if ($("#lifelist").length > 0) loadLifelist();
+
+  loadSightings();
+
+
+});
+
+function login() {
+   $("#loginlnk").click()
+}
+
+function buildLifelist(data, sel) {
+
+  if (!data) data = {};
+  if (!data.checklists) data.checklists = [];
+
+  var cl = sortArray(data.checklists, "name");
+
+  cl.splice(0,0,{"id":"", "name":"None selected"});
+
+  populateDropdown($("#lifelist"), cl, sel, false);
+
+}
+
+function loadLifelist() {
+  $.ajax({
+     url:"myavb_auth.jsp",
+     dataType:"json",
+     async:true,
+     cache:false,
+     data:{ "checkauth": "no" },
+     success:function(data) {
+       if (data && data.checklists) {
+        buildLifelist(data, '');
+       }
+     }
+
+  });
+}
+
+
+function loadSightings() {
+  $.ajax({
+     url:"myavb_sightings.jsp",
+     dataType:"json",
+     async:true,
+     cache:false,
+     data:{ "avibaseid": "01761045A529DC4A" },
+     success:function(data) {
+       if (data && data.checklists) {
+
+         if (data.checklists.length == 0)
+         $("#avbsightings").html("No sightings");
+         else {
+           $("#avbsightings").html("");
+
+           $("#avbsightings").append("<p><table width='100%'>");
+           $.each(data.checklists, function(i, item) {
+              $("#avbsightings").append("<tr style='background-color: " + (i % 2 == 0?"#FFFFFF":"#F0F0F0") + "'><td width='75%'>" + item.name + "</td><td width='20%'>" + item.dateObs + "</td><td width='5%'><img src='del.gif' id='delsighting" + item.id +"'></td></tr>");
+           });
+           $("#avbsightings").append("</table></p>");
+         }
+
+         $("[id^=delsighting]").click(function(obj) {
+            if (confirm("Are you sure that you want to delete this observation? Note that linked sightings need to be removed individually"))
+               deleteSighting(obj.target.id.substring(11));
+         });
+
+       }
+     },
+     error:function(data) {
+        alert("error");
+     }
+
+  });
+
+}
+
+function addSighting() {
+   var ll = $("#lifelist").val();
+   var id = "01761045A529DC4A";
+   var dt = $("#currDt").val();
+
+  $.ajax({
+     url:"myavb_observ_json.jsp",
+     dataType:"json",
+     async:true,
+     cache:false,
+     data:{ "upd": "yes", "lifelist": ll, "avbid": id, "newdt": dt, "newtxt": "", "datefmt": "null", "exclude": 0},
+     success:function(data) {
+       if (data && data.err) {
+         if (data.err == "success") loadSightings();
+         else
+            alert(data.err);
+       } else if (data && data.msg) {
+         if (data.msg == "success") loadSightings();
+         else alert(data.msg);
+       }
+     }
+  });
+
+}
+
+function deleteSighting(ll) {
+   var id = "01761045A529DC4A";
+
+  $.ajax({
+     url:"myavb_observ_json.jsp",
+     dataType:"json",
+     async:true,
+     cache:false,
+     data:{ "upd": "yes", "lifelist": ll, "avbid": id, "newdt": "", "newtxt": "", "datefmt": "null", "exclude": 0},
+     success:function(data) {
+       if (data && data.err) {
+         if (data.err == "success") loadSightings();
+         else
+            alert(data.err);
+       } else if (data && data.msg) {
+         if (data.msg == "success") loadSightings();
+         else alert(data.msg);
+       }
+     }
+  });
+
+}
+
+
+
+</script>
+
+
+
+<table border="0" width="100%" bgcolor="#FFFFFF">
+<tbody><tr>
+<td width="100%" class="AVBHeader" colspan="3">
+Northern Wheatear (nominate)<br>
+<i>Oenanthe oenanthe oenanthe</i> 
+(Linnaeus, 1758)</td>
+</tr>
+<tr>
+<td width="100%" class="AVBSubHeader" colspan="3" align="center">
+<script language="JavaScript">
+function changesection(s) {
+  self.document.location = 'species.jsp?lang=EN&avibaseid=01761045A529DC4A&sec=' + s;
+}
+function changespecies(t,v,s) {
+  self.document.location = 'species.jsp?lang=EN&avibaseid=' + t + (s?'&sec='+s:'&sec=summary') + (v?'&ssver=' + v:'');
+}
+
+
+</script>
+<a href="javascript:changesection('summary')">summary</a>&nbsp;&nbsp;
+<a href="javascript:changesection('taxontable')">taxon grid</a>&nbsp;&nbsp;
+<a href="javascript:changesection('map')">map</a>&nbsp;&nbsp;
+<a href="javascript:changesection('ebird')">eBird</a>&nbsp;&nbsp;
+Wikipedia&nbsp;&nbsp;
+<a href="javascript:changesection('natureserve')">NatureServe</a>&nbsp;&nbsp;
+<a href="javascript:changesection('itis')">ITIS</a>&nbsp;&nbsp;
+<font color="#303030">Birdlife</font>
+&nbsp;&nbsp;<a href="javascript:changesection('flickr')">Flickr</a>
+&nbsp;&nbsp;<a href="javascript:changesection('audio')">Audio</a>
+&nbsp;&nbsp;<a href="javascript:changesection('links')">More links</a>
+
+<hr noshade="" width="100%" size="1" align="center" color="#F0F0F0">
+
+</td>
+</tr>
+</tbody></table>
+
+
+
+<table border="0" width="100%" bgcolor="#FFFFFF">
+<tbody><tr><td>
+
+
+
+
+
+  </td></tr><tr>
+    <td class="AVBContainerText" width="60%" valign="top">
+
+    <table border="0" align="center" width="95%"><tbody><tr valign="top"><td class="AVBContainerText" bordercolor="#FFFFFF" width="50%">
+    <script src="flickr_votes.js"></script>
+    <script>
+      var imgJson = null;
+      var imgPos = -1;
+      var interv = null;
+
+      $(document).ready(function() {
+
+          $.ajax({
+            url:"flickr_img_json.jsp",
+            dataType:"json",
+            async:true,
+            cache:true,
+            data:{ "name": "Oenanthe oenanthe oenanthe"},
+            success:function(data) {
+              imgJson = data;
+              nextimg2();
+            }
+          });
+       });
+     </script>
+
+
+
+<div style="position: relative">
+<br><a target="_blank" id="flickrhref" href="http://flickr.com/photos/14191740@N08/27953005531">
+<div id="flickrvideo" class="flickrVideoBtn" style="display: none;"><img src="videobtn.png" title="Video"></div>
+<img id="flickrimg" border="0" src="https://farm8.staticflickr.com/7797/27953005531_57d0f1ee2f_m.jpg" style="max-width: 240px;"></a>
+<br><span class="credit" id="flickrcredit">photo ©Terathopius</span><br>
+<center>
+<input type="hidden" id="flickrid" value="1720617">
+<a href="javascript:void(0)"><img id="report0" src="button2.gif" title="Report as inappropriate" border="0"></a><a href="javascript:void(0)"><img id="vote0_1" src="vote2d.gif" border="0" title="Vote = 1"></a><a href="javascript:void(0)"><img id="vote0_2" src="vote2d.gif" border="0" title="Vote = 2"></a><a href="javascript:void(0)"><img id="vote0_3" src="vote2d.gif" border="0" title="Vote = 3"></a><a href="javascript:void(0)"><img id="vote0_4" src="vote2a.gif" border="0" title="Vote = 4"></a><a href="javascript:void(0)"><img id="vote0_5" src="vote0.gif" border="0" title="Vote = 5"></a><a href="javascript:nextimg2()"><img src="button1.gif" title="Change photo" border="0"></a>
+(<span id="flickrnvotes">0</span> votes)</center>
+</div>
+
+    <span style="color: #606060; font-size: 7pt">Photo powered by <a href="http://flickr.com" target="_blank">flickr.com</a>.</span><p></p>
+
+<script type="text/javascript" src="jplayer_script.js"></script>
+<link rel="stylesheet" href="jplayer.css">
+
+
+<div id="birdsound_outer" align="center">
+<div id="birdsound" align="center" style="width: 0px; height: 0px;">
+
+  <div id="avb_player" class="avb-player"></div>
+
+</div>
+</div>
+
+
+<input type="button" id="listen0" data-concept="01761045A529DC4A" value="Listen to recording" style="font-size: 9pt">
+<input type="button" class="stoprecording" id="stop0" value="Stop recording" style="font-size: 9pt">
+<br><span id="sndmetadata0" style="font-size: 9pt"></span>
+
+<script>
+  $(document).ready(function() {
+
+     interv = window.setInterval("nextimg(1, 'Oenanthe oenanthe oenanthe')", 10000);
+
+  });
+
+</script>
+
+
+
+    <p>
+    <b>Order:</b><br> &nbsp;&nbsp;Passeriformes<br>
+    <b>Family:</b><br> &nbsp;&nbsp;Muscicapidae<br>
+    
+    <b>Genus:</b><br> &nbsp;&nbsp;<a href="javascript:changespecies('07FFFF1F7179E3E7', 1)">Oenanthe</a><br>
+    
+    </p><p>
+    <b>Scientific:</b><br> &nbsp;&nbsp;<i>Oenanthe oenanthe oenanthe</i></p>
+    <p><b>Citation:</b><br> &nbsp;&nbsp;(Linnaeus, 1758)</p>
+    <p><b>Reference:</b><br> &nbsp;&nbsp;Syst.Nat.ed.10 p.186</p>
+    
+    <p><b>Protonym:</b><br> &nbsp;&nbsp;<i>Motacilla oenanthe</i></p>
+    
+    <p><b>Avibase ID:</b><br> &nbsp;&nbsp;01761045A529DC4A<br>
+    </p><p><b>Taxomic Serial Number:</b><br>
+    TSN: <a target="_blank" href="http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&amp;search_value=179815">179815</a>
+
+    </p>
+
+    </td><td class="AVBContainerText" bordercolor="#FFFFFF" width="50%">
+
+    
+
+
+    <style>
+    .li_rng_vis {
+    }
+    .li_rng_hid {
+      display: none;
+    }
+    </style>
+    <script>
+       function showAllRanges() {
+          $("[id^=rng]").toggle(true);
+          $("#range_showmore").toggle(false);
+       }
+    </script>
+
+
+    <div class="AVBContainerText2" style="border: 1pt; border-color: #D8D8BA; background-color: #F8F8F6;">
+    <p><b>Geographic range:</b></p>
+    <ul>
+    <li id="rng1" class="li_rng_vis"><i>Oenanthe oenanthe oenanthe</i>: British Isles to Mediterranean, and east to Siberia, Alaska, and nw Canada (Yukon); &gt; to c Africa</li>
+
+
+    
+    
+    </ul>
+    <span style="font-size: 8pt">Source: <a target="_blank" href="http://www.birds.cornell.edu/clementschecklist" style="color: #808080;">Clements checklist</a></span><p></p>
+    <p></p>
+    </div>
+
+
+    <b>English:</b><br> &nbsp;&nbsp;Northern Wheatear (nominate)<br>
+
+<!-- lang CS--><!-- lang DE-->
+    <b>German:</b><br> &nbsp;&nbsp;Steinschmätzer-oenanthe<br>
+<!-- lang DA--><!-- lang ES--><!-- lang FI--><!-- lang FR-->
+    <b>French:</b><br> &nbsp;&nbsp;Traquet motteux (nominal)<br>
+<!-- lang IS--><!-- lang IT--><!-- lang JA--><!-- lang JP--><!-- lang NL--><!-- lang NO-->
+    <b>Norwegian:</b><br> &nbsp;&nbsp;Steinskvett, underarten oenanthe<br>
+<!-- lang PL-->
+    <b>Polish:</b><br> &nbsp;&nbsp;bialorzytka zwyczajna<br>
+<!-- lang PT--><!-- lang PTBR--><!-- lang RU--><!-- lang SK-->
+    <b>Slovak:</b><br> &nbsp;&nbsp;skaliarik sivý<br>
+<!-- lang SV--><!-- lang ZH--><p></p>
+    </td></tr></tbody></table>
+
+<hr noshade="" width="80%" size="1" align="center" color="#E0E0E0">
+
+   <span class="AVBContainerText">
+  
+     <p><b>Authorities recognizing this taxonomic concept:</b></p>
+
+       <b>American Ornithologists' Union 2nd edition (incl. 10th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 2nd edition (incl. 11th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 2nd edition (incl. 12th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 2nd edition (incl. 13th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 2nd edition (incl. 14th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 2nd edition (incl. 15th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 3rd edition (1910):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 3rd edition (incl. 16th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Saxicola oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 3rd edition (incl. 17th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 3rd edition (incl. 18th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (1931):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 19th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 20th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 21st suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 22nd suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 24th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 25th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 26th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 27th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 28th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 29th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 30th suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 4th edition (incl. 31st suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 5th edition (1957):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 5th edition (incl. 32nd suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>American Ornithologists' Union 5th edition (incl. 33rd suppl.):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>Avibase taxonomic concepts (current):</b><br>&nbsp;&nbsp;&nbsp;Northern Wheatear (nominate) ( <i>Oenanthe oenanthe oenanthe</i>)
+       <br>
+
+       <b>Avibase taxonomic concepts v. 01 (August 2013):</b><br>&nbsp;&nbsp;&nbsp;Northern Wheatear (nominate) ( <i>Oenanthe oenanthe oenanthe</i>)
+       <br>
+
+       <b>Avibase taxonomic concepts v. 02 (May 2014):</b><br>&nbsp;&nbsp;&nbsp;Northern Wheatear (nominate) ( <i>Oenanthe oenanthe oenanthe</i>)
+       <br>
+
+       <b>Avibase taxonomic concepts v. 03 (March 2015):</b><br>&nbsp;&nbsp;&nbsp;Northern Wheatear (nominate) ( <i>Oenanthe oenanthe oenanthe</i>)
+       <br>
+
+       <b>Avibase taxonomic concepts v. 04 (Aug 2016):</b><br>&nbsp;&nbsp;&nbsp;Northern Wheatear (nominate) ( <i>Oenanthe oenanthe oenanthe</i>)
+       <br>
+
+       <b>Avibase taxonomic concepts v. 05 (Jan 2017):</b><br>&nbsp;&nbsp;&nbsp;Northern Wheatear (nominate) ( <i>Oenanthe oenanthe oenanthe</i>)
+       <br>
+
+       <b>Avibase taxonomic concepts v. 06 (Feb 2018):</b><br>&nbsp;&nbsp;&nbsp;Northern Wheatear (nominate) ( <i>Oenanthe oenanthe oenanthe</i>)
+       <br>
+
+       <b>British Ornithologists' Union Checklist (7th edition):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+       <br>
+
+       <b>Clements 5th edition (as published):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 5th edition (incl. 2000 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 5th edition (incl. 2001 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 5th edition (incl. 2002 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 5th edition (incl. 2003 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 5th edition (incl. 2004 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 5th edition (incl. 2005 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (incl. 2007 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (incl. 2008 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (incl. 2009 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (version 6.5 incl. 2010 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (version 6.6 incl. 2011 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (version 6.7 incl. 2012 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (version 6.8 incl. 2013 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements 6th edition (version 6.9 incl. 2014 revisions):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements, version 2015:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements, version 2016:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Clements, version 2017:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 2nd edition:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (as published):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 1.2):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 2.1):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 3.1):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 4):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 5):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 6):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 7):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 3rd edition (incl. corrigenda 8):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 4th edition (vol. 1-2):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Howard and Moore 4th edition (incl. corrigenda vol.1-2):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Handbook of the Birds of the World (vol 1-16):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Handbook of the Birds of the World Alive (31/01/2015):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Handbook of the Birds of the World Alive (3/07/2017):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 3.1:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 3.2:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 3.3:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 3.4:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 3.5:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 4.1:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 4.2:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 4.3:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 4.4:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 5.1:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 5.2:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 5.3:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 5.4:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 6.1:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 6.2:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 6.3:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 6.4:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 7.1:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 7.2:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 7.3:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>IOC World Bird Names, version 8.1:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>James Lee Peters (original):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>James Lee Peters (2nd edition):</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+       <b>Zoonomen - Zoological Nomenclature Resource:</b><br>&nbsp;&nbsp;&nbsp; <i>Oenanthe oenanthe oenanthe</i>
+        <a href="javascript:loadTree('01761045', 1)">[version 1]</a><br>
+
+</span>
+
+    </td>
+    <td width="40%" valign="top" align="left">
+
+<span class="AVBContainerText2">
+
+<p></p><table border="1" width="90%"><tbody><tr><td class="AVBContainerText2" style="border: 1pt; border-color: #D8D8BA;">
+
+  <p><b>Taxonomic status:</b></p><p><b>Species status:</b>
+
+  nominal subspecies
+
+  
+     </p><p>This taxon is a subspecies of
+     <a href="javascript:changespecies('8EC7846A2FF3A61B')">Oenanthe oenanthe [oenanthe or libanotica]</a>
+     <br>
+  
+
+</p></td></tr></tbody></table>
+
+<!-- myAvibase sightings -->
+
+    <table width="90%"><tbody><tr><td class="AVBSightings">
+      <font size="2"><center><b>Your sightings</b></center>
+
+      <div id="isloggedin" style="display: none;">
+        <div id="avbsightings" style="width: 100%; border: 1px #F0F0F0 solid;">No sightings</div>
+
+      <p>Add to a lifelist: <select id="lifelist" name="lifelist" style="width: 250px; font-size: 9pt;"><option value=""> None </option></select>
+      <br>Date: <input type="text" id="currDt" value="20/03/2018" size="10" style="font-size: 9pt;">
+      <input type="button" value="Go" class="AVBbuttonsm" onclick="addSighting()">
+      </p>
+
+      </div>
+
+      <div id="notloggedin"><p>You must be <a href="javascript:login()">logged in</a> to view your sighting details. To register to <b>myAvibase</b> <a href="myavibase.jsp">click here</a>.</p></div>
+
+      </font>
+    </td></tr></tbody></table>
+
+<!-- related taxa -->
+
+<link rel="stylesheet" href="jqtree.css">
+<script src="tree.jquery.js"></script>
+
+<script>
+
+$(document).ready(function() {
+   loadTree("01761045", 1);
+});
+
+function loadTree(concept, ssver) {
+
+   $.ajax({
+       url:"taxon_tree_json.jsp",
+       dataType:"json",
+       async:true,
+       cache:true,
+       data:{ "avibaseID": concept, "ssver": ssver },
+       success:function(data) {
+         $('#tree1').tree({
+            data: data,
+            autoEscape: false,
+            autoOpen: true
+         });
+         $("[id^=ssvs]").css({background: "#FFFFFF"});
+         $("#ssvs" + ssver).css({background: "#417694" });
+         $("[id^=ssva]").css({color: "#417694"});
+         $("#ssva" + ssver).css({color: "#FFFFFF"});
+       }
+    });
+}
+
+</script>
+
+<p></p><table width="90%"><tbody><tr><td class="AVBRelated">
+<font size="2">
+
+
+<center><b>Related taxa</b></center>
+
+
+<div id="tree1" style="font-size: 10pt"><ul class="jqtree_common jqtree-tree"><li class="jqtree_common jqtree-folder"><div class="jqtree-element jqtree_common"><a class="jqtree_common jqtree-toggler">▼</a><span class="jqtree_common jqtree-title"><a href="javascript:changespecies('D857C0C7',1)">Oenanthe [oenanthe, seebohmi or phillipsi]</a></span></div><ul class="jqtree_common "><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('631D27EF',1)" style="font-weight: bold;">Oenanthe phillipsi</a></span></div></li><li class="jqtree_common jqtree-folder"><div class="jqtree-element jqtree_common"><a class="jqtree_common jqtree-toggler">▼</a><span class="jqtree_common jqtree-title"><a href="javascript:changespecies('AB031597',1)">Oenanthe [oenanthe or seebohmi]</a></span></div><ul class="jqtree_common "><li class="jqtree_common jqtree-folder"><div class="jqtree-element jqtree_common"><a class="jqtree_common jqtree-toggler">▼</a><span class="jqtree_common jqtree-title"><a href="javascript:changespecies('DF526047',1)" style="font-weight: bold;">Oenanthe oenanthe</a></span></div><ul class="jqtree_common "><li class="jqtree_common jqtree-folder"><div class="jqtree-element jqtree_common"><a class="jqtree_common jqtree-toggler">▼</a><span class="jqtree_common jqtree-title"><a href="javascript:changespecies('8EC7846A',1)">Oenanthe oenanthe [oenanthe or libanotica]</a></span></div><ul class="jqtree_common "><li class="jqtree_common jqtree-folder"><div class="jqtree-element jqtree_common"><a class="jqtree_common jqtree-toggler">▼</a><span class="jqtree_common jqtree-title"><b>Oenanthe oenanthe oenanthe</b></span></div><ul class="jqtree_common "><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('62836B93',1)">Oenanthe oenanthe oenanthe (oenanthe)</a></span></div></li><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('98BFEDAC',1)">Oenanthe oenanthe oenanthe (oenanthoides)</a></span></div></li></ul></li><li class="jqtree_common jqtree-folder"><div class="jqtree-element jqtree_common"><a class="jqtree_common jqtree-toggler">▼</a><span class="jqtree_common jqtree-title"><a href="javascript:changespecies('161611C7',1)">Oenanthe oenanthe libanotica</a></span></div><ul class="jqtree_common "><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('46B8653D',1)">Oenanthe oenanthe libanotica (libanotica)</a></span></div></li><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('9E28FA7E',1)">Oenanthe oenanthe libanotica (virago)</a></span></div></li><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('3CB6C1A3',1)">Oenanthe oenanthe libanotica (nivea)</a></span></div></li></ul></li></ul></li><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('AE947F55',1)">Oenanthe oenanthe leucorhoa</a></span></div></li></ul></li><li class="jqtree_common"><div class="jqtree-element jqtree_common"><span class="jqtree-title jqtree_common"><a href="javascript:changespecies('3983013B',1)" style="font-weight: bold;">Oenanthe seebohmi</a></span></div></li></ul></li></ul></li></ul></div>
+
+</font><br>
+</td></tr></tbody></table>
+
+<!-- other related concepts -->
+
+
+
+<!-- synonyms -->
+
+    <table width="90%"><tbody><tr><td class="AVBSynonyms">
+    <font size="2"><center><b>Other synonyms</b></center>
+<br><b>Catalan: </b>Còlit gris<br><b>German: </b>Steinschmätzer-oenanthe<br><b>English: </b>Northern Northern Wheatear, Northern wheatear, Northern Wheatear (nominate), Wheatear<br><b>Estonian: </b>Kivitäks<br><b>French: </b>Traquet motteux, Traquet motteux (forme d'Eurasie), Traquet motteux (nominal), Traquet motteux (nominale), Traquet motteux (race nominale)<br><b>Latin: </b>Oenanthe oenanthe, Oenanthe oenanthe integer, Oenanthe oenanthe oenanthe, Oenanthe oenanthe oenanthoides, Oenanthe oenanthe rostrata, Saxicola oenanthe oenanthe<br><b>Norwegian: </b>Steinskvett (oenanthe), Steinskvett, underarten oenanthe<br><b>Polish: </b>bialorzytka, bialorzytka zwyczajna, białorzytka zwyczajna<br><b>Slovak: </b>skaliarik sivý
+  </font>
+  </td></tr></tbody></table><p></p>
+
+</span>
+</td></tr>
+<tr><td colspan="3">
+<p><small><!-- avb.bow2Descr --></small></p>
+<p>
+  </p></td>
+  </tr>
+
+
+
+
+
+
+<tr><td colspan="3">
+<p>&nbsp;</p>
+<center>
+<a href="http://www.bsc-eoc.org/bscmain.html" target="_blank"><img src="/bsclogosmallsq1.png" alt="" title="Avibase is hosted by Bird Studies Canada" border="0"></a> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://www.birdlife.org" target="_blank"><img src="/birdlife2013.png" alt="" title="Bird Studies Canada is the canadian co-partner of Birdlife International" border="0"></a>
+</center><br>
+
+
+
+
+
+</td></tr>
+<tr><td colspan="2" valign="bottom">
+<center><p><small>Avibase has been visited <b>256,806,571</b> times since 24 June 2003. © Denis Lepage |
+<a href="privacy.jsp">Privacy policy</a><br>
+<small><!-- Translation of this page in English provided by --></small></small></p></center>
+
+<center><a target="_blank" href="https://www.birdingtop500.com/"><img id="birdingtop500" src="https://www.birdingtop500.com/button.php?u=dlepage" border="0"></a>
+</center>
+</td></tr></tbody></table>
+
+</td></tr></tbody></table>
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+$(document).ready(function() {
+   $("#birdingtop500").attr("src", "https://www.birdingtop500.com/button.php?u=dlepage");
+});
+
+</script><script src="https://ssl.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-12387576-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
+
+
+
+<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content" id="ui-id-1" tabindex="0" style="display: none;"></ul><span role="status" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></span></body></html>

@@ -1,0 +1,201 @@
+
+P A U P *
+Version 4.0a (build 159) for Unix/Linux (built on Nov 17 2017 at 11:51:29)
+Sat Jan  6 22:50:29 2018
+
+Running on Intel(R) 64 architecture
+SSE vectorization enabled
+SSSE3 instructions supported
+Multithreading enabled for likelihood using Pthreads
+Compiled using GNU C compiler (gcc) 4.8.4
+
+        -----------------------------NOTICE-----------------------------
+          This is an alpha-test version that is still changing rapidly.
+          It will expire on 1 Apr 2018.
+
+          Please report bugs to dave@phylosolutions.com
+        ----------------------------------------------------------------
+
+Processing of file "data-raw/taxon-name.nexus" begins...
+
+Data read in 'protein' format
+
+Data matrix has 12 taxa, 57 characters
+Valid character-state symbols: ARNDCQEGHILKMFPSTWYV
+Missing data identified by 'X'
+Gaps identified by '-'
+"Equate" macros in effect:
+   B,b ==> {DN}
+   Z,z ==> {EQ}
+
+******  
+******  Warning: Use of all-digit taxon and/or character names does not conform to the NEXUS standard
+******                   and is strongly discouraged. Remember that names have priority over numbers.
+******  
+
+1 tree read from TREES block; time used = 0.00 sec (CPU time = 0.00 sec)
+
+Note: Input trees are rooted but current criterion and/or option settings would specify unrooted
+      trees.  (You can deroot the trees using the 'DerootTrees' command.)
+
+Outgroup status changed:
+  1 taxon transferred to outgroup
+  Total number of taxa now in outgroup = 1
+  Number of ingroup taxa = 11
+
+Tree description:
+
+  Optimality criterion = parsimony
+    Character-status summary:
+      Of 57 total characters:
+        All characters are of type 'unord'
+        All characters have equal weight
+        37 characters are constant
+        All variable characters are parsimony-informative
+        Number of parsimony-informative characters = 20
+    Gaps are treated as "missing"
+    Character-state optimization: Accelerated transformation (ACCTRAN)
+                                  AncStates = "standard"
+
+Tree 1 ("my tree"):
+
+Tree length = 82
+Consistency index (CI) = 0.3902
+Homoplasy index (HI) = 0.6098
+Retention index (RI) = 0.0385
+Rescaled consistency index (RC) = 0.0150
+
+             /----------------------------- A
+            13
+             +-------- 2
+             |
+             +----------------------------- G 7
+            14
+             +-------- G7
+             |
+             |           /-------------  G7
+            17----------15
+             |           \--------------------------------------------------------------- 7G
+/-----------21
+|            |   /---------------------  7G
+|            +--16
+|            |   \------------------------- 7 G
+|            |
+|            |   /------------ C3
+22           |   |
+|            \--20           /------------------------------------------------------------------- 4D
+|                \----------19
+|                            \---- E
+|
+\-----------------  F
+
+                                                                                /---------------- A
+                                                /------------------------------13
+                                                |                               \---------------- 2
+                                                |
+                                                |                               /---------------- G 7
+                                /--------------18               /--------------14
+                                |               |               |               \---------------- G7
+                                |               |               |
+                                |               |               |               /----------------  G7
+                                |               \--------------17--------------15
+                                |                               |               \---------------- 7G
+                /--------------21                               |
+                |               |                               |               /----------------  7G
+                |               |                               \--------------16
+                |               |                                               \---------------- 7 G
+                |               |
+                |               |                               /-------------------------------- C3
+---------------22               |                               |
+                |               \------------------------------20               /---------------- 4D
+                |                                               \--------------19
+                |                                                               \---------------- E
+                |
+                \--------------------------------------------------------------------------------  F
+
+Apomorphy lists:
+
+      Branch        Character  Steps      CI   Change
+-----------------------------------------------------
+node_22 --> node_21 3              1   0.286  L --> T
+                    14             1   0.250  M --> T
+                    43             1   0.167  N --> K
+node_13 --> A       2              1   0.333  A ==> S
+                    3              1   0.286  T --> L
+                    7              1   0.375  Q --> T
+                    14             1   0.250  T ==> M
+                    24             1   0.333  L ==> S
+                    43             1   0.167  K --> N
+                    49             1   0.333  L ==> V
+node_13 --> 2       11             1   0.500  Q ==> E
+                    50             1   0.500  D ==> H
+node_14 --> G 7     2              1   0.333  A ==> S
+                    3              1   0.286  T --> L
+                    7              1   0.375  Q --> T
+                    14             1   0.250  T ==> M
+                    24             1   0.333  L ==> S
+                    43             1   0.167  K --> N
+                    49             1   0.333  L ==> V
+node_14 --> G7      11             1   0.500  Q ==> E
+                    50             1   0.500  D ==> H
+node_17 --> node_15 7              1   0.375  Q --> H
+                    31             1   0.400  P --> D
+                    32             1   0.500  H --> R
+node_15 -->  G7     7              1   0.375  H --> W
+                    31             1   0.400  D --> E
+                    49             1   0.333  L ==> I
+node_15 --> 7G      2              1   0.333  A ==> T
+                    3              1   0.286  T --> S
+                    10             1   0.500  C ==> S
+                    11             1   0.500  Q ==> K
+                    12             1   0.500  N ==> S
+                    13             1   0.500  S ==> L
+                    20             1   0.500  Y ==> F
+                    24             1   0.333  L ==> T
+                    25             1   0.500  I ==> V
+                    27             1   0.500  C ==> S
+                    32             1   0.500  R --> Y
+                    43             1   0.167  K --> N
+                    50             1   0.500  D ==> E
+                    51             1   0.500  S ==> N
+                    55             1   0.500  C ==> Y
+node_17 --> node_16 3              1   0.286  T --> L
+node_16 -->  7G     3              1   0.286  L --> S
+                    11             1   0.500  Q ==> R
+                    31             1   0.400  P ==> E
+                    33             1   0.500  Y ==> F
+                    55             1   0.500  C ==> S
+node_16 --> 7 G     2              1   0.333  A ==> S
+                    7              1   0.375  Q --> T
+                    14             1   0.250  T ==> M
+                    24             1   0.333  L ==> S
+                    43             1   0.167  K --> N
+                    49             1   0.333  L ==> V
+node_21 --> node_20 31             1   0.400  P ==> E
+node_20 --> C3      7              1   0.375  Q --> W
+                    32             1   0.500  H ==> R
+                    49             1   0.333  L ==> I
+node_20 --> node_19 3              1   0.286  T --> S
+                    11             1   0.500  Q --> R
+                    55             1   0.500  C --> S
+node_19 --> 4D      2              1   0.333  A ==> T
+                    7              1   0.375  Q --> H
+                    10             1   0.500  C ==> S
+                    11             1   0.500  R --> K
+                    12             1   0.500  N ==> S
+                    13             1   0.500  S ==> L
+                    20             1   0.500  Y ==> F
+                    24             1   0.333  L ==> T
+                    25             1   0.500  I ==> V
+                    27             1   0.500  C ==> S
+                    31             1   0.400  E ==> D
+                    32             1   0.500  H ==> Y
+                    43             1   0.167  K --> N
+                    50             1   0.500  D ==> E
+                    51             1   0.500  S ==> N
+                    55             1   0.500  S --> Y
+node_19 --> E       33             1   0.500  Y ==> F
+node_22 -->  F      2              1   0.333  A --> S
+                    7              1   0.375  Q --> T
+                    24             1   0.333  L --> S
+                    49             1   0.333  L --> V
