@@ -5,9 +5,15 @@
 Extending the molecular classification based on apomorphic amino acids: case study in birds
 
 
+
 ## content
 
+- [apocode](https://github.com/dongzhuoer/apocode), mine molecular barcode from phylogenomics
 - [mcapomorphy](mcapomorphy), **M**olecular **C**lassfication based on amino acid **apomorphy**
+- [aves](aves), case study in birds
+- [record](record), laboratory note
+- [protocol](protocol), step-by-step protocol (ufinished)
+- [remote](remote), run program on workstation
 
 
 
